@@ -5,10 +5,10 @@ STLab under the Boost Software License 1.0. Existing `stlab::` API names and
 `stlab/concurrency/*.hpp` and `stlab/pre_exit.hpp` include paths are preserved.
 No futures, channels, serial queues, or STLab utility library are required.
 
-**Publication status:** this is an unpublished local extraction. The execution
-and toolkit commits are not remotely consumable release pins. CI is prepared but
-cannot run remotely until the publication order below is completed; local source
-overrides are validation evidence, not proof that a public CPM fetch works.
+**Publication status:** this is an unreleased extraction under review. The execution
+and toolkit development commits are available on public review branches, not approved
+release pins. Hosted CI can now run; its results remain separate from local validation.
+Release publication still follows the order below.
 
 ## Build and test
 
@@ -85,8 +85,8 @@ target_link_libraries(app PRIVATE stlab::execution)
 From a developer shell, equivalent typed overrides are
 `-DCPM_cpp-library_SOURCE:PATH=<toolkit-checkout>` and
 `-DCPM_stlab-execution_SOURCE:PATH=<execution-checkout>`.
-They are necessary while the production SHAs are unpublished, and must not be
-substituted into production dependency declarations.
+Use them to validate local changes instead of the remote development commits; do not
+substitute developer paths into production dependency declarations.
 
 **Proposed future release example only — 1.0.0 is not published:**
 
