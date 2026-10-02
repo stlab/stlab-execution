@@ -21,41 +21,49 @@
     // ============ Worktree Tasks ============
     {
       "label": "worktree: create",
-      "type": "process",
-      "command": "python3",
-      "args": ["${workspaceFolder}/scripts/worktree.py", "create", "--", "${input:worktreeName}"],
+      "type": "shell",
+      "command": "git worktree add \".claude/worktrees/${input:worktreeName}\" -b \"worktree-${input:worktreeName}\" && (command -v tokensave >/dev/null 2>&1 && tokensave init \".claude/worktrees/${input:worktreeName}\" && tokensave branch add \"worktree-${input:worktreeName}\" --path \".claude/worktrees/${input:worktreeName}\" || true) && code --new-window \".claude/worktrees/${input:worktreeName}\"",
       "options": {
         "cwd": "${workspaceFolder}"
       },
       "windows": {
-        "command": "python",
-        "args": ["${workspaceFolder}\\scripts\\worktree.py", "create", "--", "${input:worktreeName}"]
+        "command": "git worktree add \".claude/worktrees/${input:worktreeName}\" -b \"worktree-${input:worktreeName}\" && (where tokensave >nul 2>&1 && (tokensave init \".claude/worktrees/${input:worktreeName}\" && tokensave branch add \"worktree-${input:worktreeName}\" --path \".claude/worktrees/${input:worktreeName}\") || ver>nul) && code --new-window \".claude/worktrees/${input:worktreeName}\"",
+        "options": {
+          "shell": {
+            "executable": "cmd.exe",
+            "args": ["/d", "/c"]
+          }
+        }
       },
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
       },
-      "detail": "Requires Python 3.9+. Prompts for a single name (letters, digits, dots, underscores, hyphens), creates .claude/worktrees/<name> on branch worktree-<name>, best-effort syncs with tokensave if installed, and opens a new window. Optional sync failures warn; git/editor failures fail the task."
+      "detail": "Prompts for a name, creates a git worktree at .claude/worktrees/<name> on branch worktree-<name>, best-effort syncs it with tokensave if installed, and opens it in a new window."
     },
     {
       "label": "worktree: remove",
-      "type": "process",
-      "command": "python3",
-      "args": ["${workspaceFolder}/scripts/worktree.py", "remove", "--", "${input:worktreeName}"],
+      "type": "shell",
+      "command": "git worktree remove \".claude/worktrees/${input:worktreeName}\" && (command -v tokensave >/dev/null 2>&1 && tokensave branch gc || true)",
       "options": {
         "cwd": "${workspaceFolder}"
       },
       "windows": {
-        "command": "python",
-        "args": ["${workspaceFolder}\\scripts\\worktree.py", "remove", "--", "${input:worktreeName}"]
+        "command": "git worktree remove \".claude/worktrees/${input:worktreeName}\" && (where tokensave >nul 2>&1 && tokensave branch gc || ver>nul)",
+        "options": {
+          "shell": {
+            "executable": "cmd.exe",
+            "args": ["/d", "/c"]
+          }
+        }
       },
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
       },
-      "detail": "Requires Python 3.9+. Prompts for a single name (letters, digits, dots, underscores, hyphens), removes .claude/worktrees/<name>, and best-effort garbage-collects tokensave branch tracking if installed. Optional sync failures warn; git failures fail the task."
+      "detail": "Prompts for a name, removes the git worktree at .claude/worktrees/<name>, and best-effort garbage-collects tokensave's branch tracking if installed."
     },
     // ============ CMake Preset Tasks ============
     {
