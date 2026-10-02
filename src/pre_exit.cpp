@@ -58,6 +58,10 @@ struct pre_exit_stack_t {
 
     /// Push an exit handler. Precondition that stack is not closed.
     void push(pre_exit_handler f) {
+        if (f == nullptr) {
+            assert(false && "Adding a null pre-exit handler.");
+            std::terminate();
+        }
         lock_t lock{_mutex};
         if (_phase == phase::closed) {
             assert(false && "Adding a pre-exit handler after pre_exit() completed.");

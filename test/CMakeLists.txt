@@ -24,6 +24,11 @@ if(STLAB_EXECUTION_PACKAGE_TESTS AND NOT CMAKE_CROSSCOMPILING)
 endif()
 add_test(NAME execution.config.shared_selection
   COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_SOURCE_DIR}/shared_selection.cmake")
+add_test(NAME execution.config.node_minimum
+  COMMAND ${CMAKE_COMMAND}
+    "-DTEST_BINARY_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/node_minimum"
+    "-DTEST_TOOLCHAIN:FILEPATH=${PROJECT_SOURCE_DIR}/cmake/Platform/Emscripten-Execution.cmake"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/node_minimum.cmake")
 add_test(NAME execution.config.shared_reconfiguration
   COMMAND ${CMAKE_COMMAND}
     "-DTEST_BINARY_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/shared_reconfiguration"
@@ -37,8 +42,16 @@ add_test(NAME execution.config.shared_reconfiguration
     "-DSTLAB_EMSCRIPTEN_PTHREADS:BOOL=${STLAB_EMSCRIPTEN_PTHREADS}"
     -P "${CMAKE_CURRENT_SOURCE_DIR}/shared_reconfiguration.cmake")
 set_tests_properties(execution.test.header_smoke execution.config.shared_selection
+  execution.config.node_minimum
   PROPERTIES TIMEOUT 60)
 set_tests_properties(execution.config.shared_reconfiguration PROPERTIES TIMEOUT 450)
+
+find_package(Python3 3.9 QUIET COMPONENTS Interpreter)
+if(Python3_Interpreter_FOUND)
+  add_test(NAME execution.test.worktree_tasks
+    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/worktree_task_test.py")
+  set_tests_properties(execution.test.worktree_tasks PROPERTIES TIMEOUT 60)
+endif()
 
 # Each public header must compile without relying on another include preceding it.
 foreach(header IN ITEMS
@@ -169,6 +182,11 @@ foreach(component IN ITEMS task executor executor_abi waiter_state system_timer)
   target_link_libraries(execution.test.${component} PRIVATE doctest::doctest)
 endforeach()
 
+if(STLAB_TASK_SYSTEM STREQUAL "libdispatch")
+  execution_process_test(execution.test.libdispatch_group 10 libdispatch_group_test.cpp main.cpp)
+  target_link_libraries(execution.test.libdispatch_group PRIVATE doctest::doctest)
+endif()
+
 if(WIN32 AND STLAB_EXECUTION_SHARED)
   execution_process_test(execution.test.core_shared_smoke 60
     core_shared_smoke_test.cpp core_shared_smoke_main.cpp)
@@ -176,6 +194,26 @@ if(WIN32 AND STLAB_EXECUTION_SHARED)
 endif()
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+  if(STLAB_TASK_SYSTEM STREQUAL "portable" AND NOT STLAB_EXECUTION_SHARED)
+    execution_test_target(execution.test.portable_executor_regression
+      portable_executor_regression_test.cpp)
+    foreach(scenario IN ITEMS expansion_wake expansion_during_join hardware_zero
+        descendant_wait descendant_capture_wait)
+      add_test(NAME execution.test.portable_executor_${scenario}
+        COMMAND execution.test.portable_executor_regression ${scenario})
+      set_tests_properties(execution.test.portable_executor_${scenario}
+        PROPERTIES TIMEOUT 15)
+    endforeach()
+    execution_test_target(execution.test.portable_executor_unlimited
+      portable_executor_regression_test.cpp)
+    target_compile_definitions(execution.test.portable_executor_unlimited
+      PRIVATE PORTABLE_TEST_UNLIMITED)
+    add_test(NAME execution.test.portable_executor_hardware_zero_unlimited
+      COMMAND execution.test.portable_executor_unlimited hardware_zero)
+    set_tests_properties(execution.test.portable_executor_hardware_zero_unlimited
+      PROPERTIES TIMEOUT 15)
+  endif()
+  execution_process_test(execution.test.pre_exit_null_handler 10 pre_exit_null_handler.cpp)
   execution_process_test(execution.test.executor_priority_shutdown 10 executor_priority_shutdown.cpp)
   execution_process_test(execution.test.core_shutdown_first 60 core_shutdown_first.cpp)
   set(timer_scenarios lifecycle shutdown_first executor_shutdown application_shutdown)

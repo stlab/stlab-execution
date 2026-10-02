@@ -24,6 +24,13 @@ cmake --build --preset=test-cpp17
 ctest --preset=test-cpp17
 ```
 
+The VS Code `worktree: create` and `worktree: remove` tasks require Python 3.9+
+and Git on `PATH` (`python3` on POSIX, `python` on Windows). Names must be single
+directory names using letters, digits, dots, underscores, or hyphens, starting
+with a letter or digit. Creation also requires the VS Code CLI. Optional
+tokensave synchronization is skipped with a diagnostic if unavailable or failing;
+Windows tokensave batch launchers are not executed.
+
 `test-shared` and `test-portable-shared` exercise the shared runtime with native
 and portable task backends. The toolkit dependency is pinned to its exact commit;
 for local development, pass `-DCPM_cpp-library_SOURCE:PATH=<toolkit-checkout>` during
@@ -47,7 +54,7 @@ from the same x64 Visual Studio developer environment. The ASan preset instrumen
 both the runtime and its contract/lifecycle executables; allocator interception
 tests run only in non-ASan static Windows configurations.
 
-With an activated Emscripten SDK and Node 16.16 or newer, use `test-emscripten`
+With an activated Emscripten SDK and Node 18.3.0 or newer, use `test-emscripten`
 for pthreads or `test-emscripten-threadless` for cooperative event-loop execution.
 The threadless suite uses standalone Node scenarios rather than a blocking
 doctest/std::future harness. Each process has a timeout. ABI rejection tests

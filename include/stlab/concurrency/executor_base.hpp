@@ -49,7 +49,7 @@ auto execute_at(std::chrono::duration<Rep, Per> duration, executor_t executor) -
     return [_duration = std::move(duration), _executor = std::move(executor)](auto f) mutable {
         if (_duration != std::chrono::duration<Rep, Per>{})
             system_timer(_duration,
-                         [_f = std::move(f), _executor = std::move(_executor)]() mutable noexcept {
+                         [_f = std::move(f), _executor]() mutable noexcept {
                              _executor(std::move(_f));
                          });
         else

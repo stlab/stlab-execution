@@ -70,6 +70,7 @@ inline void pre_exit() { stlab_pre_exit(); }
 
 /// Register a pre-exit handler. The `pre-exit-handler` may not throw. With C++17 or later it
 /// is required to be `noexcept`.
+/// - Precondition: `f` is not null and `pre_exit()` has not completed.
 inline void at_pre_exit(pre_exit_handler f) { stlab_at_pre_exit(f); }
 
 /**************************************************************************************************/

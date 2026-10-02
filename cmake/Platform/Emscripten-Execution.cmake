@@ -103,11 +103,11 @@ if ( STLAB_EMSCRIPTEN_PTHREADS )
 endif()
 
 #
-# Set the minimum required version for node; earlier versions lack sufficient exception support.
+# Emscripten 6.0.10 requires Node 18.3.0 or newer.
 # Note: https://www.npmjs.com/package/wasm-check is a useful utility to find which
 # --experimental-wasm-xxx flags are supported by node.
 #
-set( STLAB_WASM_NODE_JS_MIN_VERSION "16.16.0" )
+set( STLAB_WASM_NODE_JS_MIN_VERSION "18.3.0" )
 
 # set( NODE_JS_FLAGS "--experimental-wasm-threads;--experimental-wasm-eh" )
 

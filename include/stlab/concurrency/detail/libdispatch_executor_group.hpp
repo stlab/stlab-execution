@@ -37,7 +37,8 @@ struct group_t {
 
     /// Move-assigns a dispatch group owner.
     auto operator=(group_t&& a) noexcept -> group_t& {
-        _group = std::exchange(a._group, nullptr);
+        group_t previous(std::move(a));
+        std::swap(_group, previous._group);
         return *this;
     }
 

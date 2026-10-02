@@ -190,10 +190,11 @@ public:
 
 /// Returns the configured hardware concurrency, clamped to the task-pool limit.
 auto portable_hardware_concurrency() -> unsigned {
+    const auto hardware = std::max(1u, std::thread::hardware_concurrency());
 #if STLAB_TASK_POOL_MAXIMUM() > 0
-    return std::clamp(STLAB_TASK_POOL_MAXIMUM(), 1u, std::thread::hardware_concurrency());
+    return std::clamp(STLAB_TASK_POOL_MAXIMUM(), 1u, hardware);
 #else
-    return std::max(1u, std::thread::hardware_concurrency());
+    return hardware;
 #endif
 }
 
@@ -680,8 +681,11 @@ struct priority_task_system::implementation {
     const unsigned _thread_limit{std::max(9U, portable_hardware_concurrency() * 4 + 1)};
 
     std::mutex _mutex;
+    std::condition_variable _idle;
+    std::size_t _pending{0};
     std::vector<std::thread> _threads;
     std::vector<waiter> _waiters{_thread_limit};
+    bool _joining{false};
 
     /// Starts the initial portable executor workers.
     implementation() {
@@ -690,10 +694,18 @@ struct priority_task_system::implementation {
             add_thread_unlocked(i);
     }
 
-    /// Queues a task and wakes the worker responsible for the selected shard.
+    /// Queues a task, waking another available worker when the shard's worker is busy.
     void submit(executor_priority priority, task_relocation r) {
+        {
+            std::unique_lock<std::mutex> lock{_mutex};
+            if (_joining) {
+                assert(false && "default executor submission after teardown");
+                std::terminate();
+            }
+            ++_pending;
+        }
         const auto shard = executor_queues().submit(priority, r);
-        (void)_waiters[shard].wake();
+        if (!_waiters[shard].wake()) (void)wake();
     }
 
     /// Attempts to wake one waiting worker.
@@ -704,20 +716,26 @@ struct priority_task_system::implementation {
         return false;
     }
 
-    /// Adds an expansion worker unless the thread limit has been reached.
+    /// Adds an expansion worker unless workers are retiring or the thread limit has been reached.
     void add_thread() {
         std::unique_lock<std::mutex> lock{_mutex};
-        if (_threads.size() == _thread_limit) return;
+        if (_joining || _threads.size() == _thread_limit) return;
         add_thread_unlocked(_threads.size());
     }
 
-    /// Signals and joins all workers.
+    /// Drains accepted tasks and their captures before closing expansion and joining workers.
     void join() {
+        std::vector<std::thread> threads;
+        {
+            std::unique_lock<std::mutex> lock{_mutex};
+            _idle.wait(lock, [&] { return _pending == 0; });
+            _joining = true;
+            threads.swap(_threads);
+        }
         for (auto& waiter : _waiters)
             waiter.done();
-        for (auto& thread : _threads)
+        for (auto& thread : threads)
             thread.join();
-        _threads.clear();
     }
 
 private:
@@ -729,13 +747,16 @@ private:
             stlab::set_current_thread_name(name);
 
             while (true) {
-                if (auto task = try_pop(index)) {
+                auto task = try_pop(index);
+                if (!task) task = pop(index);
+                if (task) {
                     task();
-                    continue;
-                }
-
-                if (auto task = pop(index)) {
-                    task();
+                    task = nullptr;
+                    {
+                        std::unique_lock<std::mutex> lock{_mutex};
+                        assert(_pending != 0);
+                        if (--_pending == 0) _idle.notify_one();
+                    }
                     continue;
                 }
 

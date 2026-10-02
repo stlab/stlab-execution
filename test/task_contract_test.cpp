@@ -58,3 +58,32 @@ TEST_CASE("task reassignment releases the previous owned target") {
     CHECK(target == nullptr);
     CHECK(destructions == 1);
 }
+
+TEST_CASE("task self-move preserves a move-only target") {
+    int destructions = 0;
+    auto deleter = [&destructions](int* value) noexcept {
+        ++destructions;
+        delete value;
+    };
+    {
+        stlab::task<int() noexcept> target =
+            [p = std::unique_ptr<int, decltype(deleter)>(new int(73), deleter)]() noexcept {
+                return p ? *p : -1;
+            };
+        auto& alias = target;
+        target = std::move(alias);
+        CHECK(destructions == 0);
+        CHECK(target() == 73);
+    }
+    CHECK(destructions == 1);
+}
+
+TEST_CASE("task self-swap preserves a move-only target") {
+    stlab::task<int() noexcept> target = [p = std::make_unique<int>(91)]() noexcept {
+        return p ? *p : -1;
+    };
+    target.swap(target);
+    CHECK(target() == 91);
+    std::swap(target, target);
+    CHECK(target() == 91);
+}

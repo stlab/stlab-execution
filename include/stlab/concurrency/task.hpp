@@ -366,6 +366,7 @@ public:
     auto operator=(const task_&) -> task_& = delete;
 
     auto operator=(task_&& x) noexcept -> task_& {
+        if (this == &x) return *this;
         _vtable_ptr->dtor(&_model);
         _vtable_ptr = x._vtable_ptr;
         _invoke = x._invoke;
@@ -397,7 +398,7 @@ public:
     }
 
     template <class T>
-    [[nodiscard]] [[nodiscard]] [[nodiscard]] auto target() const -> const T* {
+    [[nodiscard]] auto target() const -> const T* {
         return (target_type() == typeid(T)) ?
                    static_cast<const T*>(_vtable_ptr->const_pointer(&_model)) :
                    nullptr;

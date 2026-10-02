@@ -5,6 +5,7 @@
 */
 
 #include <stlab/concurrency/default_executor.hpp>
+#include <stlab/concurrency/executor_base.hpp>
 #include <stlab/concurrency/immediate_executor.hpp>
 
 #include <chrono>
@@ -53,4 +54,20 @@ TEST_CASE("high executor invokes a move-only task") {
 
 TEST_CASE("low executor invokes a move-only task") {
     check_move_only_submission(stlab::low_executor);
+}
+
+TEST_CASE("delayed executor forwards every submission") {
+    for (const auto delay : {std::chrono::milliseconds(0), std::chrono::milliseconds(1)}) {
+        auto executor = stlab::execute_delayed(delay, stlab::immediate_executor);
+        for (int n = 0; n != 3; ++n) {
+            std::promise<int> completion;
+            auto result = completion.get_future();
+            executor([p = std::make_unique<int>(73 + n),
+                      completion = std::move(completion)]() mutable noexcept {
+                completion.set_value(*p);
+            });
+            REQUIRE(result.wait_for(std::chrono::seconds(5)) == std::future_status::ready);
+            CHECK(result.get() == 73 + n);
+        }
+    }
 }
