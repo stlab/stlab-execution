@@ -34,8 +34,11 @@ subproject. The generated `stlab/execution/config.hpp` belongs to this library,
 with execution-specific version macros and an `execution_v*` inline namespace.
 
 `STLAB_EXECUTION_SHARED` selects a shared runtime. `STLAB_CORE_SHARED` is the
-legacy input spelling and effective compatibility macro; explicitly conflicting
-inputs are rejected. Without the new setting, legacy ON selects shared, as does
+legacy input spelling and effective compatibility macro. Differing supplied values
+are rejected on a fresh configuration. On reconfiguration, a spelling changed
+since the last resolved configuration wins over its unchanged cached counterpart,
+even if that counterpart is redundantly supplied again; both caches are reconciled.
+Without the new setting, legacy ON selects shared, as does
 `BUILD_SHARED_LIBS=ON` on non-Windows platforms; otherwise the runtime is static.
 The parent project's `BUILD_SHARED_LIBS` is not changed.
 

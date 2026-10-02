@@ -10,6 +10,11 @@ endif()
 add_test(NAME execution.test.header_smoke COMMAND execution.test.header_smoke)
 add_test(NAME execution.config.shared_selection
   COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_SOURCE_DIR}/shared_selection.cmake")
+add_test(NAME execution.config.shared_reconfiguration
+  COMMAND ${CMAKE_COMMAND}
+    "-DTEST_BINARY_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/shared_reconfiguration"
+    "-DCPM_cpp-library_SOURCE:PATH=${cpp-library_SOURCE_DIR}"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/shared_reconfiguration.cmake")
 
 # Each public header must compile without relying on another include preceding it.
 foreach(header IN ITEMS

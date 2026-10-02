@@ -5,9 +5,10 @@ include(CMakeDependentOption)
 
 # Resolves canonical and legacy shared settings without changing BUILD_SHARED_LIBS.
 macro(execution_resolve_library_type)
-  # Compare supplied spellings before declaring the canonical option or its defaults.
+  # Normalize both spellings before comparing them with the last resolved value.
   set(execution_shared_supplied OFF)
   set(execution_legacy_shared_supplied OFF)
+  set(execution_shared_requested OFF)
   set(execution_legacy_shared_requested OFF)
   if(DEFINED STLAB_EXECUTION_SHARED)
     set(execution_shared_supplied ON)
@@ -25,22 +26,39 @@ macro(execution_resolve_library_type)
       set(execution_legacy_shared_requested OFF)
     endif()
   endif()
-  if(execution_shared_supplied AND execution_legacy_shared_supplied AND
-     NOT execution_shared_requested STREQUAL execution_legacy_shared_requested)
-    message(FATAL_ERROR "STLAB_EXECUTION_SHARED and STLAB_CORE_SHARED explicitly conflict.")
-  endif()
   set(execution_shared_default OFF)
   if(execution_legacy_shared_requested OR (BUILD_SHARED_LIBS AND NOT WIN32))
     set(execution_shared_default ON)
   endif()
-  option(STLAB_EXECUTION_SHARED "Build the process-shared execution library" ${execution_shared_default})
-  # Persist the effective legacy alias so a subsequent configure does not mistake
-  # a superseded compatibility default for an explicitly conflicting input.
-  if(execution_legacy_shared_supplied)
-    set(STLAB_CORE_SHARED ${STLAB_EXECUTION_SHARED} CACHE BOOL
-      "Legacy alias for STLAB_EXECUTION_SHARED" FORCE)
+  if(DEFINED STLAB_EXECUTION_SHARED_RESOLVED)
+    set(execution_shared_default ${STLAB_EXECUTION_SHARED_RESOLVED})
+    # Both caches were reconciled to this value. A changed spelling wins over
+    # the unchanged counterpart, even when that counterpart was supplied again.
+    # Two changed boolean spellings necessarily agree.
+    if(execution_shared_supplied AND
+       NOT execution_shared_requested STREQUAL STLAB_EXECUTION_SHARED_RESOLVED)
+      set(execution_shared_default ${execution_shared_requested})
+    elseif(execution_legacy_shared_supplied AND
+           NOT execution_legacy_shared_requested STREQUAL STLAB_EXECUTION_SHARED_RESOLVED)
+      set(execution_shared_default ${execution_legacy_shared_requested})
+    endif()
+  else()
+    if(execution_shared_supplied AND execution_legacy_shared_supplied AND
+       NOT execution_shared_requested STREQUAL execution_legacy_shared_requested)
+      message(FATAL_ERROR "STLAB_EXECUTION_SHARED and STLAB_CORE_SHARED explicitly conflict.")
+    endif()
+    if(execution_shared_supplied)
+      set(execution_shared_default ${execution_shared_requested})
+    endif()
   endif()
+  set(STLAB_EXECUTION_SHARED ${execution_shared_default} CACHE BOOL
+    "Build the process-shared execution library" FORCE)
+  set(STLAB_EXECUTION_SHARED ${execution_shared_default})
+  set(STLAB_CORE_SHARED ${execution_shared_default} CACHE BOOL
+    "Legacy alias for STLAB_EXECUTION_SHARED" FORCE)
   set(STLAB_CORE_SHARED ${STLAB_EXECUTION_SHARED})
+  set(STLAB_EXECUTION_SHARED_RESOLVED ${STLAB_EXECUTION_SHARED} CACHE INTERNAL
+    "Last resolved shared selection; both option caches agree with this value" FORCE)
   if(STLAB_EXECUTION_SHARED)
     set(execution_library_type SHARED)
   else()
