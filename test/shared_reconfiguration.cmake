@@ -4,6 +4,7 @@ if(NOT DEFINED TEST_BINARY_DIR OR NOT DEFINED CPM_cpp-library_SOURCE)
   message(FATAL_ERROR "TEST_BINARY_DIR and CPM_cpp-library_SOURCE are required.")
 endif()
 get_filename_component(source_dir "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
+include("${CMAKE_CURRENT_LIST_DIR}/check_node_configuration.cmake")
 file(REMOVE_RECURSE "${TEST_BINARY_DIR}")
 
 # Configures one fresh or existing build directory and checks its public selection.
@@ -13,9 +14,13 @@ function(check_selection case expected)
   file(WRITE "${binary_dir}/.cmake/api/v1/query/codemodel-v2" "")
   set(platform_options)
   if(TEST_TOOLCHAIN)
+    # Keep the semicolon-separated flags in one argument when this list is expanded.
+    string(REPLACE ";" "\\;" node_flags_argument "${NODE_JS_FLAGS}")
     list(APPEND platform_options "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=${TEST_TOOLCHAIN}"
       "-DEM_CONFIG_EXECUTABLE:FILEPATH=${EM_CONFIG_EXECUTABLE}"
       "-DNODE_JS_EXECUTABLE:FILEPATH=${NODE_JS_EXECUTABLE}"
+      "-DNODE_JS_FLAGS:STRING=${node_flags_argument}"
+      "-DCMAKE_PROJECT_INCLUDE:FILEPATH=${CMAKE_CURRENT_LIST_DIR}/record_node_emulator.cmake"
       "-DSTLAB_EMSCRIPTEN_PTHREADS:BOOL=${STLAB_EMSCRIPTEN_PTHREADS}")
   endif()
   execute_process(
@@ -35,6 +40,9 @@ function(check_selection case expected)
   endif()
 
   file(READ "${binary_dir}/CMakeCache.txt" cache)
+  if(TEST_SYSTEM_NAME STREQUAL "Emscripten")
+    check_node_configuration("${binary_dir}" "${NODE_JS_EXECUTABLE}" "${NODE_JS_FLAGS}")
+  endif()
   foreach(spelling IN ITEMS STLAB_EXECUTION_SHARED STLAB_CORE_SHARED)
     if((spelling STREQUAL "STLAB_EXECUTION_SHARED" OR cache MATCHES "${spelling}:") AND
        NOT cache MATCHES "${spelling}:BOOL=${expected}[\r\n]")

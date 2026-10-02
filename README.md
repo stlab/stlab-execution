@@ -38,6 +38,15 @@ doctest/std::future harness. Each process has a timeout. ABI rejection tests
 require an unresolved task-storage guard diagnostic, not merely a failed link.
 The deliberately incompatible target is excluded from the default build.
 
+Nested configuration tests preserve the selected `NODE_JS_FLAGS` list and check
+the child cache and actual emulator executable/flag order. For a focused regression
+with two Node options (repeat with `test-emscripten` for pthreads):
+
+```bash
+cmake --preset=test-emscripten-threadless "-DNODE_JS_FLAGS:STRING=--no-warnings;--stack-trace-limit=20"
+ctest --preset=test-emscripten-threadless -R "shared_reconfiguration|emscripten_configuration"
+```
+
 ## Consume
 
 Link `stlab::execution` from `add_subdirectory` or CPM. Installed consumers use

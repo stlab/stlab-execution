@@ -13,11 +13,13 @@ add_test(NAME execution.config.shared_selection
 add_test(NAME execution.config.shared_reconfiguration
   COMMAND ${CMAKE_COMMAND}
     "-DTEST_BINARY_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/shared_reconfiguration"
+    "-DTEST_PARENT_BINARY_DIR:PATH=${PROJECT_BINARY_DIR}"
     "-DCPM_cpp-library_SOURCE:PATH=${cpp-library_SOURCE_DIR}"
     "-DTEST_TOOLCHAIN:FILEPATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DTEST_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}"
     "-DEM_CONFIG_EXECUTABLE:FILEPATH=${EM_CONFIG_EXECUTABLE}"
     "-DNODE_JS_EXECUTABLE:FILEPATH=${NODE_JS_EXECUTABLE}"
+    "-DNODE_JS_FLAGS:STRING=${NODE_JS_FLAGS}"
     "-DSTLAB_EMSCRIPTEN_PTHREADS:BOOL=${STLAB_EMSCRIPTEN_PTHREADS}"
     -P "${CMAKE_CURRENT_SOURCE_DIR}/shared_reconfiguration.cmake")
 set_tests_properties(execution.test.header_smoke execution.config.shared_selection
@@ -136,9 +138,11 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten" AND NOT STLAB_EMSCRIPTEN_PTHREADS)
   add_test(NAME execution.test.emscripten_configuration
     COMMAND ${CMAKE_COMMAND} "-Dsource_dir:PATH=${PROJECT_SOURCE_DIR}"
       "-Dbinary_dir:PATH=${PROJECT_BINARY_DIR}/configuration-tests"
+      "-DTEST_PARENT_BINARY_DIR:PATH=${PROJECT_BINARY_DIR}"
       "-Dem_config:FILEPATH=${EM_CONFIG_EXECUTABLE}"
       "-Dcpp_library_source:PATH=${cpp-library_SOURCE_DIR}"
       "-Dnode:FILEPATH=${NODE_JS_EXECUTABLE}"
+      "-DNODE_JS_FLAGS:STRING=${NODE_JS_FLAGS}"
       -P "${CMAKE_CURRENT_SOURCE_DIR}/emscripten_config_test.cmake")
   set_tests_properties(execution.test.emscripten_configuration PROPERTIES TIMEOUT 450)
   # Node's event loop cannot progress while a doctest case blocks on std::future.

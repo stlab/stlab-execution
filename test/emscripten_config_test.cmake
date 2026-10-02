@@ -1,5 +1,6 @@
 # Each incompatible configuration must fail with the intended diagnostic, not a toolchain error.
 # Require nested toolchain checks to inherit the explicitly selected SDK.
+include("${CMAKE_CURRENT_LIST_DIR}/check_node_configuration.cmake")
 get_filename_component(em_config_dir "${em_config}" DIRECTORY)
 cmake_path(CONVERT "$ENV{PATH}" TO_CMAKE_PATH_LIST search_path NORMALIZE)
 list(REMOVE_ITEM search_path "${em_config_dir}")
@@ -27,6 +28,8 @@ foreach(scenario IN ITEMS task main threads pool compiler)
       -B "${binary_dir}/${scenario}" "-DEM_CONFIG_EXECUTABLE:FILEPATH=${em_config}"
       "-DCPM_cpp-library_SOURCE:PATH=${cpp_library_source}"
       "-DNODE_JS_EXECUTABLE:FILEPATH=${node}"
+      "-DNODE_JS_FLAGS:STRING=${NODE_JS_FLAGS}"
+      "-DCMAKE_PROJECT_INCLUDE:FILEPATH=${CMAKE_CURRENT_LIST_DIR}/record_node_emulator.cmake"
       -DBUILD_TESTING=OFF ${option}
     WORKING_DIRECTORY "${source_dir}"
     RESULT_VARIABLE result OUTPUT_VARIABLE output ERROR_VARIABLE error
@@ -34,4 +37,5 @@ foreach(scenario IN ITEMS task main threads pool compiler)
   if(result STREQUAL "0" OR NOT "${output}${error}" MATCHES "${diagnostic}")
     message(FATAL_ERROR "${scenario}: wrong configuration result: ${result}\n${output}${error}")
   endif()
+  check_node_configuration("${binary_dir}/${scenario}" "${node}" "${NODE_JS_FLAGS}")
 endforeach()
