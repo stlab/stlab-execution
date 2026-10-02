@@ -25,6 +25,17 @@ for local development, pass `-DCPM_cpp-library_SOURCE:PATH=<toolkit-checkout>` d
 configuration. With no release tag, the toolkit's development version is `0.0.0`.
 `-DCPP_LIBRARY_VERSION=1.0.0` may be used for standalone install validation.
 
+`cmake --preset=test-packages` followed by `ctest --preset=test-packages`
+verifies standalone installed C++17/20 consumers and independently compiles each
+applicable public header. `test-packages-shared` and
+`test-packages-portable-shared` select the corresponding shared backends.
+The verifier uses a fresh `install`-preset child with `BUILD_TESTING=OFF` and
+the standalone validation version override above, never an STLab package.
+Commands and package evidence remain under
+`build/<preset>/package-test/execution-packages`; Windows fixtures deploy
+`TARGET_RUNTIME_DLLS` before execution. Use the same compiler environment and
+toolkit `:PATH` override as other native presets.
+
 Matching configure/build/test presets also cover `test-portable`,
 `test-portable-main`, and `test-asan`. On Windows, run all three CMake commands
 from the same x64 Visual Studio developer environment. The ASan preset instruments

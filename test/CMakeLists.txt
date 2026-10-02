@@ -1,3 +1,7 @@
+get_target_property(execution_alias stlab::execution ALIASED_TARGET)
+if(NOT execution_alias STREQUAL "execution")
+  message(FATAL_ERROR "The build target must be stlab::execution, matching the installed target.")
+endif()
 add_executable(execution.test.header_smoke header_smoke.cpp)
 target_link_libraries(execution.test.header_smoke PRIVATE stlab::execution)
 if(WIN32 AND STLAB_EXECUTION_SHARED)
@@ -8,6 +12,21 @@ if(WIN32 AND STLAB_EXECUTION_SHARED)
     COMMAND_EXPAND_LISTS)
 endif()
 add_test(NAME execution.test.header_smoke COMMAND execution.test.header_smoke)
+option(STLAB_EXECUTION_PACKAGE_TESTS "Verify native installed execution consumers" OFF)
+if(STLAB_EXECUTION_PACKAGE_TESTS AND NOT CMAKE_CROSSCOMPILING)
+  add_test(NAME execution.package.roundtrip
+    COMMAND ${CMAKE_COMMAND}
+      "-DEXECUTION_SOURCE:PATH=${PROJECT_SOURCE_DIR}"
+      "-DTOOLKIT_SOURCE:PATH=${cpp-library_SOURCE_DIR}"
+      "-DVERIFY_PARENT:PATH=${PROJECT_BINARY_DIR}/package-test"
+      "-DVERIFY_ROOT:PATH=${PROJECT_BINARY_DIR}/package-test/execution-packages"
+      "-DSTLAB_EXECUTION_SHARED:BOOL=${STLAB_EXECUTION_SHARED}"
+      "-DSTLAB_TASK_SYSTEM=${STLAB_TASK_SYSTEM}"
+      "-DTEST_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}"
+      "-DTEST_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/verify_package.cmake")
+  set_tests_properties(execution.package.roundtrip PROPERTIES TIMEOUT 600 LABELS package)
+endif()
 add_test(NAME execution.config.shared_selection
   COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_SOURCE_DIR}/shared_selection.cmake")
 add_test(NAME execution.config.shared_reconfiguration

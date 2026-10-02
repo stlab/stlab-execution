@@ -25,6 +25,21 @@
       "cacheVariables": { "CMAKE_CXX_STANDARD": "20" }
     },
     {
+      "name": "test-packages",
+      "inherits": "test",
+      "cacheVariables": { "STLAB_EXECUTION_PACKAGE_TESTS": "ON", "STLAB_EXECUTION_SHARED": "OFF" }
+    },
+    {
+      "name": "test-packages-shared",
+      "inherits": "test-packages",
+      "cacheVariables": { "STLAB_EXECUTION_SHARED": "ON" }
+    },
+    {
+      "name": "test-packages-portable-shared",
+      "inherits": "test-packages-shared",
+      "cacheVariables": { "STLAB_TASK_SYSTEM": "portable" }
+    },
+    {
       "name": "test-cpp17",
       "inherits": "base",
       "cacheVariables": { "CMAKE_CXX_STANDARD": "17" }
@@ -90,6 +105,9 @@
     }
   ],
   "buildPresets": [
+    { "name": "test-packages", "configurePreset": "test-packages" },
+    { "name": "test-packages-shared", "configurePreset": "test-packages-shared" },
+    { "name": "test-packages-portable-shared", "configurePreset": "test-packages-portable-shared" },
     { "name": "default", "configurePreset": "default" },
     { "name": "test", "configurePreset": "test" },
     { "name": "test-cpp17", "configurePreset": "test-cpp17" },
@@ -106,6 +124,15 @@
     { "name": "install", "configurePreset": "install" }
   ],
   "testPresets": [
+    { "name": "test-packages", "configurePreset": "test-packages",
+      "filter": { "include": { "name": "^execution.package.roundtrip$" } },
+      "output": { "outputOnFailure": true } },
+    { "name": "test-packages-shared", "configurePreset": "test-packages-shared",
+      "filter": { "include": { "name": "^execution.package.roundtrip$" } },
+      "output": { "outputOnFailure": true } },
+    { "name": "test-packages-portable-shared", "configurePreset": "test-packages-portable-shared",
+      "filter": { "include": { "name": "^execution.package.roundtrip$" } },
+      "output": { "outputOnFailure": true } },
     { "name": "test", "configurePreset": "test", "output": { "outputOnFailure": true } },
     { "name": "test-cpp17", "configurePreset": "test-cpp17", "output": { "outputOnFailure": true } },
     { "name": "test-shared", "configurePreset": "test-shared", "output": { "outputOnFailure": true } },
