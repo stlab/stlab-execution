@@ -25,6 +25,19 @@ for local development, pass `-DCPM_cpp-library_SOURCE:PATH=<toolkit-checkout>` d
 configuration. With no release tag, the toolkit's development version is `0.0.0`.
 `-DCPP_LIBRARY_VERSION=1.0.0` may be used for standalone install validation.
 
+Matching configure/build/test presets also cover `test-portable`,
+`test-portable-main`, and `test-asan`. On Windows, run all three CMake commands
+from the same x64 Visual Studio developer environment. The ASan preset instruments
+both the runtime and its contract/lifecycle executables; allocator interception
+tests run only in non-ASan static Windows configurations.
+
+With an activated Emscripten SDK and Node 16.16 or newer, use `test-emscripten`
+for pthreads or `test-emscripten-threadless` for cooperative event-loop execution.
+The threadless suite uses standalone Node scenarios rather than a blocking
+doctest/std::future harness. Each process has a timeout. ABI rejection tests
+require an unresolved task-storage guard diagnostic, not merely a failed link.
+The deliberately incompatible target is excluded from the default build.
+
 ## Consume
 
 Link `stlab::execution` from `add_subdirectory` or CPM. Installed consumers use

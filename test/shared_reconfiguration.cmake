@@ -11,10 +11,17 @@ function(check_selection case expected)
   set(binary_dir "${TEST_BINARY_DIR}/${case}")
   file(MAKE_DIRECTORY "${binary_dir}/.cmake/api/v1/query")
   file(WRITE "${binary_dir}/.cmake/api/v1/query/codemodel-v2" "")
+  set(platform_options)
+  if(TEST_TOOLCHAIN)
+    list(APPEND platform_options "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=${TEST_TOOLCHAIN}"
+      "-DEM_CONFIG_EXECUTABLE:FILEPATH=${EM_CONFIG_EXECUTABLE}"
+      "-DNODE_JS_EXECUTABLE:FILEPATH=${NODE_JS_EXECUTABLE}"
+      "-DSTLAB_EMSCRIPTEN_PTHREADS:BOOL=${STLAB_EMSCRIPTEN_PTHREADS}")
+  endif()
   execute_process(
     COMMAND "${CMAKE_COMMAND}" -S "${source_dir}" -B "${binary_dir}" -G Ninja
       "-DCPM_cpp-library_SOURCE:PATH=${CPM_cpp-library_SOURCE}"
-      -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS:BOOL=ON ${ARGN}
+      -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS:BOOL=ON ${platform_options} ${ARGN}
     RESULT_VARIABLE result OUTPUT_VARIABLE output ERROR_VARIABLE error)
   if(expected STREQUAL "CONFLICT")
     if(result EQUAL 0 OR NOT "${output}${error}" MATCHES "explicitly conflict")
@@ -86,8 +93,10 @@ check_selection(matching-on ON -DSTLAB_EXECUTION_SHARED=ON -DSTLAB_CORE_SHARED=O
 check_selection(matching-off OFF -DSTLAB_EXECUTION_SHARED=OFF -DSTLAB_CORE_SHARED=OFF)
 check_selection(canonical-off OFF -DSTLAB_EXECUTION_SHARED=OFF)
 
+# Emscripten's toolchain shadows BUILD_SHARED_LIBS with a normal OFF variable;
+# the caller's ON cache entry must still be preserved above.
 # Fresh default is platform-dependent; the original non-Windows regression remains separate.
-if(WIN32)
+if(WIN32 OR TEST_SYSTEM_NAME STREQUAL "Emscripten")
   check_selection(default OFF)
 else()
   check_selection(default ON)

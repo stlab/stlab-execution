@@ -1,5 +1,6 @@
 {
   "version": 5,
+  "cmakeMinimumRequired": { "major": 3, "minor": 24, "patch": 0 },
   "configurePresets": [
     {
       "name": "base",
@@ -39,6 +40,35 @@
       "cacheVariables": { "STLAB_TASK_SYSTEM": "portable" }
     },
     {
+      "name": "test-portable",
+      "inherits": "test",
+      "cacheVariables": { "STLAB_TASK_SYSTEM": "portable" }
+    },
+    {
+      "name": "test-portable-main",
+      "inherits": "test-portable",
+      "cacheVariables": { "STLAB_MAIN_EXECUTOR": "portable" }
+    },
+    {
+      "name": "test-asan",
+      "inherits": "test",
+      "cacheVariables": { "STLAB_SANITIZER": "address", "STLAB_EXECUTION_SHARED": "OFF" }
+    },
+    {
+      "name": "test-emscripten",
+      "inherits": "test",
+      "toolchainFile": "${sourceDir}/cmake/Platform/Emscripten-Execution.cmake",
+      "cacheVariables": {
+        "STLAB_EMSCRIPTEN_PTHREADS": "ON",
+        "STLAB_EXECUTION_SHARED": "OFF"
+      }
+    },
+    {
+      "name": "test-emscripten-threadless",
+      "inherits": "test-emscripten",
+      "cacheVariables": { "STLAB_EMSCRIPTEN_PTHREADS": "OFF" }
+    },
+    {
       "name": "docs",
       "inherits": "default",
       "cacheVariables": { "BUILD_DOCS": "ON" }
@@ -65,6 +95,11 @@
     { "name": "test-cpp17", "configurePreset": "test-cpp17" },
     { "name": "test-shared", "configurePreset": "test-shared" },
     { "name": "test-portable-shared", "configurePreset": "test-portable-shared" },
+    { "name": "test-portable", "configurePreset": "test-portable" },
+    { "name": "test-portable-main", "configurePreset": "test-portable-main" },
+    { "name": "test-asan", "configurePreset": "test-asan" },
+    { "name": "test-emscripten", "configurePreset": "test-emscripten" },
+    { "name": "test-emscripten-threadless", "configurePreset": "test-emscripten-threadless" },
     { "name": "docs", "configurePreset": "docs" },
     { "name": "clang-tidy", "configurePreset": "clang-tidy" },
     { "name": "init", "configurePreset": "init" },
@@ -75,6 +110,11 @@
     { "name": "test-cpp17", "configurePreset": "test-cpp17", "output": { "outputOnFailure": true } },
     { "name": "test-shared", "configurePreset": "test-shared", "output": { "outputOnFailure": true } },
     { "name": "test-portable-shared", "configurePreset": "test-portable-shared", "output": { "outputOnFailure": true } },
+    { "name": "test-portable", "configurePreset": "test-portable", "output": { "outputOnFailure": true } },
+    { "name": "test-portable-main", "configurePreset": "test-portable-main", "output": { "outputOnFailure": true } },
+    { "name": "test-asan", "configurePreset": "test-asan", "output": { "outputOnFailure": true } },
+    { "name": "test-emscripten", "configurePreset": "test-emscripten", "output": { "outputOnFailure": true } },
+    { "name": "test-emscripten-threadless", "configurePreset": "test-emscripten-threadless", "output": { "outputOnFailure": true } },
     { "name": "clang-tidy", "configurePreset": "clang-tidy", "output": { "outputOnFailure": true } }
   ]
 }
