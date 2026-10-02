@@ -1,8 +1,6 @@
 # Distributed under the Boost Software License, Version 1.0.
 # Backend settings and validation retained from STLab.
 
-include(CMakeDependentOption)
-
 # Resolves canonical and legacy shared settings without changing BUILD_SHARED_LIBS.
 macro(execution_resolve_library_type)
   # Normalize both spellings before comparing them with the last resolved value.
@@ -73,15 +71,6 @@ macro(execution_configure_platform)
   find_package(Qt5 QUIET COMPONENTS Core)
   find_package(Qt6 QUIET COMPONENTS Core)
   find_package(Threads)
-
-  cmake_dependent_option(STLAB_NO_STD_COROUTINES
-    "Suppress usage of standard coroutines. Useful for non-conforming compilers."
-    OFF "CMAKE_CXX_STANDARD VERSION_GREATER_EQUAL 20" ON)
-  if(STLAB_NO_STD_COROUTINES)
-    set(STLAB_STD_COROUTINES 0)
-  else()
-    set(STLAB_STD_COROUTINES 1)
-  endif()
 
   if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
     option(STLAB_EMSCRIPTEN_PTHREADS "Build Emscripten targets with pthread support." ON)

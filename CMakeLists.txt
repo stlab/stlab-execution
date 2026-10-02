@@ -109,7 +109,6 @@ elseif(STLAB_MAIN_EXECUTOR STREQUAL "qt6")
   target_link_libraries(execution PUBLIC Qt6::Core)
 endif()
 
-message(STATUS "execution: Disable Coroutines: ${STLAB_NO_STD_COROUTINES}")
 message(STATUS "execution: Thread System: ${STLAB_THREAD_SYSTEM}")
 message(STATUS "execution: Task System: ${STLAB_TASK_SYSTEM}")
 message(STATUS "execution: Main Executor: ${STLAB_MAIN_EXECUTOR}")

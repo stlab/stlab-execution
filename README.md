@@ -66,8 +66,13 @@ The parent project's `BUILD_SHARED_LIBS` is not changed.
 
 Backend options retain STLab's defaults and validation: `STLAB_THREAD_SYSTEM`,
 `STLAB_TASK_SYSTEM`, `STLAB_MAIN_EXECUTOR`, `STLAB_TASK_POOL_MAXIMUM`,
-`STLAB_NO_STD_COROUTINES`, and `STLAB_EMSCRIPTEN_PTHREADS`.
+and `STLAB_EMSCRIPTEN_PTHREADS`.
 `STLAB_SANITIZER=address` retains runtime address-sanitizer instrumentation.
+
+Coroutine configuration (`STLAB_NO_STD_COROUTINES` and `STLAB_STD_COROUTINES()`)
+belongs exclusively to STLab. Execution neither resolves that option nor defines
+that macro; its C++17 public interface is independent of STLab's coroutine policy
+and either library's build standard.
 
 Call `stlab::pre_exit()` exactly once before normal process exit when using
 runtime services. Scheduling, timer retirement, pre-exit ordering, and versioned
