@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 project(execution-consumer LANGUAGES CXX)
 enable_testing()
+include("${CMAKE_CURRENT_LIST_DIR}/../RuntimeDlls.cmake")
 set(CMAKE_DISABLE_FIND_PACKAGE_stlab TRUE)
 find_package(stlab-execution REQUIRED CONFIG)
 
@@ -29,11 +30,7 @@ endif()
 
 add_executable(consumer main.cpp)
 target_link_libraries(consumer PRIVATE stlab::execution)
-if(WIN32)
-  add_custom_command(TARGET consumer POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:consumer>
-      $<TARGET_RUNTIME_DLLS:consumer> COMMAND_EXPAND_LISTS)
-endif()
+execution_copy_runtime_dlls(consumer)
 add_test(NAME execution.package.consumer COMMAND consumer)
 set_tests_properties(execution.package.consumer PROPERTIES TIMEOUT 10)
 

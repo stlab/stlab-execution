@@ -1,16 +1,11 @@
+include("${CMAKE_CURRENT_SOURCE_DIR}/RuntimeDlls.cmake")
 get_target_property(execution_alias stlab::execution ALIASED_TARGET)
 if(NOT execution_alias STREQUAL "execution")
   message(FATAL_ERROR "The build target must be stlab::execution, matching the installed target.")
 endif()
 add_executable(execution.test.header_smoke header_smoke.cpp)
 target_link_libraries(execution.test.header_smoke PRIVATE stlab::execution)
-if(WIN32 AND STLAB_EXECUTION_SHARED)
-  add_custom_command(TARGET execution.test.header_smoke POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-      $<TARGET_RUNTIME_DLLS:execution.test.header_smoke>
-      $<TARGET_FILE_DIR:execution.test.header_smoke>
-    COMMAND_EXPAND_LISTS)
-endif()
+execution_copy_runtime_dlls(execution.test.header_smoke)
 add_test(NAME execution.test.header_smoke COMMAND execution.test.header_smoke)
 option(STLAB_EXECUTION_PACKAGE_TESTS "Verify native installed execution consumers" OFF)
 if(STLAB_EXECUTION_PACKAGE_TESTS AND NOT CMAKE_CROSSCOMPILING)
@@ -80,12 +75,7 @@ endfunction()
 function(execution_test_target target)
   add_executable(${target} ${ARGN})
   target_link_libraries(${target} PRIVATE stlab::execution)
-  if(WIN32 AND STLAB_EXECUTION_SHARED)
-    add_custom_command(TARGET ${target} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:${target}> $<TARGET_FILE_DIR:${target}>
-      COMMAND_EXPAND_LISTS)
-  endif()
+  execution_copy_runtime_dlls(${target})
   execution_test_sanitizer(${target})
 endfunction()
 

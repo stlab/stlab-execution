@@ -60,6 +60,9 @@ ctest --preset=test-emscripten-threadless -R "shared_reconfiguration|emscripten_
 
 ## Consume
 
+Windows test and package consumers deploy runtime DLLs with an empty-list-safe
+helper compatible with CMake 3.24. Static consumers require no DLL copy.
+
 Link `stlab::execution` from `add_subdirectory` or CPM. Installed consumers use
 `find_package(stlab-execution CONFIG REQUIRED)` and the same target name.
 `STLAB_EXECUTION_INSTALL` defaults to ON for standalone builds and OFF as a
