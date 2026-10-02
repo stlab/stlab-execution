@@ -1,0 +1,22 @@
+/** @mainpage stlab-execution
+
+Standalone task execution, executors, timers, and process lifecycle.
+
+@details
+This unpublished extraction owns the canonical `stlab/concurrency/task.hpp`,
+executor and timer headers, and `stlab/pre_exit.hpp`. Public APIs retain their
+`stlab::` spellings. Futures, channels, await helpers, and serial queues remain
+in STLab, which publicly depends on this package.
+
+Link `stlab::execution` from source or after
+`find_package(stlab-execution CONFIG REQUIRED)`. Rebuild all consumers:
+independent C++ inline namespaces do not promise old binary compatibility.
+The v2 C runtime ABI and task-storage guards are preserved.
+
+@ref stlab_concurrency documents scheduling primitives;
+@ref stlab_pre_exit documents process lifecycle.
+The README describes independent configuration, installation, local overrides,
+and publication blockers. There is no published execution documentation site yet.
+
+License: [Boost Software License 1.0](https://www.boost.org/LICENSE_1_0.txt).
+ */

@@ -1,0 +1,22 @@
+/**
+ * @file execution_groups.hpp
+ * @brief Execution API module groups (Doxygen input only; not compiled).
+ */
+
+/** @defgroup stlab_concurrency concurrency
+ *  @brief Tasks, executors, and timers under @c stlab/concurrency/.
+ *
+ *  @details
+ *  @ref stlab_concurrency_task provides move-only callables.
+ *  @ref stlab_concurrency_executor_base composes executors and timed submission.
+ *  @ref stlab_concurrency_default_executor documents priority scheduling and
+ *  the versioned @ref stlab_concurrency_executor_abi.
+ *  @ref stlab_concurrency_main_executor provides main-queue execution;
+ *  @ref stlab_concurrency_immediate_executor invokes work synchronously.
+ *  @ref stlab_concurrency_system_timer documents timer ownership and shutdown.
+ *  @ref stlab_concurrency_set_current_thread_name provides thread naming.
+ *
+ *  Process lifecycle belongs to @ref stlab_pre_exit.
+ *  Higher-level futures, channels, and serial queues belong to STLab,
+ *  not this standalone package.
+ */

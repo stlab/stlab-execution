@@ -1,0 +1,164 @@
+{
+  "version": 5,
+  "cmakeMinimumRequired": { "major": 3, "minor": 24, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CPM_SOURCE_CACHE": "${sourceDir}/.cache/cpm",
+        "BUILD_TESTING": "ON"
+      }
+    },
+    {
+      "name": "default",
+      "inherits": "base",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release", "BUILD_TESTING": "OFF" }
+    },
+    {
+      "name": "test",
+      "inherits": "base",
+      "cacheVariables": { "CMAKE_CXX_STANDARD": "20" }
+    },
+    {
+      "name": "test-packages",
+      "inherits": "test",
+      "cacheVariables": { "STLAB_EXECUTION_PACKAGE_TESTS": "ON", "STLAB_EXECUTION_SHARED": "OFF" }
+    },
+    {
+      "name": "test-packages-shared",
+      "inherits": "test-packages",
+      "cacheVariables": { "STLAB_EXECUTION_SHARED": "ON" }
+    },
+    {
+      "name": "test-packages-portable-shared",
+      "inherits": "test-packages-shared",
+      "cacheVariables": { "STLAB_TASK_SYSTEM": "portable" }
+    },
+    {
+      "name": "test-cpp17",
+      "inherits": "base",
+      "cacheVariables": { "CMAKE_CXX_STANDARD": "17" }
+    },
+    {
+      "name": "test-shared",
+      "inherits": "test",
+      "cacheVariables": { "STLAB_EXECUTION_SHARED": "ON" }
+    },
+    {
+      "name": "test-portable-shared",
+      "inherits": "test-shared",
+      "cacheVariables": { "STLAB_TASK_SYSTEM": "portable" }
+    },
+    {
+      "name": "test-portable",
+      "inherits": "test",
+      "cacheVariables": { "STLAB_TASK_SYSTEM": "portable" }
+    },
+    {
+      "name": "test-portable-main",
+      "inherits": "test-portable",
+      "cacheVariables": { "STLAB_MAIN_EXECUTOR": "portable" }
+    },
+    {
+      "name": "test-asan",
+      "inherits": "test",
+      "cacheVariables": { "STLAB_SANITIZER": "address", "STLAB_EXECUTION_SHARED": "OFF" }
+    },
+    {
+      "name": "test-sanitizer",
+      "inherits": "test",
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-fsanitize=thread -fsanitize=undefined",
+        "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=thread -fsanitize=undefined"
+      }
+    },
+    {
+      "name": "test-portable-sanitizer",
+      "inherits": "test-sanitizer",
+      "cacheVariables": { "STLAB_TASK_SYSTEM": "portable" }
+    },
+    {
+      "name": "test-emscripten",
+      "inherits": "test",
+      "toolchainFile": "${sourceDir}/cmake/Platform/Emscripten-Execution.cmake",
+      "cacheVariables": {
+        "STLAB_EMSCRIPTEN_PTHREADS": "ON",
+        "STLAB_EXECUTION_SHARED": "OFF"
+      }
+    },
+    {
+      "name": "test-emscripten-threadless",
+      "inherits": "test-emscripten",
+      "cacheVariables": { "STLAB_EMSCRIPTEN_PTHREADS": "OFF" }
+    },
+    {
+      "name": "docs",
+      "inherits": "default",
+      "cacheVariables": { "BUILD_DOCS": "ON" }
+    },
+    {
+      "name": "clang-tidy",
+      "inherits": "test",
+      "cacheVariables": { "CMAKE_CXX_CLANG_TIDY": "clang-tidy" }
+    },
+    {
+      "name": "init",
+      "inherits": "default",
+      "cacheVariables": { "CPP_LIBRARY_FORCE_INIT": "ON" }
+    },
+    {
+      "name": "install",
+      "inherits": "default",
+      "cacheVariables": { "CPM_USE_LOCAL_PACKAGES": "ON" }
+    }
+  ],
+  "buildPresets": [
+    { "name": "test-packages", "configurePreset": "test-packages" },
+    { "name": "test-packages-shared", "configurePreset": "test-packages-shared" },
+    { "name": "test-packages-portable-shared", "configurePreset": "test-packages-portable-shared" },
+    { "name": "default", "configurePreset": "default" },
+    { "name": "test", "configurePreset": "test" },
+    { "name": "test-cpp17", "configurePreset": "test-cpp17" },
+    { "name": "test-shared", "configurePreset": "test-shared" },
+    { "name": "test-portable-shared", "configurePreset": "test-portable-shared" },
+    { "name": "test-portable", "configurePreset": "test-portable" },
+    { "name": "test-portable-main", "configurePreset": "test-portable-main" },
+    { "name": "test-asan", "configurePreset": "test-asan" },
+    { "name": "test-sanitizer", "configurePreset": "test-sanitizer" },
+    { "name": "test-portable-sanitizer", "configurePreset": "test-portable-sanitizer" },
+    { "name": "test-emscripten", "configurePreset": "test-emscripten" },
+    { "name": "test-emscripten-threadless", "configurePreset": "test-emscripten-threadless" },
+    { "name": "docs", "configurePreset": "docs", "targets": ["docs"] },
+    { "name": "clang-tidy", "configurePreset": "clang-tidy" },
+    { "name": "init", "configurePreset": "init" },
+    { "name": "install", "configurePreset": "install" }
+  ],
+  "testPresets": [
+    { "name": "test-packages", "configurePreset": "test-packages",
+      "filter": { "include": { "name": "^execution.package.roundtrip$" } },
+      "output": { "outputOnFailure": true } },
+    { "name": "test-packages-shared", "configurePreset": "test-packages-shared",
+      "filter": { "include": { "name": "^execution.package.roundtrip$" } },
+      "output": { "outputOnFailure": true } },
+    { "name": "test-packages-portable-shared", "configurePreset": "test-packages-portable-shared",
+      "filter": { "include": { "name": "^execution.package.roundtrip$" } },
+      "output": { "outputOnFailure": true } },
+    { "name": "test", "configurePreset": "test", "output": { "outputOnFailure": true } },
+    { "name": "test-cpp17", "configurePreset": "test-cpp17", "output": { "outputOnFailure": true } },
+    { "name": "test-shared", "configurePreset": "test-shared", "output": { "outputOnFailure": true } },
+    { "name": "test-portable-shared", "configurePreset": "test-portable-shared", "output": { "outputOnFailure": true } },
+    { "name": "test-portable", "configurePreset": "test-portable", "output": { "outputOnFailure": true } },
+    { "name": "test-portable-main", "configurePreset": "test-portable-main", "output": { "outputOnFailure": true } },
+    { "name": "test-asan", "configurePreset": "test-asan", "output": { "outputOnFailure": true } },
+    { "name": "test-sanitizer", "configurePreset": "test-sanitizer", "output": { "outputOnFailure": true } },
+    { "name": "test-portable-sanitizer", "configurePreset": "test-portable-sanitizer", "output": { "outputOnFailure": true } },
+    { "name": "test-emscripten", "configurePreset": "test-emscripten", "output": { "outputOnFailure": true } },
+    { "name": "test-emscripten-threadless", "configurePreset": "test-emscripten-threadless", "output": { "outputOnFailure": true } },
+    { "name": "clang-tidy", "configurePreset": "clang-tidy", "output": { "outputOnFailure": true } }
+  ]
+}

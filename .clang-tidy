@@ -1,0 +1,18 @@
+# Standard comes from the compile command (CMake), including clang-cl on Windows.
+Checks: >
+  cert-*,
+  performance-*,
+  modernize-*,
+  misc-include-cleaner,
+  -readability-identifier-length,
+  -readability-magic-numbers,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -modernize-use-trailing-return-type,
+  -cert-err58-cpp
+CheckOptions:
+  - key: misc-include-cleaner.IgnoreHeaders
+    value: >
+      boost/test/.*;
+      __chrono/.*
+HeaderFilterRegex: "^.*/include/stlab/.*$"
+# WarningsAsErrors: "*"
