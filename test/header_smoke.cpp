@@ -1,10 +1,11 @@
 #include <stlab/execution/config.hpp>
 
 #ifdef STLAB_STD_COROUTINES
-#error Execution must not define STLab's coroutine policy
+#error "Execution must not define STLab coroutine policy"
 #endif
 
 #include <memory>
+#include <utility>
 #include <stlab/concurrency/default_executor.hpp>
 #include <stlab/concurrency/executor_base.hpp>
 #include <stlab/concurrency/immediate_executor.hpp>

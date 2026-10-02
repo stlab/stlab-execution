@@ -5,6 +5,11 @@ STLab under the Boost Software License 1.0. Existing `stlab::` API names and
 `stlab/concurrency/*.hpp` and `stlab/pre_exit.hpp` include paths are preserved.
 No futures, channels, serial queues, or STLab utility library are required.
 
+**Publication status:** this is an unpublished local extraction. The execution
+and toolkit commits are not remotely consumable release pins. CI is prepared but
+cannot run remotely until the publication order below is completed; local source
+overrides are validation evidence, not proof that a public CPM fetch works.
+
 ## Build and test
 
 Use CMake 3.24 or newer and Ninja, with the compiler environment configured:
@@ -65,9 +70,61 @@ helper compatible with CMake 3.24. Static consumers require no DLL copy.
 
 Link `stlab::execution` from `add_subdirectory` or CPM. Installed consumers use
 `find_package(stlab-execution CONFIG REQUIRED)` and the same target name.
+
+Current local source consumption (generic developer paths):
+
+```cmake
+set(CPM_cpp-library_SOURCE "/path/to/cpp-library" CACHE PATH "")
+set(CPM_stlab-execution_SOURCE "/path/to/stlab-execution" CACHE PATH "")
+CPMAddPackage(
+  NAME stlab-execution
+  SOURCE_DIR "${CPM_stlab-execution_SOURCE}")
+target_link_libraries(app PRIVATE stlab::execution)
+```
+
+From a developer shell, equivalent typed overrides are
+`-DCPM_cpp-library_SOURCE:PATH=<toolkit-checkout>` and
+`-DCPM_stlab-execution_SOURCE:PATH=<execution-checkout>`.
+They are necessary while the production SHAs are unpublished, and must not be
+substituted into production dependency declarations.
+
+**Proposed future release example only — 1.0.0 is not published:**
+
+```cmake
+CPMAddPackage("gh:stlab/stlab-execution@1.0.0")
+target_link_libraries(app PRIVATE stlab::execution)
+```
+
+Do not use that fetch until an authorized release exists. Its approved version
+must then replace both this example and STLab's dependency/minimum install
+requirement together, without guessing a floor now.
+
+For a locally installed execution package:
+
+```cmake
+find_package(stlab-execution CONFIG REQUIRED)
+target_link_libraries(app PRIVATE stlab::execution)
+```
+
+Set `CMAKE_PREFIX_PATH` to the install prefix. Source and installed consumers
+include the same canonical headers, for example
+`<stlab/concurrency/default_executor.hpp>` and `<stlab/pre_exit.hpp>`.
+STLab users keep linking `stlab::stlab`; its public execution dependency supplies
+these headers and the single runtime transitively. Execution never requires STLab.
+The legacy `stlab-core` / `stlab::stlab-core` INTERFACE targets belong to STLab,
+not to the standalone execution package.
+
+**Rebuild all consumers.** Independent execution inline namespaces and library
+filenames change the C++ ABI. Existing public `stlab::` names, include paths,
+task-storage guards, and the v2 C scheduling ABI are preserved; this is source
+compatibility, not compatibility with old prebuilt C++ binaries.
+
 `STLAB_EXECUTION_INSTALL` defaults to ON for standalone builds and OFF as a
 subproject. The generated `stlab/execution/config.hpp` belongs to this library,
 with execution-specific version macros and an `execution_v*` inline namespace.
+STLab's version/namespace and coroutine policy are independent. Its own
+`STLAB_INSTALL` controls only STLab-owned artifacts; enabling either package's
+installation does not silently enable the other. Header file sets do not overlap.
 
 `STLAB_EXECUTION_SHARED` selects a shared runtime. `STLAB_CORE_SHARED` is the
 legacy input spelling and effective compatibility macro. Differing supplied values
@@ -91,3 +148,23 @@ and either library's build standard.
 Call `stlab::pre_exit()` exactly once before normal process exit when using
 runtime services. Scheduling, timer retirement, pre-exit ordering, and versioned
 C ABI entry points retain their STLab contracts; see adjacent header documentation.
+
+## Documentation and platform CI
+
+Header-adjacent contracts are canonical. `cmake --preset=docs` and
+`cmake --build --preset=docs` generate the standalone API reference in
+`build/docs/html`; Doxygen is required. There is no published execution
+documentation site yet. The directory groups and main page are owned here,
+without importing STLab's higher-level API sources.
+
+CI covers Linux GCC/Clang, C++17/20, macOS native/portable and both TSan+UBSan
+variants, Windows static/native and canonical shared native/portable, portable
+main, Qt6/Qt5 main, both Emscripten runtimes, and Linux/Windows package consumers
+(including Windows DLL deployment). Job configuration is not passing runtime
+evidence; macOS/Qt/race checks remain pending until run.
+
+Publication is a separate authorized operation: publish the toolkit first,
+replace this repository's toolkit SHA with that actual release and verify without
+overrides; publish execution next; then update STLab's pin and matching installed
+dependency requirement and verify STLab without overrides. No release or minimum
+version is inferred from local validation's `CPP_LIBRARY_VERSION` override.

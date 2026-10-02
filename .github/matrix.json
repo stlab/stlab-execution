@@ -1,0 +1,18 @@
+{
+  "config": [
+    { "name": "Linux GCC C++20", "os": "ubuntu-latest", "compiler": "gcc", "preset": "test" },
+    { "name": "Linux GCC C++17", "os": "ubuntu-latest", "compiler": "gcc", "preset": "test-cpp17" },
+    { "name": "Linux Clang C++20", "os": "ubuntu-latest", "compiler": "clang", "preset": "test" },
+    { "name": "Linux shared portable", "os": "ubuntu-latest", "compiler": "gcc", "preset": "test-portable-shared" },
+    { "name": "macOS native", "os": "macos-latest", "compiler": "apple-clang", "preset": "test" },
+    { "name": "macOS portable", "os": "macos-latest", "compiler": "apple-clang", "preset": "test-portable" },
+    { "name": "Windows native static", "os": "windows-latest", "compiler": "Visual Studio", "preset": "test" },
+    { "name": "Windows native shared", "os": "windows-latest", "compiler": "Visual Studio", "preset": "test-shared" },
+    { "name": "Windows portable shared", "os": "windows-latest", "compiler": "Visual Studio", "preset": "test-portable-shared" },
+    { "name": "Linux portable main", "os": "ubuntu-latest", "compiler": "gcc", "preset": "test-portable-main" },
+    { "name": "Linux Qt6 main", "os": "ubuntu-latest", "compiler": "gcc", "preset": "test", "qt": "qt6", "cmake_options": "-DSTLAB_MAIN_EXECUTOR=qt6" },
+    { "name": "Linux Qt5 main", "os": "ubuntu-latest", "compiler": "gcc", "preset": "test", "qt": "qt5", "cmake_options": "-DSTLAB_MAIN_EXECUTOR=qt5" },
+    { "name": "Emscripten pthread", "os": "ubuntu-latest", "compiler": "emscripten", "preset": "test-emscripten" },
+    { "name": "Emscripten threadless", "os": "ubuntu-latest", "compiler": "emscripten", "preset": "test-emscripten-threadless" }
+  ]
+}
