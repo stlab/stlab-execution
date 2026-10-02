@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 # Pending: unpublished toolkit SHA cannot be fetched by remote runners until
 # authorized toolkit publication and pin replacement. Local overrides are not CI.
 jobs:
@@ -31,7 +34,9 @@ jobs:
         if: ${{ matrix.config.compiler == 'emscripten' }}
         shell: bash
         run: |
-          git clone --depth 1 https://github.com/emscripten-core/emsdk.git "$HOME/emsdk"
+          git init "$HOME/emsdk"
+          git -C "$HOME/emsdk" fetch --depth 1 https://github.com/emscripten-core/emsdk.git a2b92777574c2feda07994cd4f1079a3dfc151f8 # 6.0.10
+          git -C "$HOME/emsdk" checkout --detach FETCH_HEAD
           pushd "$HOME/emsdk"
           ./emsdk install 6.0.10
           ./emsdk activate 6.0.10
@@ -57,7 +62,7 @@ jobs:
           echo "CXX=clang++" >> $GITHUB_ENV
       - name: MSVC x64
         if: ${{ startsWith(matrix.config.os, 'windows') }}
-        uses: TheMrMilchmann/setup-msvc-dev@v4
+        uses: TheMrMilchmann/setup-msvc-dev@368ef7d1ee4d1171b31d4a7f67f4d954f903f5a9 # v4.1.0
         with:
           arch: x64
       - name: Configure native
@@ -104,6 +109,10 @@ jobs:
         include:
           - os: ubuntu-latest
             preset: test-packages
+          - os: macos-latest
+            preset: test-packages
+          - os: macos-latest
+            preset: test-packages-shared
           - os: windows-latest
             preset: test-packages
           - os: windows-latest
@@ -113,7 +122,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - if: ${{ startsWith(matrix.os, 'windows') }}
-        uses: TheMrMilchmann/setup-msvc-dev@v4
+        uses: TheMrMilchmann/setup-msvc-dev@368ef7d1ee4d1171b31d4a7f67f4d954f903f5a9 # v4.1.0
         with:
           arch: x64
       - run: cmake --preset=${{ matrix.preset }}

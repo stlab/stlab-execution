@@ -16,7 +16,8 @@
  *  `task<F>` type-erases any callable target (function, lambda, `std::bind`, member pointer, etc.)
  *  with a fixed signature. It is similar to `std::function` but **not copyable**, which suits
  *  move-only and single-shot targets (common in messaging and executor queues). An empty task
- *  compares equal to `nullptr`; invoking it throws `std::bad_function_call`.
+ *  compares equal to `nullptr`; invoking it throws `std::bad_function_call` for a potentially
+ *  throwing signature, or calls `std::terminate()` for a `noexcept` signature.
  *
  *  Mutable `operator()` allows moving arguments through for one invocation. Small targets (function
  *  pointers, `std::reference_wrapper`, `std::function`) may use small-buffer optimization; larger

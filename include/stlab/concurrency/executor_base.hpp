@@ -13,7 +13,7 @@
  *  @brief Executor type aliases and scheduling helpers.
  *
  *  @details
- *  `executor_t` is `std::function<void(task<void() noexcept>&&)>`. `execute_at` and
+ *  `executor_t` is `std::function<void(task<void() noexcept>)>`. `execute_at` and
  *  `execute_delayed` wrap an executor to post work after a duration (or deprecated time point).
  *  `operator&` combines an `executor` with a callable into `executor_task_pair` for `future::then`
  *  and channel attachment.

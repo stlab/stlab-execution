@@ -44,7 +44,9 @@ The following cache variables may also be set:
 if(APPLE)
   # libdispatch is included with the Apple compiler so no location on disk
   # is used.
-  add_library(libdispatch::libdispatch INTERFACE IMPORTED)
+  if(NOT TARGET libdispatch::libdispatch)
+    add_library(libdispatch::libdispatch INTERFACE IMPORTED)
+  endif()
   set(libdispatch_FOUND TRUE)
 else()
   find_package(PkgConfig)

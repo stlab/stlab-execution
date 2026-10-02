@@ -102,6 +102,14 @@ if(NOT STLAB_THREAD_SYSTEM STREQUAL "none")
 endif()
 if(STLAB_TASK_SYSTEM STREQUAL "libdispatch" OR STLAB_MAIN_EXECUTOR STREQUAL "libdispatch")
   target_link_libraries(execution PUBLIC libdispatch::libdispatch)
+  if(STLAB_EXECUTION_INSTALL)
+    # Export the resolver as a package-local config without changing consumers' module paths.
+    cpp_library_map_dependency(libdispatch::libdispatch
+      [[libdispatch CONFIG PATHS "${CMAKE_CURRENT_LIST_DIR}" NO_DEFAULT_PATH]])
+    install(FILES cmake/Findlibdispatch.cmake
+      DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/stlab-execution"
+      RENAME libdispatchConfig.cmake)
+  endif()
 endif()
 if(STLAB_MAIN_EXECUTOR STREQUAL "qt5")
   target_link_libraries(execution PUBLIC Qt5::Core)

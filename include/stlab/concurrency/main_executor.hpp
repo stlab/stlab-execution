@@ -14,7 +14,7 @@
  *
  *  @details
  *  Tasks submitted to `main_executor` normally run in submission order on the main queue selected
- * by `STLAB_MAIN_EXECUTOR` when `stlab-core` is built: the libdispatch main queue, the Qt
+ *  by `STLAB_MAIN_EXECUTOR` when `stlab-execution` is configured: the libdispatch main queue, the Qt
  *  application event loop, the Emscripten main runtime thread, or (opt-in) a portable
  *  stlab-owned queue. On native platforms, `main_executor_run()` services the main queue on the
  *  calling thread and never returns, like `dispatch_main()`. The main queue remains available

@@ -4,6 +4,8 @@ enable_testing()
 include("${CMAKE_CURRENT_LIST_DIR}/../RuntimeDlls.cmake")
 set(CMAKE_DISABLE_FIND_PACKAGE_stlab TRUE)
 find_package(stlab-execution REQUIRED CONFIG)
+# Package discovery must be repeatable, including its platform dependencies.
+find_package(stlab-execution REQUIRED CONFIG)
 
 get_target_property(imported stlab::execution IMPORTED)
 if(NOT imported OR TARGET execution OR TARGET stlab::stlab OR TARGET stlab::stlab-core)
