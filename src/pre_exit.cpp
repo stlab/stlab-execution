@@ -109,6 +109,7 @@ void run_pre_exit_handlers() {
 } // namespace
 
 extern "C" void stlab_pre_exit() {
+    execution_detail::check_pre_exit_context();
     pre_exit_stack().start();
     run_pre_exit_handlers();
 }

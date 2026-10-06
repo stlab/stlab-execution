@@ -8,6 +8,8 @@
 
 #include <functional>
 #include <memory>
+#include <stdexcept>
+#include <type_traits>
 #include <utility>
 
 #include <doctest/doctest.h>
@@ -86,4 +88,33 @@ TEST_CASE("task self-swap preserves a move-only target") {
     CHECK(target() == 91);
     std::swap(target, target);
     CHECK(target() == 91);
+}
+
+TEST_CASE("task preserves a reference result") {
+    int value = 119;
+    stlab::task<int&()> target = [&]() -> int& { return value; };
+    CHECK((std::is_same_v<decltype(target()), int&>));
+    auto&& result = target();
+    CHECK(&result == &value);
+    result = 137;
+    CHECK(value == 137);
+}
+
+namespace {
+struct throwing_move_target {
+    throwing_move_target() = default;
+    throwing_move_target(const throwing_move_target&) = default;
+    throwing_move_target(throwing_move_target&&) { throw std::runtime_error("target move"); }
+    auto operator()() const noexcept -> int { return 83; }
+};
+} // namespace
+
+TEST_CASE("task relocates a throwing-move target without moving the callable") {
+    throwing_move_target callable;
+    stlab::task<int() noexcept> first{callable};
+    stlab::task<int() noexcept> second{std::move(first)};
+    CHECK(second() == 83);
+    stlab::task<int() noexcept> relocated{second.relocation_concept(), second.relocation_invoke(),
+                                          second.relocation_source()};
+    CHECK(relocated() == 83);
 }

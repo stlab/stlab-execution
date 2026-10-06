@@ -17,6 +17,7 @@ if(STLAB_EXECUTION_PACKAGE_TESTS AND NOT CMAKE_CROSSCOMPILING)
       "-DVERIFY_ROOT:PATH=${PROJECT_BINARY_DIR}/package-test/execution-packages"
       "-DBUILD_SHARED_LIBS:BOOL=${STLAB_EXECUTION_SHARED}"
       "-DSTLAB_TASK_SYSTEM=${STLAB_TASK_SYSTEM}"
+      "-DSTLAB_SANITIZER=${STLAB_SANITIZER}"
       "-DTEST_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}"
       "-DTEST_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}"
       -P "${CMAKE_CURRENT_SOURCE_DIR}/verify_package.cmake")
@@ -186,11 +187,24 @@ if(WIN32 AND STLAB_EXECUTION_SHARED)
 endif()
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+  add_test(NAME execution.config.pool_decimal
+    COMMAND ${CMAKE_COMMAND}
+      "-DTEST_BINARY_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/pool_configuration"
+      "-DTOOLKIT_SOURCE:PATH=${cpp-library_SOURCE_DIR}"
+      "-DTEST_GENERATOR:STRING=${CMAKE_GENERATOR}"
+      "-DTEST_GENERATOR_PLATFORM:STRING=${CMAKE_GENERATOR_PLATFORM}"
+      "-DTEST_GENERATOR_TOOLSET:STRING=${CMAKE_GENERATOR_TOOLSET}"
+      "-DTEST_CONFIG:STRING=$<CONFIG>"
+      "-DTEST_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}"
+      "-DTEST_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/pool_configuration.cmake")
+  set_tests_properties(execution.config.pool_decimal PROPERTIES TIMEOUT 120)
   if(STLAB_TASK_SYSTEM STREQUAL "portable" AND NOT STLAB_EXECUTION_SHARED)
     execution_test_target(execution.test.portable_executor_regression
       portable_executor_regression_test.cpp)
     foreach(scenario IN ITEMS expansion_wake expansion_during_join hardware_zero
-        descendant_wait descendant_capture_wait)
+        descendant_wait descendant_capture_wait queue_reentry main_queue_reentry
+        queue_noallocation main_queue_noallocation)
       add_test(NAME execution.test.portable_executor_${scenario}
         COMMAND execution.test.portable_executor_regression ${scenario})
       set_tests_properties(execution.test.portable_executor_${scenario}
@@ -208,7 +222,13 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
   execution_process_test(execution.test.pre_exit_null_handler 10 pre_exit_null_handler.cpp)
   execution_process_test(execution.test.executor_priority_shutdown 10 executor_priority_shutdown.cpp)
   execution_process_test(execution.test.core_shutdown_first 60 core_shutdown_first.cpp)
-  set(timer_scenarios lifecycle shutdown_first executor_shutdown application_shutdown)
+  execution_test_target(execution.test.pre_exit_callback pre_exit_callback.cpp)
+  foreach(scenario IN ITEMS executor timer executor_capture timer_capture)
+    add_test(NAME execution.test.pre_exit_callback_${scenario}
+      COMMAND execution.test.pre_exit_callback ${scenario})
+    set_tests_properties(execution.test.pre_exit_callback_${scenario} PROPERTIES TIMEOUT 10)
+  endforeach()
+  set(timer_scenarios lifecycle shutdown_first executor_shutdown application_shutdown reentry)
   if(WIN32 AND NOT STLAB_EXECUTION_SHARED AND NOT STLAB_SANITIZER STREQUAL "address")
     list(APPEND timer_scenarios resource_failure)
   endif()

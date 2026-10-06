@@ -65,6 +65,9 @@ extern "C" void stlab_at_pre_exit(pre_exit_handler f);
 /// runs only after executor work and deferred handlers finish. Default/high/low submission
 /// remains available during the drain and is a precondition violation after it completes.
 ///
+/// - Precondition: on threaded task systems, not called from a default/high/low executor task,
+///   a timer callback, or destruction of their captures. These callbacks cannot synchronously
+///   wait for their own completion; violations assert and terminate.
 /// - Complexity: linear in invoked handlers, excluding the work performed by those handlers.
 inline void pre_exit() { stlab_pre_exit(); }
 

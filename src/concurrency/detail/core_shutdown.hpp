@@ -16,6 +16,18 @@ namespace execution_detail {
 /// Cleanup operation for one initialized default-executor backend.
 using core_executor_cleanup = void (*)() noexcept;
 
+/// Marks native callback execution, including target relocation and capture destruction.
+class core_callback_scope {
+public:
+    core_callback_scope() noexcept;
+    ~core_callback_scope();
+    core_callback_scope(const core_callback_scope&) = delete;
+    auto operator=(const core_callback_scope&) -> core_callback_scope& = delete;
+};
+
+/// Diagnoses synchronous pre-exit from a native core callback before shutdown starts.
+void check_pre_exit_context() noexcept;
+
 /// Pushes the shared core handler onto the public pre-exit stack through a throwing C++ entry.
 ///
 /// - Precondition: `pre_exit()` has not completed.

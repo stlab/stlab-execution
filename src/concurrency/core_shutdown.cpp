@@ -25,6 +25,8 @@ STLAB_EXECUTION_VERSION_NAMESPACE_BEGIN()
 namespace execution_detail {
 namespace {
 
+thread_local unsigned callback_depth = 0;
+
 /// One lazily registered handler and the fixed-size registry of initialized executor backends.
 struct core_shutdown_state {
     std::once_flag registration;
@@ -78,6 +80,25 @@ void shutdown_core() noexcept {
 }
 
 } // namespace
+
+core_callback_scope::core_callback_scope() noexcept {
+#if !STLAB_TASK_SYSTEM(EMSCRIPTEN)
+    ++callback_depth;
+#endif
+}
+
+core_callback_scope::~core_callback_scope() {
+#if !STLAB_TASK_SYSTEM(EMSCRIPTEN)
+    --callback_depth;
+#endif
+}
+
+void check_pre_exit_context() noexcept {
+    if (callback_depth != 0) {
+        assert(false && "pre_exit() called from a native core callback or capture destructor");
+        std::terminate();
+    }
+}
 
 void register_core_shutdown() {
     auto& value = state();

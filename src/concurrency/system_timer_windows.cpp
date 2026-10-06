@@ -19,6 +19,7 @@
 #include <memory>
 #include <mutex>
 #include <new>
+#include <optional>
 #include <system_error>
 #include <utility>
 
@@ -34,7 +35,7 @@ class windows_timers {
     struct record {
         windows_timers& owner;
         execution_detail::timer_delay delay;
-        task<void() noexcept> target;
+        std::optional<task<void() noexcept>> target;
         PTP_TIMER timer = nullptr;
         record* next = nullptr;
         record* previous = nullptr;
@@ -97,9 +98,10 @@ class windows_timers {
 
     /// Commits execution under the same lock that closes admission.
     static void CALLBACK callback(PTP_CALLBACK_INSTANCE, void* context, PTP_TIMER) noexcept {
+        execution_detail::core_callback_scope callback_scope;
         auto& entry = *static_cast<record*>(context);
         auto& owner = entry.owner;
-        task<void() noexcept> target;
+        std::unique_ptr<record> committed;
         {
             std::scoped_lock lock(owner._mutex);
             if (owner._closed) return;
@@ -108,16 +110,17 @@ class windows_timers {
                 arm(entry, remaining);
                 return;
             }
-            target = std::move(entry.target);
+            owner.remove(entry);
+            committed.reset(&entry);
         }
+        auto target = std::move(*entry.target);
+        entry.target.reset();
         target();
         target = nullptr;
         {
             std::scoped_lock lock(owner._mutex);
-            if (owner._closed) return; // Group cleanup waits for us and releases this record.
-            owner.remove(entry);
-            CloseThreadpoolTimer(entry.timer);
-            delete &entry;
+            // Once closed, group cleanup owns the native handle and waits for this callback.
+            if (!owner._closed) CloseThreadpoolTimer(entry.timer);
         }
     }
 
@@ -133,7 +136,7 @@ public:
         auto entry = std::make_unique<record>(*this, delay_ns);
         entry->timer = CreateThreadpoolTimer(callback, entry.get(), &_environment);
         if (!entry->timer) resource_failure(GetLastError());
-        entry->target = task<void() noexcept>(vtable, invoke, source);
+        entry->target.emplace(vtable, invoke, source);
         entry->next = _pending;
         if (_pending) _pending->previous = entry.get();
         _pending = entry.get();
@@ -152,9 +155,9 @@ public:
             _closed = true;
         }
         if (!_pool) return;
-        // Closed callbacks never mutate the list or targets; committed targets are callback-local.
+        // Closed callbacks never mutate the list; committed records are owned by their callbacks.
         for (auto* entry = _pending; entry; entry = entry->next)
-            entry->target = nullptr;
+            entry->target.reset();
         CloseThreadpoolCleanupGroupMembers(_group, TRUE, nullptr);
         while (_pending) {
             auto* entry = _pending;

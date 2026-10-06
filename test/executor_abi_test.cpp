@@ -9,6 +9,7 @@
 #include <stlab/concurrency/task.hpp>
 
 #include <atomic>
+#include <chrono>
 #include <condition_variable>
 #include <cstddef>
 #include <mutex>
@@ -37,8 +38,8 @@ struct counted_task_context {
         auto& self = *static_cast<counted_task_context*>(context);
         self._count->fetch_add(1, std::memory_order_relaxed);
 
+        std::scoped_lock lock{*self._mutex};
         if (self._remaining->fetch_sub(1, std::memory_order_acq_rel) == 1) {
-            std::scoped_lock lock{*self._mutex};
             self._ready->notify_one();
         }
     }
@@ -156,4 +157,27 @@ TEST_CASE("abi_executor_submit_drains_concurrent_contention_without_dropping_tas
     for (const auto& execution : executions) {
         REQUIRE(execution.load(std::memory_order_relaxed) == 1);
     }
+}
+
+TEST_CASE("abi callback does not publish completion before acquiring the final-access lock") {
+    std::atomic<int> count{0};
+    std::atomic<int> remaining{1};
+    std::condition_variable ready;
+    std::mutex mutex;
+    counted_task_context context{&count, &remaining, &ready, &mutex};
+    std::unique_lock lock(mutex);
+    std::thread callback([&] { counted_task_context::run(&context); });
+    const auto started_deadline = std::chrono::steady_clock::now() + std::chrono::seconds(5);
+    while (count.load(std::memory_order_acquire) == 0 &&
+           std::chrono::steady_clock::now() < started_deadline)
+        std::this_thread::yield();
+    CHECK(count.load() == 1);
+    const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(100);
+    while (remaining.load(std::memory_order_acquire) != 0 &&
+           std::chrono::steady_clock::now() < deadline)
+        std::this_thread::yield();
+    CHECK(remaining.load(std::memory_order_acquire) == 1);
+    lock.unlock();
+    callback.join();
+    CHECK(remaining.load() == 0);
 }

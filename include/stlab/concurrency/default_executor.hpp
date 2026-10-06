@@ -166,15 +166,15 @@ struct executor_type {
 
 /**************************************************************************************************/
 
-/// Default task pool executor using low thread priority (when using the portable or Windows task
-/// system).
+/// Low-priority concurrent executor. Portable executors prioritize queued work without changing
+/// OS thread priority; Windows and libdispatch use platform priority hints.
 inline constexpr auto low_executor =
     execution_detail::executor_type<execution_detail::executor_priority::low>{};
-/// Default concurrent executor used by `stlab::async` and related APIs when none is specified.
+/// Default concurrent executor using the medium-priority queue.
 inline constexpr auto default_executor =
     execution_detail::executor_type<execution_detail::executor_priority::medium>{};
-/// Default task pool executor using high thread priority (when using the portable or Windows task
-/// system).
+/// High-priority concurrent executor. Portable executors prioritize queued work without changing
+/// OS thread priority; Windows and libdispatch use platform priority hints.
 inline constexpr auto high_executor =
     execution_detail::executor_type<execution_detail::executor_priority::high>{};
 

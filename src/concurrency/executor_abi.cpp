@@ -38,7 +38,9 @@
 #include <cstdint>
 #include <deque>
 #include <exception>
+#include <memory>
 #include <mutex>
+#include <optional>
 #include <thread>
 #include <utility>
 #include <vector>
@@ -84,33 +86,38 @@ constexpr auto executor_priority_index(executor_priority priority) -> std::size_
 /// Synchronizes access to a FIFO shard of executor tasks.
 class task_shard {
     using task_t = task<void() noexcept>;
+    using entry_t = std::optional<task_t>;
 
     std::mutex _mutex;
-    std::deque<task_t> _tasks;
+    std::deque<std::unique_ptr<entry_t>> _tasks;
 
 public:
     /// Attempts to remove and return the oldest task without blocking.
     ///
     /// - Postcondition: returns an empty task if the shard is locked or empty.
     auto try_pop() -> task_t {
-        std::unique_lock<std::mutex> lock{_mutex, std::try_to_lock};
-        if (!lock || _tasks.empty()) return nullptr;
-
-        auto result = std::move(_tasks.front());
-        _tasks.pop_front();
-        return result;
+        std::unique_ptr<entry_t> extracted;
+        {
+            std::unique_lock<std::mutex> lock{_mutex, std::try_to_lock};
+            if (!lock || _tasks.empty()) return nullptr;
+            extracted = std::move(_tasks.front());
+            _tasks.pop_front();
+        }
+        return std::move(**extracted);
     }
 
     /// Removes and returns the oldest task, waiting only for the shard lock.
     ///
     /// - Postcondition: returns an empty task if the shard is empty.
     auto pop() -> task_t {
-        std::unique_lock<std::mutex> lock{_mutex};
-        if (_tasks.empty()) return nullptr;
-
-        auto result = std::move(_tasks.front());
-        _tasks.pop_front();
-        return result;
+        std::unique_ptr<entry_t> extracted;
+        {
+            std::unique_lock<std::mutex> lock{_mutex};
+            if (_tasks.empty()) return nullptr;
+            extracted = std::move(_tasks.front());
+            _tasks.pop_front();
+        }
+        return std::move(**extracted);
     }
 
     /// Attempts to append a task without blocking.
@@ -120,14 +127,18 @@ public:
         std::unique_lock<std::mutex> lock{_mutex, std::try_to_lock};
         if (!lock) return false;
 
-        _tasks.emplace_back(r.vtable, r.invoke, r.source);
+        auto entry = std::make_unique<entry_t>();
+        _tasks.push_back(std::move(entry));
+        _tasks.back()->emplace(r.vtable, r.invoke, r.source);
         return true;
     }
 
     /// Appends a task, waiting until the shard is available.
     void push(task_relocation r) {
         std::unique_lock<std::mutex> lock{_mutex};
-        _tasks.emplace_back(r.vtable, r.invoke, r.source);
+        auto entry = std::make_unique<entry_t>();
+        _tasks.push_back(std::move(entry));
+        _tasks.back()->emplace(r.vtable, r.invoke, r.source);
     }
 };
 
@@ -251,6 +262,7 @@ auto unpack_hint(void* context) -> std::size_t {
 /// - Precondition: each invocation corresponds to exactly one queued task.
 template <executor_priority Priority, class Reschedule>
 void run_wake(std::size_t hint, Reschedule&& reschedule) {
+    core_callback_scope callback_scope;
     if (auto task = executor_queues().try_pop(Priority, hint)) {
         task();
         return;
@@ -742,6 +754,7 @@ private:
     /// Starts a worker with the specified queue hint.
     void add_thread_unlocked(std::size_t index) {
         _threads.emplace_back([this, index] {
+            core_callback_scope callback_scope;
             const auto name = index < _worker_count ? "cc.stlab.default_executor" :
                                                       "cc.stlab.default_executor.expansion";
             stlab::set_current_thread_name(name);

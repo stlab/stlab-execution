@@ -22,20 +22,17 @@ This will define the following variables:
 
 ``libdispatch_FOUND``
   True if the system has the libdispatch library.
-``libdispatch_VERSION``
-  The version of the libdispatch library which was found.
-``libdispatch_INCLUDE_DIRS``
-  Include directories needed to use libdispatch.
-``libdispatch_LIBRARIES``
-  Libraries needed to link to libdispatch.
+
+Use ``libdispatch::libdispatch`` for include and link requirements. This module
+does not provide a version variable or plural include/library result variables.
 
 Cache Variables
 ^^^^^^^^^^^^^^^
 
-The following cache variables may also be set:
+The following cache variables may also be set on non-Apple platforms:
 
 ``libdispatch_INCLUDE_DIR``
-  The directory containing ``foo.h``.
+  The directory containing ``dispatch/dispatch.h``.
 ``libdispatch_LIBRARY``
   The path to the libdispatch library.
 

@@ -26,6 +26,7 @@
 #include <memory>
 #include <mutex>
 #include <new>
+#include <optional>
 #include <utility>
 
 #if defined(__EMSCRIPTEN_PTHREADS__)
@@ -48,7 +49,7 @@ struct timer_record {
     std::int64_t delay_ns;
     long timeout_id = 0;
     bool armed = false;
-    task<void() noexcept> target;
+    std::optional<task<void() noexcept>> target;
 
     /// Captures the acceptance instant before registration is proxied.
     explicit timer_record(std::int64_t delay) : accepted(clock_type::now()), delay_ns(delay) {}
@@ -112,8 +113,8 @@ void arm(timer_record& record) noexcept {
 
 /// Invokes a due timer, or re-arms it when a bounded timeout expires early.
 void fire(void* context) noexcept {
+    core_callback_scope callback_scope;
     auto& record = *static_cast<timer_record*>(context);
-    task<void() noexcept> target;
     {
         auto& service = state();
         std::scoped_lock lock{service.mutex};
@@ -124,9 +125,10 @@ void fire(void* context) noexcept {
         }
         service.remove(record);
         record.armed = false;
-        target = std::move(record.target);
         record.release();
     }
+    auto target = std::move(*record.target);
+    record.target.reset();
     target();
     target = nullptr;
     record.release();
@@ -166,7 +168,7 @@ void close_on_main() noexcept {
             record.release();
         }
         lock.unlock();
-        record.target = nullptr;
+        record.target.reset();
         record.release();
         lock.lock();
     }
@@ -237,7 +239,7 @@ extern "C" auto stlab_v2_system_timer_submit(const unsigned char* task_abi_guard
             std::scoped_lock lock{service.mutex};
             assert(!service.closed && "Scheduling a timer after pre_exit().");
             if (service.closed) std::terminate();
-            record->target = task<void() noexcept>{vtable, invoke, source};
+            record->target.emplace(vtable, invoke, source);
             service.insert(*record);
         }
         auto* context = record.release();

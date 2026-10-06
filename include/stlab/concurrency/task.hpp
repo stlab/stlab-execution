@@ -13,15 +13,16 @@
  *  @brief Move-only callable wrapper for executor scheduling (`task<Signature>`).
  *
  *  @details
- *  `task<F>` type-erases any callable target (function, lambda, `std::bind`, member pointer, etc.)
+ *  `task<F>` type-erases callable targets (functions, lambdas, `std::bind` expressions, etc.)
  *  with a fixed signature. It is similar to `std::function` but **not copyable**, which suits
  *  move-only and single-shot targets (common in messaging and executor queues). An empty task
  *  compares equal to `nullptr`; invoking it throws `std::bad_function_call` for a potentially
  *  throwing signature, or calls `std::terminate()` for a `noexcept` signature.
  *
- *  Mutable `operator()` allows moving arguments through for one invocation. Small targets (function
- *  pointers, `std::reference_wrapper`, `std::function`) may use small-buffer optimization; larger
- *  callables are heap-allocated.
+ *  Wrap member pointers in a lambda or `std::bind` expression.
+ *  Mutable `operator()` allows moving arguments through for one invocation. Small targets with
+ *  non-throwing move construction may use small-buffer optimization; other targets are
+ *  heap-allocated so task relocation remains non-throwing.
  */
 
 /**************************************************************************************************/
@@ -352,7 +353,8 @@ public:
         using large_t = model<std::decay_t<F>, false>;
         using model_t =
             std::conditional_t<(sizeof(small_t) <= stlab_v2_task_storage_size) &&
-                                   (alignof(small_t) <= stlab_v2_task_storage_alignment),
+                                   (alignof(small_t) <= stlab_v2_task_storage_alignment) &&
+                                   std::is_nothrow_move_constructible_v<std::decay_t<F>>,
                                small_t, large_t>;
 
         if (is_empty(f)) return;
@@ -406,7 +408,7 @@ public:
     }
 
     template <class... Brgs>
-    auto operator()(Brgs&&... brgs) noexcept(NoExcept) {
+    auto operator()(Brgs&&... brgs) noexcept(NoExcept) -> R {
         return _invoke(&_model, std::forward<Brgs>(brgs)...);
     }
 

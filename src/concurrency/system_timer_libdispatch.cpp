@@ -22,6 +22,7 @@
 #include <memory>
 #include <mutex>
 #include <new>
+#include <optional>
 #include <utility>
 
 namespace stlab {
@@ -34,7 +35,7 @@ class dispatch_timers {
     struct record {
         dispatch_timers& owner;
         execution_detail::timer_delay delay;
-        task<void() noexcept> target;
+        std::optional<task<void() noexcept>> target;
         dispatch_source_t source = nullptr;
         record* next = nullptr;
         record* previous = nullptr;
@@ -60,8 +61,8 @@ class dispatch_timers {
 
     /// Makes execution or cancellation one synchronized ownership transition.
     static void event(void* context) noexcept {
+        execution_detail::core_callback_scope callback_scope;
         auto& entry = *static_cast<record*>(context);
-        task<void() noexcept> target;
         {
             std::scoped_lock lock(entry.owner._mutex);
             if (entry.owner._closed) return;
@@ -70,8 +71,9 @@ class dispatch_timers {
                 arm(entry, remaining);
                 return;
             }
-            target = std::move(entry.target);
         }
+        auto target = std::move(*entry.target);
+        entry.target.reset();
         target();
         target = nullptr;
         dispatch_source_cancel(entry.source);
@@ -79,12 +81,13 @@ class dispatch_timers {
 
     /// Releases the target and source after all event handlers for this source have returned.
     static void canceled(void* context) noexcept {
+        execution_detail::core_callback_scope callback_scope;
         auto& entry = *static_cast<record*>(context);
         auto& owner = entry.owner;
         std::unique_lock<std::mutex> lock(owner._mutex);
         // Cancellation owns the record after event handlers return; synchronize its publication.
         lock.unlock();
-        entry.target = nullptr;
+        entry.target.reset();
         lock.lock();
         if (entry.previous)
             entry.previous->next = entry.next;
@@ -112,7 +115,7 @@ public:
         dispatch_set_context(entry->source, entry.get());
         dispatch_source_set_event_handler_f(entry->source, event);
         dispatch_source_set_cancel_handler_f(entry->source, canceled);
-        entry->target = task<void() noexcept>(vtable, invoke, source);
+        entry->target.emplace(vtable, invoke, source);
         entry->next = _pending;
         if (_pending) _pending->previous = entry.get();
         _pending = entry.get();

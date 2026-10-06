@@ -5,6 +5,7 @@
 */
 
 #include "../src/concurrency/detail/core_shutdown.hpp"
+#include "../src/concurrency/detail/main_task_queue.hpp"
 #include "../src/concurrency/detail/waiter_state.hpp"
 #include <stlab/concurrency/default_executor.hpp>
 #include <stlab/concurrency/set_current_thread_name.hpp>
@@ -26,6 +27,8 @@
 #include <future>
 #include <memory>
 #include <mutex>
+#include <new>
+#include <optional>
 #include <string>
 #include <thread>
 #include <utility>
@@ -34,6 +37,21 @@
 #if defined(_MSC_VER) && defined(_DEBUG)
 #include <crtdbg.h>
 #endif
+
+namespace allocation_test {
+std::atomic<unsigned> count{0};
+}
+
+auto operator new(std::size_t size) -> void* {
+    if (auto* pointer = std::malloc(std::max(size, std::size_t{1}))) {
+        allocation_test::count.fetch_add(1, std::memory_order_relaxed);
+        return pointer;
+    }
+    throw std::bad_alloc();
+}
+
+void operator delete(void* pointer) noexcept { std::free(pointer); }
+void operator delete(void* pointer, std::size_t) noexcept { std::free(pointer); }
 
 // Include the real implementation with test-only scheduling observations. Standard and public
 // headers are already included, so the substitutions affect only executor_abi.cpp's internals.
@@ -219,6 +237,83 @@ void hardware_zero() {
           "zero hardware concurrency could not execute a task");
     stlab::pre_exit();
 }
+
+struct destructor_submission {
+    bool* armed;
+    bool* submitted;
+    void* queue;
+    void (*submit)(void*);
+
+    void operator()() const noexcept {}
+    ~destructor_submission() {
+        if (*armed && !std::exchange(*submitted, true)) submit(queue);
+    }
+};
+
+void queue_reentry(bool main_queue) {
+    for (bool waiting_pop : {false, true}) {
+        bool armed = false;
+        bool submitted = false;
+        if (main_queue) {
+            stlab::execution_detail::main_task_queue queue;
+            stlab::task<void() noexcept> source{destructor_submission{
+                &armed, &submitted, &queue, [](void* value) {
+                    stlab::task<void() noexcept> child{[]() noexcept {}};
+                    static_cast<stlab::execution_detail::main_task_queue*>(value)->push(
+                        child.relocation_concept(), child.relocation_invoke(),
+                        child.relocation_source());
+                }}};
+            queue.push(source.relocation_concept(), source.relocation_invoke(),
+                       source.relocation_source());
+            armed = true;
+            auto task = waiting_pop ? queue.wait_pop() : queue.pop();
+            if (!submitted) fail("main queue did not destroy the consumed source");
+            (void)queue.pop();
+        } else {
+            stlab::execution_detail::task_shard queue;
+            stlab::task<void() noexcept> source{destructor_submission{
+                &armed, &submitted, &queue, [](void* value) {
+                    stlab::task<void() noexcept> child{[]() noexcept {}};
+                    static_cast<stlab::execution_detail::task_shard*>(value)->push(
+                        {child.relocation_concept(), child.relocation_invoke(),
+                         child.relocation_source()});
+                }}};
+            queue.push({source.relocation_concept(), source.relocation_invoke(),
+                        source.relocation_source()});
+            armed = true;
+            auto task = waiting_pop ? queue.pop() : queue.try_pop();
+            if (!submitted) fail("executor queue did not destroy the consumed source");
+            (void)queue.pop();
+        }
+    }
+    stlab::pre_exit();
+}
+
+void queue_noallocation(bool main_queue) {
+    for (bool waiting_pop : {false, true}) {
+        stlab::task<void() noexcept> source{[]() noexcept {}};
+        if (main_queue) {
+            stlab::execution_detail::main_task_queue queue;
+            queue.push(source.relocation_concept(), source.relocation_invoke(),
+                       source.relocation_source());
+            const auto before = allocation_test::count.load();
+            auto task = waiting_pop ? queue.wait_pop() : queue.pop();
+            if (allocation_test::count.load() != before)
+                fail("main queue allocated while consuming an accepted task");
+        } else {
+            stlab::execution_detail::task_shard queue;
+            queue.push({source.relocation_concept(), source.relocation_invoke(),
+                        source.relocation_source()});
+            const auto before = allocation_test::count.load();
+            auto task = waiting_pop ? queue.pop() : queue.try_pop();
+            (void)queue.pop();
+            (void)queue.try_pop();
+            if (allocation_test::count.load() != before)
+                fail("executor queue allocated while consuming an accepted task");
+        }
+    }
+    stlab::pre_exit();
+}
 } // namespace
 
 int main(int argc, char** argv) {
@@ -238,6 +333,14 @@ int main(int argc, char** argv) {
         descendant_wait(false);
     else if (scenario == "descendant_capture_wait")
         descendant_wait(true);
+    else if (scenario == "queue_reentry")
+        queue_reentry(false);
+    else if (scenario == "main_queue_reentry")
+        queue_reentry(true);
+    else if (scenario == "queue_noallocation")
+        queue_noallocation(false);
+    else if (scenario == "main_queue_noallocation")
+        queue_noallocation(true);
     else
         fail("unknown scenario");
     std::printf("PASS: %s\n", argv[1]);
