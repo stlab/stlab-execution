@@ -47,7 +47,7 @@ endfunction()
 
 set(settings "-DCPM_cpp-library_SOURCE:PATH=${TOOLKIT_SOURCE}" -DBUILD_TESTING=OFF
   -DSTLAB_EXECUTION_INSTALL=ON -DCPP_LIBRARY_VERSION=1.0.0)
-foreach(setting STLAB_EXECUTION_SHARED STLAB_TASK_SYSTEM)
+foreach(setting BUILD_SHARED_LIBS STLAB_TASK_SYSTEM)
   if(DEFINED ${setting} AND NOT "${${setting}}" STREQUAL "")
     list(APPEND settings "-D${setting}=${${setting}}")
   endif()

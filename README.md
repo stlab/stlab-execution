@@ -5,10 +5,59 @@ STLab under the Boost Software License 1.0. Existing `stlab::` API names and
 `stlab/concurrency/*.hpp` and `stlab/pre_exit.hpp` include paths are preserved.
 No futures, channels, serial queues, or STLab utility library are required.
 
-**Publication status:** this is an unreleased extraction under review. The execution
-and toolkit development commits are available on public review branches, not approved
-release pins. Hosted CI can now run; its results remain separate from local validation.
+**Publication status:** this is an unreleased extraction under review. Execution
+development commits are available on public review branches; cpp-library is pinned
+to its 5.5.0 release. Hosted CI results remain separate from local validation.
 Release publication still follows the order below.
+
+## External dependencies
+
+Search for `[DEPENDENCY]` in source comments and this README to find dependency
+declarations and upstream sources. Pinned packages use current releases; system
+libraries, toolchains, and editor tools are supplied by the client. Minimum supported
+versions are compatibility requirements, not pins to obsolete releases.
+
+<!-- [DEPENDENCY] https://github.com/cpm-cmake/CPM.cmake/releases/tag/v0.43.2 -->
+`cmake/CPM.cmake` is the CPM download bootstrap, pinned to 0.43.2 with a SHA-256
+check on the downloaded release. Keep provenance here rather than modifying the
+externally supplied bootstrap.
+
+<!-- [DEPENDENCY] https://github.com/stlab/cpp-library/releases/tag/v5.5.0 -->
+cpp-library 5.5.0 provides build, install, documentation, and template generation,
+pinned to the release's exact commit.
+Regenerate templates with `cmake --preset=init` and `cmake --build --preset=init`.
+Do not edit generated files; update their owning cpp-library templates or
+generator instead. The project declares doctest 2.5.3 for tests; the toolkit
+provides doxygen-awesome-css 2.5.0 for documentation.
+
+<!-- [DEPENDENCY] https://github.com/actions/checkout/releases -->
+<!-- [DEPENDENCY] https://github.com/ilammy/msvc-dev-cmd/releases -->
+<!-- [DEPENDENCY] https://github.com/ssciwr/doxygen-install/releases -->
+<!-- [DEPENDENCY] https://github.com/actions/configure-pages/releases -->
+<!-- [DEPENDENCY] https://github.com/actions/upload-pages-artifact/releases -->
+<!-- [DEPENDENCY] https://github.com/actions/deploy-pages/releases -->
+The generated CI workflow uses checkout v7, msvc-dev-cmd 1.13.0,
+doxygen-install 2.0.3, configure-pages v6, upload-pages-artifact v5, and
+deploy-pages v5. These versions and their source comments are owned by
+cpp-library's `cmake/cpp-library-ci.cmake`, not the generated workflow.
+
+<!-- [DEPENDENCY] https://cmake.org/download/ -->
+<!-- [DEPENDENCY] https://github.com/ninja-build/ninja/releases -->
+<!-- [DEPENDENCY] https://github.com/llvm/llvm-project/releases -->
+Build and analysis tools are client-provided CMake, Ninja, and, for the
+`clang-tidy` preset, LLVM's clang-tidy.
+
+<!-- [DEPENDENCY] https://www.python.org/downloads/ -->
+<!-- [DEPENDENCY] https://git-scm.com/downloads -->
+Python is used by `scripts/flatten_json.py`; Git resolves source dependencies
+and project versions.
+
+<!-- [DEPENDENCY] https://github.com/microsoft/vscode/releases -->
+<!-- [DEPENDENCY] https://github.com/matepek/vscode-catch2-test-adapter -->
+<!-- [DEPENDENCY] https://github.com/clangd/vscode-clangd -->
+<!-- [DEPENDENCY] https://github.com/microsoft/vscode-livepreview -->
+<!-- [DEPENDENCY] https://github.com/microsoft/vscode-cmake-tools -->
+The editor extension recommendations are unpinned and managed by VS Code.
 
 ## Build and test
 
@@ -23,13 +72,6 @@ cmake --preset=test-cpp17
 cmake --build --preset=test-cpp17
 ctest --preset=test-cpp17
 ```
-
-The VS Code `worktree: create` and `worktree: remove` tasks require Python 3.9+
-and Git on `PATH` (`python3` on POSIX, `python` on Windows). Names must be single
-directory names using letters, digits, dots, underscores, or hyphens, starting
-with a letter or digit. Creation also requires the VS Code CLI. Optional
-tokensave synchronization is skipped with a diagnostic if unavailable or failing;
-Windows tokensave batch launchers are not executed.
 
 `test-shared` and `test-portable-shared` exercise the shared runtime with native
 and portable task backends. The toolkit dependency is pinned to its exact commit;
@@ -133,14 +175,12 @@ STLab's version/namespace and coroutine policy are independent. Its own
 `STLAB_INSTALL` controls only STLab-owned artifacts; enabling either package's
 installation does not silently enable the other. Header file sets do not overlap.
 
-`STLAB_EXECUTION_SHARED` selects a shared runtime. `STLAB_CORE_SHARED` is the
-legacy input spelling and effective compatibility macro. Differing supplied values
-are rejected on a fresh configuration. On reconfiguration, a spelling changed
-since the last resolved configuration wins over its unchanged cached counterpart,
-even if that counterpart is redundantly supplied again; both caches are reconciled.
-Without the new setting, legacy ON selects shared, as does
-`BUILD_SHARED_LIBS=ON` on non-Windows platforms; otherwise the runtime is static.
-The parent project's `BUILD_SHARED_LIBS` is not changed.
+The runtime is statically linked by default. Set `BUILD_SHARED_LIBS=ON` to build
+a shared runtime, including on Windows. The parent project's `BUILD_SHARED_LIBS`
+is respected and is not changed. The former `STLAB_EXECUTION_SHARED` and
+`STLAB_CORE_SHARED` CMake options are no longer used; migrate those inputs to
+`BUILD_SHARED_LIBS`. The public `STLAB_EXECUTION_SHARED()` macro and its
+`STLAB_CORE_SHARED()` compatibility alias reflect the actual execution target type.
 
 Backend options retain STLab's defaults and validation: `STLAB_THREAD_SYSTEM`,
 `STLAB_TASK_SYSTEM`, `STLAB_MAIN_EXECUTOR`, `STLAB_TASK_POOL_MAXIMUM`,

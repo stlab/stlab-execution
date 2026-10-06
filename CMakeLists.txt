@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.24)
 
 include(cmake/CPM.cmake)
+# [DEPENDENCY] https://github.com/stlab/cpp-library/releases/tag/v5.5.0
 CPMAddPackage(
   NAME cpp-library
+  VERSION 5.5.0
   GITHUB_REPOSITORY stlab/cpp-library
-  GIT_TAG cd552af39ee4c71fe4342dfba4517c70dddba0b3)
+  GIT_TAG b5273fdb8d0c356579883d8419fecb267804d0f2)
 include("${cpp-library_SOURCE_DIR}/cpp-library.cmake")
 cpp_library_enable_dependency_tracking()
 
@@ -18,14 +20,12 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(ExecutionPlatform)
 include(ExecutionConfig)
 
-execution_resolve_library_type()
 execution_configure_platform()
 
 cpp_library_setup(
   DESCRIPTION "Portable task execution, timers, and process lifecycle"
   NAMESPACE stlab
   REQUIRES_CPP_VERSION 17
-  LIBRARY_TYPE ${execution_library_type}
   INSTALL_OPTION STLAB_EXECUTION_INSTALL
   HEADERS
     concurrency/task.hpp
@@ -42,6 +42,12 @@ cpp_library_setup(
     concurrency/executor_abi.cpp
     concurrency/core_shutdown.cpp)
 
+get_target_property(execution_library_type execution TYPE)
+if(execution_library_type STREQUAL "SHARED_LIBRARY")
+  set(STLAB_EXECUTION_SHARED ON)
+else()
+  set(STLAB_EXECUTION_SHARED OFF)
+endif()
 execution_generate_config_file()
 target_sources(execution PUBLIC
   FILE_SET headers TYPE HEADERS

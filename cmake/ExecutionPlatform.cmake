@@ -38,6 +38,7 @@ function(execution_detect_task_system result_var)
       set(result "emscripten")
     endif()
   else()
+    # [DEPENDENCY] https://github.com/swiftlang/swift-corelibs-libdispatch
     find_package(libdispatch)
     if(libdispatch_FOUND)
       set(result "libdispatch")

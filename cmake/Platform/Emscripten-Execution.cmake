@@ -7,6 +7,7 @@
 #
 # Find the Emscripten SDK and include its CMake toolchain.
 #
+# [DEPENDENCY] https://github.com/emscripten-core/emsdk
 find_program( EM_CONFIG_EXECUTABLE em-config )
 if ( NOT EM_CONFIG_EXECUTABLE )
     message( FATAL_ERROR "Could not find emsdk installation. Please install the Emscripten SDK.\nhttps://emscripten.org/docs/getting_started/downloads.html" )
@@ -107,6 +108,7 @@ endif()
 # Note: https://www.npmjs.com/package/wasm-check is a useful utility to find which
 # --experimental-wasm-xxx flags are supported by node.
 #
+# [DEPENDENCY] https://github.com/nodejs/node/releases
 set( STLAB_WASM_NODE_JS_MIN_VERSION "18.3.0" )
 
 # set( NODE_JS_FLAGS "--experimental-wasm-threads;--experimental-wasm-eh" )

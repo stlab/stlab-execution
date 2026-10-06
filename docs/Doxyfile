@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: BSL-1.0
 # Standalone execution documentation; configured by cpp-library.
+# [DEPENDENCY] https://github.com/doxygen/doxygen/releases
 PROJECT_NAME           = "@PROJECT_NAME@"
 PROJECT_BRIEF          = "@PROJECT_BRIEF@"
 PROJECT_NUMBER         = @PROJECT_VERSION@
@@ -13,6 +14,7 @@ QUIET                  = YES
 WARN_IF_UNDOCUMENTED   = NO
 WARN_AS_ERROR          = YES
 EXAMPLE_PATH           = "@EXAMPLES_PATH@"
+# [DEPENDENCY] https://github.com/jothepro/doxygen-awesome-css/releases
 HTML_EXTRA_STYLESHEET  = "@AWESOME_CSS_PATH@/doxygen-awesome.css" \
                          "@AWESOME_CSS_PATH@/doxygen-awesome-sidebar-only.css" \
                          "@CPP_LIBRARY_ROOT@/templates/custom.css"
@@ -28,7 +30,9 @@ CLASS_GRAPH            = NO
 COLLABORATION_GRAPH    = NO
 GROUP_GRAPHS           = NO
 USE_MATHJAX            = YES
-MATHJAX_VERSION        = MathJax_3
+# [DEPENDENCY] https://github.com/mathjax/MathJax/releases
+MATHJAX_VERSION        = MathJax_4
+MATHJAX_RELPATH        = https://cdn.jsdelivr.net/npm/mathjax@4.1.3
 INCLUDE_PATH           = "@CMAKE_CURRENT_BINARY_DIR@/include"
 ENABLE_PREPROCESSING   = YES
 MACRO_EXPANSION        = YES

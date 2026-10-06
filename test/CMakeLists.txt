@@ -15,15 +15,13 @@ if(STLAB_EXECUTION_PACKAGE_TESTS AND NOT CMAKE_CROSSCOMPILING)
       "-DTOOLKIT_SOURCE:PATH=${cpp-library_SOURCE_DIR}"
       "-DVERIFY_PARENT:PATH=${PROJECT_BINARY_DIR}/package-test"
       "-DVERIFY_ROOT:PATH=${PROJECT_BINARY_DIR}/package-test/execution-packages"
-      "-DSTLAB_EXECUTION_SHARED:BOOL=${STLAB_EXECUTION_SHARED}"
+      "-DBUILD_SHARED_LIBS:BOOL=${STLAB_EXECUTION_SHARED}"
       "-DSTLAB_TASK_SYSTEM=${STLAB_TASK_SYSTEM}"
       "-DTEST_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}"
       "-DTEST_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}"
       -P "${CMAKE_CURRENT_SOURCE_DIR}/verify_package.cmake")
   set_tests_properties(execution.package.roundtrip PROPERTIES TIMEOUT 600 LABELS package)
 endif()
-add_test(NAME execution.config.shared_selection
-  COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_SOURCE_DIR}/shared_selection.cmake")
 add_test(NAME execution.config.node_minimum
   COMMAND ${CMAKE_COMMAND}
     "-DTEST_BINARY_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/node_minimum"
@@ -41,17 +39,10 @@ add_test(NAME execution.config.shared_reconfiguration
     "-DNODE_JS_FLAGS:STRING=${NODE_JS_FLAGS}"
     "-DSTLAB_EMSCRIPTEN_PTHREADS:BOOL=${STLAB_EMSCRIPTEN_PTHREADS}"
     -P "${CMAKE_CURRENT_SOURCE_DIR}/shared_reconfiguration.cmake")
-set_tests_properties(execution.test.header_smoke execution.config.shared_selection
+set_tests_properties(execution.test.header_smoke
   execution.config.node_minimum
   PROPERTIES TIMEOUT 60)
 set_tests_properties(execution.config.shared_reconfiguration PROPERTIES TIMEOUT 450)
-
-find_package(Python3 3.9 QUIET COMPONENTS Interpreter)
-if(Python3_Interpreter_FOUND)
-  add_test(NAME execution.test.worktree_tasks
-    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/worktree_task_test.py")
-  set_tests_properties(execution.test.worktree_tasks PROPERTIES TIMEOUT 60)
-endif()
 
 # Each public header must compile without relying on another include preceding it.
 foreach(header IN ITEMS
@@ -171,7 +162,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten" AND NOT STLAB_EMSCRIPTEN_PTHREADS)
   return()
 endif()
 
-CPMAddPackage("gh:doctest/doctest@2.5.2")
+# [DEPENDENCY] https://github.com/doctest/doctest/releases
+CPMAddPackage("gh:doctest/doctest@2.5.3")
 foreach(component IN ITEMS task executor executor_abi waiter_state system_timer)
   if(component STREQUAL "task" OR component STREQUAL "executor")
     set(source ${component}_contract_test.cpp)

@@ -49,6 +49,7 @@ if(APPLE)
   endif()
   set(libdispatch_FOUND TRUE)
 else()
+  # [DEPENDENCY] https://gitlab.freedesktop.org/pkg-config/pkg-config
   find_package(PkgConfig)
   pkg_check_modules(PC_libdispatch QUIET libdispatch)
 

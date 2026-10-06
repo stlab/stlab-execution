@@ -124,7 +124,7 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: Install Doxygen
-        uses: ssciwr/doxygen-install@329d88f5a303066a5bd006db7516b1925b86350e
+        uses: ssciwr/doxygen-install@fa3e94d34131d3990b6b8ba939ab982964aa3758
 
       - name: Configure CMake
         run: cmake --preset=docs
