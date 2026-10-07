@@ -13,13 +13,14 @@
  *  @brief Move-only callable wrapper for executor scheduling (`task<Signature>`).
  *
  *  @details
- *  `task<F>` type-erases callable targets (functions, lambdas, `std::bind` expressions, etc.)
+ *  `task<F>` type-erases callable targets (functions, lambdas, member pointers,
+ *  `std::bind` expressions, etc.) using `std::invoke`
  *  with a fixed signature. It is similar to `std::function` but **not copyable**, which suits
  *  move-only and single-shot targets (common in messaging and executor queues). An empty task
  *  compares equal to `nullptr`; invoking it throws `std::bad_function_call` for a potentially
  *  throwing signature, or calls `std::terminate()` for a `noexcept` signature.
  *
- *  Wrap member pointers in a lambda or `std::bind` expression.
+ *  Member pointers take their object as the first argument, as with `std::invoke`.
  *  Mutable `operator()` allows moving arguments through for one invocation. Small targets with
  *  non-throwing move construction may use small-buffer optimization; other targets are
  *  heap-allocated so task relocation remains non-throwing.
@@ -209,7 +210,7 @@ private:
 
         // NOLINTNEXTLINE(performance-unnecessary-value-param)
         static auto invoke(void* self, Args... args) noexcept(NoExcept) -> R {
-            return (static_cast<model*>(self)->_f)(std::forward<Args>(args)...);
+            return std::invoke(static_cast<model*>(self)->_f, std::forward<Args>(args)...);
         }
 
         static auto target_type() noexcept -> const std::type_info& { return typeid(F); }
@@ -246,7 +247,7 @@ private:
         */
 
         static auto invoke(void* self, Args... args) noexcept(NoExcept) -> R {
-            return (*static_cast<model*>(self)->_p)(std::forward<Args>(args)...);
+            return std::invoke(*static_cast<model*>(self)->_p, std::forward<Args>(args)...);
         }
 
         static auto target_type() noexcept -> const std::type_info& { return typeid(F); }

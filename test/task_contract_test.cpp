@@ -6,6 +6,7 @@
 
 #include <stlab/concurrency/task.hpp>
 
+#include <array>
 #include <functional>
 #include <memory>
 #include <stdexcept>
@@ -101,6 +102,15 @@ TEST_CASE("task preserves a reference result") {
 }
 
 namespace {
+struct member_target {
+    int value = 73;
+    auto add(int amount) noexcept -> int& {
+        value += amount;
+        return value;
+    }
+    auto read() const -> int { return value; }
+};
+
 struct throwing_move_target {
     throwing_move_target() = default;
     throwing_move_target(const throwing_move_target&) = default;
@@ -108,6 +118,60 @@ struct throwing_move_target {
     auto operator()() const noexcept -> int { return 83; }
 };
 } // namespace
+
+TEST_CASE("task invokes member functions with forwarded arguments and reference results") {
+    member_target object;
+    stlab::task<int&(member_target&, int) noexcept> add = &member_target::add;
+    CHECK(noexcept(add(object, 18)));
+    CHECK(&add(object, 18) == &object.value);
+    CHECK(object.value == 91);
+
+    stlab::task<int(const member_target&)> read = &member_target::read;
+    CHECK(read(object) == 91);
+}
+
+TEST_CASE("task invokes data members through objects pointers and reference wrappers") {
+    member_target object;
+    stlab::task<int&(member_target&) noexcept> by_reference = &member_target::value;
+    by_reference(object) = 97;
+    CHECK(object.value == 97);
+
+    stlab::task<int&(member_target*) noexcept> by_pointer = &member_target::value;
+    CHECK(&by_pointer(&object) == &object.value);
+
+    stlab::task<int&(std::reference_wrapper<member_target>) noexcept> by_wrapper =
+        &member_target::value;
+    CHECK(&by_wrapper(std::ref(object)) == &object.value);
+
+    auto owned = std::make_unique<member_target>();
+    stlab::task<int&(const std::unique_ptr<member_target>&) noexcept> by_owner =
+        &member_target::value;
+    by_owner(owned) = 137;
+    CHECK(owned->value == 137);
+}
+
+TEST_CASE("null member pointers produce empty tasks") {
+    decltype(&member_target::add) null_function = nullptr;
+    stlab::task<int&(member_target&, int) noexcept> function = null_function;
+    CHECK(function == nullptr);
+
+    decltype(&member_target::value) null_member = nullptr;
+    stlab::task<int&(member_target&) noexcept> member = null_member;
+    CHECK(member == nullptr);
+}
+
+TEST_CASE("heap-backed task forwards move-only arguments and preserves reference results") {
+    int value = 119;
+    auto callable = [padding = std::array<int, stlab::stlab_v2_task_storage_size>{},
+                     &value](std::unique_ptr<int> amount) noexcept -> int& {
+        value += *amount + padding[0];
+        return value;
+    };
+    static_assert(sizeof(callable) > stlab::stlab_v2_task_storage_size);
+    stlab::task<int&(std::unique_ptr<int>) noexcept> target = std::move(callable);
+    CHECK(&target(std::make_unique<int>(18)) == &value);
+    CHECK(value == 137);
+}
 
 TEST_CASE("task relocates a throwing-move target without moving the callable") {
     throwing_move_target callable;
