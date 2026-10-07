@@ -81,36 +81,59 @@ cmake --preset=test
 cmake --build --preset=test
 ctest --preset=test
 
-cmake --preset=test-cpp17
-cmake --build --preset=test-cpp17
-ctest --preset=test-cpp17
+cmake --preset=test -B build\test-cpp17 -DCMAKE_CXX_STANDARD=17
+cmake --build build\test-cpp17
+ctest --test-dir build\test-cpp17 --output-on-failure
 ```
 
-`test-shared` and `test-portable-shared` exercise the shared runtime with native
-and portable task backends. The toolkit dependency is pinned to its exact commit;
+The generated presets are `default`, `test`, `docs`, `clang-tidy`, `init`, and
+`install`; variant names below are build directories, not additional presets.
+Configure variants with the `test` preset and a distinct `-B` directory, then
+build and test that directory directly. For example:
+
+```powershell
+cmake --preset=test -B build\test-shared -DBUILD_SHARED_LIBS=ON
+cmake --build build\test-shared
+ctest --test-dir build\test-shared --output-on-failure
+```
+
+The toolkit dependency is pinned to its exact commit;
 for local development, pass `-DCPM_cpp-library_SOURCE:PATH=<toolkit-checkout>` during
 configuration. With no release tag, the toolkit's development version is `0.0.0`.
 `-DCPP_LIBRARY_VERSION=1.0.0` may be used for standalone install validation.
 
-`cmake --preset=test-packages` followed by `ctest --preset=test-packages`
-verifies standalone installed C++17/20 consumers and independently compiles each
-applicable public header. `test-packages-shared` and
-`test-packages-portable-shared` select the corresponding shared backends.
+Configure with `-DSTLAB_EXECUTION_PACKAGE_TESTS=ON` to verify standalone installed
+C++17/20 consumers. Every test configuration independently compiles each
+applicable public header. Package checks can be combined with
+`-DBUILD_SHARED_LIBS=ON` and `-DSTLAB_TASK_SYSTEM=portable`.
 The verifier uses a fresh `install`-preset child with `BUILD_TESTING=OFF` and
 the standalone validation version override above, never an STLab package.
 Commands and package evidence remain under
-`build/<preset>/package-test/execution-packages`; Windows fixtures deploy
+`<build-directory>/package-test/execution-packages`; Windows fixtures deploy
 `TARGET_RUNTIME_DLLS` before execution. Use the same compiler environment and
 toolkit `:PATH` override as other native presets.
 
-Matching configure/build/test presets also cover `test-portable`,
-`test-portable-main`, and `test-asan`. On Windows, run all three CMake commands
-from the same x64 Visual Studio developer environment. The ASan preset instruments
+Select portable task workers with `-DSTLAB_TASK_SYSTEM=portable`, portable main
+execution with `-DSTLAB_MAIN_EXECUTOR=portable`, and address sanitization with
+`-DSTLAB_SANITIZER=address`. Use separate build directories for these variants.
+On Windows, run all three CMake commands
+from the same x64 Visual Studio developer environment. Address sanitization instruments
 both the runtime and its contract/lifecycle executables; allocator interception
 tests run only in non-ASan static Windows configurations.
 
-With an activated Emscripten SDK and Node 18.3.0 or newer, use `test-emscripten`
-for pthreads or `test-emscripten-threadless` for cooperative event-loop execution.
+With an activated Emscripten SDK and Node 18.3.0 or newer, select the project
+toolchain and enable pthreads or cooperative event-loop execution explicitly:
+
+```powershell
+cmake --preset=test -B build\test-emscripten "-DCMAKE_TOOLCHAIN_FILE=cmake\Platform\Emscripten-Execution.cmake" -DSTLAB_EMSCRIPTEN_PTHREADS=ON
+cmake --build build\test-emscripten
+ctest --test-dir build\test-emscripten --output-on-failure
+
+cmake --preset=test -B build\test-emscripten-threadless "-DCMAKE_TOOLCHAIN_FILE=cmake\Platform\Emscripten-Execution.cmake" -DSTLAB_EMSCRIPTEN_PTHREADS=OFF
+cmake --build build\test-emscripten-threadless
+ctest --test-dir build\test-emscripten-threadless --output-on-failure
+```
+
 The threadless suite uses standalone Node scenarios rather than a blocking
 doctest/std::future harness. Each process has a timeout. ABI rejection tests
 require an unresolved task-storage guard diagnostic, not merely a failed link.
@@ -118,11 +141,12 @@ The deliberately incompatible target is excluded from the default build.
 
 Nested configuration tests preserve the selected `NODE_JS_FLAGS` list and check
 the child cache and actual emulator executable/flag order. For a focused regression
-with two Node options (repeat with `test-emscripten` for pthreads):
+with two Node options, reconfigure the threadless directory above (repeat with
+the pthread-enabled directory for pthreads):
 
-```bash
-cmake --preset=test-emscripten-threadless "-DNODE_JS_FLAGS:STRING=--no-warnings;--stack-trace-limit=20"
-ctest --preset=test-emscripten-threadless -R "shared_reconfiguration|emscripten_configuration"
+```powershell
+cmake --preset=test -B build\test-emscripten-threadless "-DCMAKE_TOOLCHAIN_FILE=cmake\Platform\Emscripten-Execution.cmake" -DSTLAB_EMSCRIPTEN_PTHREADS=OFF "-DNODE_JS_FLAGS:STRING=--no-warnings;--stack-trace-limit=20"
+ctest --test-dir build\test-emscripten-threadless --output-on-failure -R "shared_reconfiguration|emscripten_configuration"
 ```
 
 ## Consume
@@ -217,11 +241,11 @@ Header-adjacent contracts are canonical. `cmake --preset=docs` and
 documentation site yet. The directory groups and main page are owned here,
 without importing STLab's higher-level API sources.
 
-CI covers Linux GCC/Clang, C++17/20, macOS native/portable and both TSan+UBSan
-variants, Windows static/native and canonical shared native/portable, portable
-main, Qt6/Qt5 main, both Emscripten runtimes, and Linux/Windows package consumers
-(including Windows DLL deployment). Job configuration is not passing runtime
-evidence; macOS/Qt/race checks remain pending until run.
+The generated CI workflow covers native Linux GCC/Clang, macOS, Windows, and
+clang-tidy using the generic presets. Shared, C++17, portable, sanitizer, Qt,
+Emscripten, and installed-package variants require separate runs with the
+configuration options above; `.github/matrix.json` is not consumed by this
+workflow. Job configuration alone is not passing runtime evidence.
 
 Publication is a separate authorized operation: publish the toolkit first,
 replace this repository's toolkit SHA with that actual release and verify without

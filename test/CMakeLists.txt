@@ -153,6 +153,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten" AND NOT STLAB_EMSCRIPTEN_PTHREADS)
     COMMAND ${CMAKE_COMMAND} "-Dsource_dir:PATH=${PROJECT_SOURCE_DIR}"
       "-Dbinary_dir:PATH=${PROJECT_BINARY_DIR}/configuration-tests"
       "-DTEST_PARENT_BINARY_DIR:PATH=${PROJECT_BINARY_DIR}"
+      "-Dgenerator:STRING=${CMAKE_GENERATOR}"
+      "-Dtoolchain:FILEPATH=${CMAKE_TOOLCHAIN_FILE}"
       "-Dem_config:FILEPATH=${EM_CONFIG_EXECUTABLE}"
       "-Dcpp_library_source:PATH=${cpp-library_SOURCE_DIR}"
       "-Dnode:FILEPATH=${NODE_JS_EXECUTABLE}"
@@ -187,6 +189,11 @@ if(WIN32 AND STLAB_EXECUTION_SHARED)
 endif()
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+  if(WIN32 AND STLAB_TASK_SYSTEM STREQUAL "windows" AND NOT STLAB_EXECUTION_SHARED)
+    execution_process_test(execution.test.windows_executor_resource_failure 10
+      windows_executor_resource_failure.cpp)
+    target_compile_definitions(execution.test.windows_executor_resource_failure PRIVATE NDEBUG)
+  endif()
   add_test(NAME execution.config.pool_decimal
     COMMAND ${CMAKE_COMMAND}
       "-DTEST_BINARY_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/pool_configuration"
@@ -202,10 +209,14 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
   if(STLAB_TASK_SYSTEM STREQUAL "portable" AND NOT STLAB_EXECUTION_SHARED)
     execution_test_target(execution.test.portable_executor_regression
       portable_executor_regression_test.cpp)
-    foreach(scenario IN ITEMS expansion_wake expansion_during_join hardware_zero
+    set(portable_scenarios expansion_wake expansion_during_join hardware_zero
         descendant_wait descendant_capture_wait queue_submission main_queue_submission
         queue_enqueue_noallocation main_queue_enqueue_noallocation timer_enqueue_noallocation
         queue_noallocation main_queue_noallocation)
+    if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+      list(APPEND portable_scenarios worker_names)
+    endif()
+    foreach(scenario IN LISTS portable_scenarios)
       add_test(NAME execution.test.portable_executor_${scenario}
         COMMAND execution.test.portable_executor_regression ${scenario})
       set_tests_properties(execution.test.portable_executor_${scenario}

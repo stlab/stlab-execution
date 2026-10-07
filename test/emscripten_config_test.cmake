@@ -24,8 +24,9 @@ foreach(scenario IN ITEMS task main threads pool compiler)
     set(diagnostic "requires a toolchain without -pthread")
   endif()
   execute_process(
-    COMMAND "${CMAKE_COMMAND}" --preset=test-emscripten-threadless
-      -B "${binary_dir}/${scenario}" "-DEM_CONFIG_EXECUTABLE:FILEPATH=${em_config}"
+    COMMAND "${CMAKE_COMMAND}" -S "${source_dir}" -B "${binary_dir}/${scenario}"
+      -G "${generator}" "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=${toolchain}"
+      -DSTLAB_EMSCRIPTEN_PTHREADS=OFF "-DEM_CONFIG_EXECUTABLE:FILEPATH=${em_config}"
       "-DCPM_cpp-library_SOURCE:PATH=${cpp_library_source}"
       "-DNODE_JS_EXECUTABLE:FILEPATH=${node}"
       "-DNODE_JS_FLAGS:STRING=${NODE_JS_FLAGS}"

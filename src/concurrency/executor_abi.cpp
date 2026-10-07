@@ -506,6 +506,7 @@ public:
     void schedule(std::size_t hint) {
         auto work = CreateThreadpoolWork(&callback, pack_hint(hint), &_callback_environment);
         assert(work != nullptr && "CreateThreadpoolWork failed.");
+        if (work == nullptr) std::terminate();
 
         SubmitThreadpoolWork(work);
     }
@@ -742,8 +743,7 @@ private:
     void add_thread_unlocked(std::size_t index) {
         _threads.emplace_back([this, index] {
             core_callback_scope callback_scope;
-            const auto name = index < _worker_count ? "cc.stlab.default_executor" :
-                                                      "cc.stlab.default_executor.expansion";
+            const auto name = index < _worker_count ? "stlab.default" : "stlab.default.x";
             stlab::set_current_thread_name(name);
 
             while (true) {

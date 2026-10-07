@@ -166,6 +166,35 @@ void expansion_wake() {
     stlab::pre_exit();
 }
 
+#if defined(__linux__)
+void worker_names() {
+    auto observe_name = [](std::promise<std::string>& observed) noexcept {
+        char name[16]{};
+        if (pthread_getname_np(pthread_self(), name, sizeof(name)) != 0)
+            fail("could not read worker name");
+        observed.set_value(name);
+    };
+    std::promise<std::string> initial_name;
+    auto initial = initial_name.get_future();
+    std::promise<std::string> expansion_name;
+    auto expansion = expansion_name.get_future();
+    std::promise<void> release;
+    auto released = release.get_future().share();
+    stlab::default_executor([&]() noexcept {
+        observe_name(initial_name);
+        stlab::stlab_v2_notify_default_executor_before_waiting();
+        released.wait();
+    });
+    if (initial.wait_for(5s) != std::future_status::ready) fail("initial worker did not start");
+    if (initial.get() != "stlab.default") fail("initial worker name was not set");
+    stlab::default_executor([&]() noexcept { observe_name(expansion_name); });
+    if (expansion.wait_for(5s) != std::future_status::ready) fail("expansion worker did not start");
+    if (expansion.get() != "stlab.default.x") fail("expansion worker name was not set");
+    release.set_value();
+    stlab::pre_exit();
+}
+#endif
+
 void expansion_during_join() {
     std::set_terminate([] { fail("shutdown left an expansion thread unjoined"); });
     std::promise<void> continue_task;
@@ -373,8 +402,11 @@ int main(int argc, char** argv) {
 #endif
     if (argc != 2) fail("expected one portable executor regression scenario");
     const std::string scenario = argv[1];
-    if (scenario == "expansion_wake")
-        expansion_wake();
+    if (scenario == "expansion_wake") expansion_wake();
+#if defined(__linux__)
+    else if (scenario == "worker_names")
+        worker_names();
+#endif
     else if (scenario == "expansion_during_join")
         expansion_during_join();
     else if (scenario == "hardware_zero")
