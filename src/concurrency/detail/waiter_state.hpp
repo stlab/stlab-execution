@@ -4,7 +4,8 @@
     (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#pragma once
+#ifndef STLAB_SRC_CONCURRENCY_DETAIL_WAITER_STATE_HPP
+#define STLAB_SRC_CONCURRENCY_DETAIL_WAITER_STATE_HPP
 
 #include <stlab/execution/config.hpp>
 
@@ -58,3 +59,5 @@ public:
 } // namespace execution_detail
 STLAB_EXECUTION_VERSION_NAMESPACE_END()
 } // namespace stlab
+
+#endif
