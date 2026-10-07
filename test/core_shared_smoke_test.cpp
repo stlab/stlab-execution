@@ -45,6 +45,7 @@ TEST_CASE("shared core exports blocking notification") {
 TEST_CASE("shared core exports execute work and preserve pre_exit") {
     std::atomic<bool> done{false};
     std::condition_variable ready;
+    // Coordinates ready's wait/notification even though done is atomic.
     std::mutex mutex;
     smoke_context context{&done, &ready, &mutex};
 

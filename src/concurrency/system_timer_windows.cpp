@@ -45,6 +45,7 @@ class windows_timers {
             owner(service), delay(delay_ns) {}
     };
 
+    // Protects _closed, native resource initialization, and _pending links/handle ownership.
     std::mutex _mutex;
     bool _closed = false;
     PTP_POOL _pool = nullptr;

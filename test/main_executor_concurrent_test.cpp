@@ -37,6 +37,7 @@ bool submitters_ready = false;
 std::vector<std::thread> submitters;
 
 #if defined(__EMSCRIPTEN_PTHREADS__)
+// Protects startup_task_ran and coordinates startup_condition's wait predicate.
 std::mutex startup_mutex;
 std::condition_variable startup_condition;
 bool startup_task_ran = false;

@@ -40,11 +40,13 @@
 
 namespace allocation_test {
 std::atomic<unsigned> count{0};
-}
+thread_local unsigned current_thread_count = 0;
+} // namespace allocation_test
 
 auto operator new(std::size_t size) -> void* {
     if (auto* pointer = std::malloc(std::max(size, std::size_t{1}))) {
         allocation_test::count.fetch_add(1, std::memory_order_relaxed);
+        ++allocation_test::current_thread_count;
         return pointer;
     }
     throw std::bad_alloc();
@@ -60,13 +62,18 @@ using namespace std;
 inline unsigned reported_hardware = 2;
 inline std::atomic<unsigned> sleepers{0};
 inline std::function<void()> before_shutdown;
+inline thread_local unsigned thread_start_allocations = 0;
 
 class thread {
     std::thread _thread;
 
 public:
     template <class F>
-    explicit thread(F&& f) : _thread(std::forward<F>(f)) {}
+    explicit thread(F&& f) {
+        const auto before = allocation_test::current_thread_count;
+        _thread = std::thread(std::forward<F>(f));
+        thread_start_allocations += allocation_test::current_thread_count - before;
+    }
     thread(thread&&) noexcept = default;
     auto operator=(thread&&) noexcept -> thread& = default;
     static auto hardware_concurrency() noexcept -> unsigned { return reported_hardware; }
@@ -254,6 +261,26 @@ void descendant_wait(bool capture_cleanup) {
     if (completed.load() != 3) fail("shutdown did not drain every descendant");
 }
 
+void construction_allocations() {
+    const auto before_containers = allocation_test::current_thread_count;
+    {
+        std::vector<portable_test_std::thread> threads;
+        threads.reserve(1);
+        std::vector<stlab::execution_detail::waiter> waiters(1);
+    }
+    // Include the standard library's container bookkeeping, such as debug iterator proxies.
+    const auto container_allocations = allocation_test::current_thread_count - before_containers;
+    const auto before = allocation_test::current_thread_count;
+    const auto before_threads = portable_test_std::thread_start_allocations;
+    stlab::execution_detail::priority_task_system system;
+    const auto allocations = allocation_test::current_thread_count - before;
+    const auto thread_allocations = portable_test_std::thread_start_allocations - before_threads;
+    if (allocations - thread_allocations != container_allocations)
+        fail("portable executor allocated beyond its thread and waiter vectors");
+    system.join();
+    stlab::pre_exit();
+}
+
 void hardware_zero() {
     portable_test_std::reported_hardware = 0;
     if (stlab::execution_detail::portable_hardware_concurrency() != 1)
@@ -411,6 +438,8 @@ int main(int argc, char** argv) {
         expansion_during_join();
     else if (scenario == "hardware_zero")
         hardware_zero();
+    else if (scenario == "construction_allocations")
+        construction_allocations();
     else if (scenario == "descendant_wait")
         descendant_wait(false);
     else if (scenario == "descendant_capture_wait")

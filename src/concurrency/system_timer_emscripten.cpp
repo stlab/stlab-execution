@@ -70,6 +70,7 @@ struct timer_record {
 
 /// Serializes timer admission and tracks accepted registration/timeout callbacks.
 struct timer_state {
+    // Protects closed, head/list links, and registration/cancellation of accepted timers.
     std::mutex mutex;
     timer_record* head = nullptr;
     bool closed = false;
@@ -177,6 +178,7 @@ void close_on_main() noexcept {
 #if defined(__EMSCRIPTEN_PTHREADS__)
 /// Allows a pthread shutdown caller to wait for event-loop cancellation.
 struct shutdown_request {
+    // Protects complete and keeps this request alive through the notifier's final access.
     std::mutex mutex;
     std::condition_variable condition;
     bool complete = false;

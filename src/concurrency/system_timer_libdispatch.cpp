@@ -43,8 +43,21 @@ class dispatch_timers {
         /// Prepares bookkeeping before source creation and task relocation.
         record(dispatch_timers& service, std::int64_t delay_ns) noexcept :
             owner(service), delay(delay_ns) {}
+
+        /// Discards an unpublished suspended source without invoking its cancellation handler.
+        ~record() {
+            if (!source) return;
+            dispatch_source_set_cancel_handler_f(source, nullptr);
+            dispatch_source_cancel(source);
+            dispatch_resume(source);
+            dispatch_release(source);
+        }
     };
 
+    // Protects _closed and _pending links. At unlock, linked records are resumed and no longer
+    // owned by submit(). Closure excludes new records and new execution commitments. Records stay
+    // linked until event handlers and capture destruction finish, making an empty list a drain
+    // predicate for _finished.
     std::mutex _mutex;
     std::condition_variable _finished;
     record* _pending = nullptr;
@@ -84,17 +97,15 @@ class dispatch_timers {
         execution_detail::core_callback_scope callback_scope;
         auto& entry = *static_cast<record*>(context);
         auto& owner = entry.owner;
-        std::unique_lock<std::mutex> lock(owner._mutex);
-        // Cancellation owns the record after event handlers return; synchronize its publication.
-        lock.unlock();
         entry.target.reset();
-        lock.lock();
+        std::scoped_lock lock(owner._mutex);
         if (entry.previous)
             entry.previous->next = entry.next;
         else
             owner._pending = entry.next;
         if (entry.next) entry.next->previous = entry.previous;
         dispatch_release(entry.source);
+        entry.source = nullptr;
         delete &entry;
         owner._finished.notify_one();
     }
@@ -105,8 +116,6 @@ public:
                 stlab_v2_task_proc invoke,
                 void* source,
                 std::int64_t delay_ns) {
-        std::scoped_lock lock(_mutex);
-        execution_detail::check_timer_open(_closed);
         auto entry = std::make_unique<record>(*this, delay_ns);
         entry->source =
             dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,
@@ -115,6 +124,14 @@ public:
         dispatch_set_context(entry->source, entry.get());
         dispatch_source_set_event_handler_f(entry->source, event);
         dispatch_source_set_cancel_handler_f(entry->source, canceled);
+
+        // Leave a resumed, callback-owned record in _pending only if admission is open.
+        std::unique_lock<std::mutex> lock(_mutex);
+        if (_closed) {
+            lock.unlock();
+            entry.reset();
+            execution_detail::check_timer_open(true);
+        }
         entry->target.emplace(vtable, invoke, source);
         entry->next = _pending;
         if (_pending) _pending->previous = entry.get();

@@ -28,6 +28,7 @@ struct pre_exit_stack_t {
     /// Tracks the single pre-exit operation, including asynchronous cooperative retirement.
     enum class phase : std::uint8_t { idle, running, deferred, closed };
 
+    // Protects _stack and _phase, including handler admission versus final stack closure.
     std::mutex _mutex;
     // The size constructor can propagate debug-iterator allocation failure; vector() is noexcept.
     std::vector<pre_exit_handler> _stack = std::vector<pre_exit_handler>(0);

@@ -22,7 +22,6 @@
 
 #if STLAB_TASK_SYSTEM(PORTABLE)
 #include "detail/waiter_state.hpp"
-#include <memory>
 #include <stlab/concurrency/set_current_thread_name.hpp>
 #endif
 
@@ -85,6 +84,7 @@ constexpr auto executor_priority_index(executor_priority priority) -> std::size_
 class task_shard {
     using task_t = task<void() noexcept>;
 
+    // Protects _tasks; queue insertion/removal requires compound deque operations.
     std::mutex _mutex;
     std::deque<task_t> _tasks;
 
@@ -370,6 +370,7 @@ class windows_executor_lifecycle {
     static constexpr std::size_t count_mask = draining - 1;
 
     std::atomic<std::size_t> _state{0};
+    // Serializes the final _state decrement with _ready's wait to prevent lost wakeups.
     std::mutex _mutex;
     std::condition_variable _ready;
     std::array<core_executor_cleanup, 3> _cleanup{};
@@ -591,52 +592,9 @@ void submit_executor_task(executor_priority priority, task_relocation r) {
 
 #elif STLAB_TASK_SYSTEM(PORTABLE)
 
-/// Owns the process-shared portable task system.
-class priority_task_system {
-    struct implementation;
-    std::unique_ptr<implementation> _impl;
-    std::atomic<bool> _closed{false};
-
-public:
-    /// Constructs the portable task system and starts its initial workers.
-    priority_task_system();
-
-    /// Disables copying of the portable task system.
-    priority_task_system(const priority_task_system&) = delete;
-
-    /// Disables assignment of the portable task system.
-    auto operator=(const priority_task_system&) -> priority_task_system& = delete;
-
-    /// Disables moving of the portable task system.
-    priority_task_system(priority_task_system&&) = delete;
-
-    /// Disables move-assignment of the portable task system.
-    auto operator=(priority_task_system&&) -> priority_task_system& = delete;
-
-    /// Destroys the portable task system.
-    ~priority_task_system();
-
-    /// Submits one task to the shared portable executor state.
-    ///
-    /// - Precondition: `r.vtable` and `r.invoke` are not `nullptr`.
-    /// - Postcondition: exactly one execution of the relocated target is scheduled.
-    void submit(executor_priority priority, task_relocation r);
-
-    /// Wakes one waiting worker if one is available.
-    auto wake() -> bool;
-
-    /// Adds one expansion worker when the pool may otherwise stall.
-    void add_thread();
-
-    /// Joins all worker threads after shared executor shutdown begins.
-    void join();
-
-    /// Diagnoses access after portable executor workers have been joined.
-    void check_open() const noexcept;
-};
-
 /// Coordinates one portable executor worker's sleep, wake, and shutdown state.
 class waiter {
+    // Protects _state transitions and coordinates _ready's sleep/wake predicate.
     std::mutex _mutex;
     std::condition_variable _ready;
     waiter_state _state;
@@ -676,10 +634,11 @@ public:
 };
 
 /// Implements the portable priority task system's worker pool.
-struct priority_task_system::implementation {
+struct priority_task_system_implementation {
     const unsigned _worker_count{executor_shard_count()};
     const unsigned _thread_limit{std::max(9U, portable_hardware_concurrency() * 4 + 1)};
 
+    // Protects _pending, _threads, and _joining; coordinates the _idle drain predicate.
     std::mutex _mutex;
     std::condition_variable _idle;
     std::size_t _pending{0};
@@ -688,7 +647,7 @@ struct priority_task_system::implementation {
     bool _joining{false};
 
     /// Starts the initial portable executor workers.
-    implementation() {
+    priority_task_system_implementation() {
         _threads.reserve(_thread_limit);
         for (unsigned i = 0; i != _worker_count; ++i)
             add_thread_unlocked(i);
@@ -780,26 +739,69 @@ private:
     }
 };
 
+/// Owns the process-shared portable task system with directly embedded worker state.
+class priority_task_system {
+    priority_task_system_implementation _impl;
+    std::atomic<bool> _closed{false};
+
+public:
+    /// Constructs the portable task system and starts its initial workers.
+    priority_task_system();
+
+    /// Disables copying of the portable task system.
+    priority_task_system(const priority_task_system&) = delete;
+
+    /// Disables assignment of the portable task system.
+    auto operator=(const priority_task_system&) -> priority_task_system& = delete;
+
+    /// Disables moving of the portable task system.
+    priority_task_system(priority_task_system&&) = delete;
+
+    /// Disables move-assignment of the portable task system.
+    auto operator=(priority_task_system&&) -> priority_task_system& = delete;
+
+    /// Destroys the portable task system.
+    ~priority_task_system();
+
+    /// Submits one task to the shared portable executor state.
+    ///
+    /// - Precondition: `r.vtable` and `r.invoke` are not `nullptr`.
+    /// - Postcondition: exactly one execution of the relocated target is scheduled.
+    void submit(executor_priority priority, task_relocation r);
+
+    /// Wakes one waiting worker if one is available.
+    auto wake() -> bool;
+
+    /// Adds one expansion worker when the pool may otherwise stall.
+    void add_thread();
+
+    /// Joins all worker threads after shared executor shutdown begins.
+    void join();
+
+    /// Diagnoses access after portable executor workers have been joined.
+    void check_open() const noexcept;
+};
+
 /// Constructs the portable priority task system.
-priority_task_system::priority_task_system() : _impl(std::make_unique<implementation>()) {}
+priority_task_system::priority_task_system() = default;
 
 /// Destroys the portable priority task system.
 priority_task_system::~priority_task_system() = default;
 
 /// Submits a task to the portable priority task system.
 void priority_task_system::submit(executor_priority priority, task_relocation r) {
-    _impl->submit(priority, r);
+    _impl.submit(priority, r);
 }
 
 /// Attempts to wake one portable executor worker.
-auto priority_task_system::wake() -> bool { return _impl->wake(); }
+auto priority_task_system::wake() -> bool { return _impl.wake(); }
 
 /// Adds an expansion worker to the portable task system.
-void priority_task_system::add_thread() { _impl->add_thread(); }
+void priority_task_system::add_thread() { _impl.add_thread(); }
 
 /// Signals and joins all portable executor workers.
 void priority_task_system::join() {
-    _impl->join();
+    _impl.join();
     _closed.store(true, std::memory_order_release);
 }
 

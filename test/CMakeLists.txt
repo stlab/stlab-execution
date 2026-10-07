@@ -127,6 +127,11 @@ if(NOT STLAB_MAIN_EXECUTOR STREQUAL "none")
   endforeach()
 endif()
 
+if((STLAB_MAIN_EXECUTOR STREQUAL "qt5" OR STLAB_MAIN_EXECUTOR STREQUAL "qt6")
+   AND NOT STLAB_EXECUTION_SHARED)
+  execution_process_test(execution.test.qt_receiver_allocation 10 qt_receiver_allocation_test.cpp)
+endif()
+
 execution_test_target(execution.test.task_abi_mismatch task_abi_mismatch_test.cpp)
 set_target_properties(execution.test.task_abi_mismatch PROPERTIES EXCLUDE_FROM_ALL TRUE)
 add_test(NAME execution.test.task_abi_mismatch_link
@@ -180,6 +185,14 @@ endforeach()
 if(STLAB_TASK_SYSTEM STREQUAL "libdispatch")
   execution_process_test(execution.test.libdispatch_group 10 libdispatch_group_test.cpp main.cpp)
   target_link_libraries(execution.test.libdispatch_group PRIVATE doctest::doctest)
+  if(NOT STLAB_EXECUTION_SHARED)
+    execution_process_test(execution.test.libdispatch_timer_preparation 10
+      libdispatch_timer_preparation_test.cpp)
+    target_compile_definitions(execution.test.libdispatch_timer_preparation PRIVATE NDEBUG)
+    add_test(NAME execution.test.libdispatch_timer_capture_destruction
+      COMMAND execution.test.libdispatch_timer_preparation capture_destruction)
+    set_tests_properties(execution.test.libdispatch_timer_capture_destruction PROPERTIES TIMEOUT 10)
+  endif()
 endif()
 
 if(WIN32 AND STLAB_EXECUTION_SHARED)
@@ -209,7 +222,7 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
   if(STLAB_TASK_SYSTEM STREQUAL "portable" AND NOT STLAB_EXECUTION_SHARED)
     execution_test_target(execution.test.portable_executor_regression
       portable_executor_regression_test.cpp)
-    set(portable_scenarios expansion_wake expansion_during_join hardware_zero
+    set(portable_scenarios expansion_wake expansion_during_join hardware_zero construction_allocations
         descendant_wait descendant_capture_wait queue_submission main_queue_submission
         queue_enqueue_noallocation main_queue_enqueue_noallocation timer_enqueue_noallocation
         queue_noallocation main_queue_noallocation)

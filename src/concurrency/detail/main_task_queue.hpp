@@ -25,6 +25,7 @@ namespace execution_detail {
 class main_task_queue {
     using task_t = task<void() noexcept>;
 
+    // Protects _tasks and coordinates the _ready wait predicate; deque operations are compound.
     std::mutex _mutex;
     std::condition_variable _ready;
     std::deque<task_t> _tasks;

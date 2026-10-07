@@ -39,26 +39,24 @@ struct event_receiver : QObject {
     auto event(QEvent* event) -> bool override;
 };
 
-/// Posted Qt event that owns one main-executor task and the receiver that runs it.
+/// Posted Qt event that owns one main-executor task and embeds the receiver that runs it.
 class executor_event : public QEvent {
     main_task_t _task;
-    std::unique_ptr<event_receiver> _receiver;
+    event_receiver _receiver;
 
 public:
     /// Constructs an event owning `task`, with a receiver living on the application thread.
     ///
     /// - Precondition: a `QCoreApplication` instance exists.
-    explicit executor_event(main_task_t task) :
-        QEvent(QEvent::User), _task(std::move(task)),
-        _receiver(std::make_unique<event_receiver>()) {
-        _receiver->moveToThread(QCoreApplication::instance()->thread());
+    explicit executor_event(main_task_t task) : QEvent(QEvent::User), _task(std::move(task)) {
+        _receiver.moveToThread(QCoreApplication::instance()->thread());
     }
 
     /// Invokes the owned task.
     void execute() noexcept { _task(); }
 
     /// Returns the object the event must be posted to.
-    [[nodiscard]] auto receiver() const -> QObject* { return _receiver.get(); }
+    [[nodiscard]] auto receiver() -> QObject* { return &_receiver; }
 };
 
 auto event_receiver::event(QEvent* event) -> bool {

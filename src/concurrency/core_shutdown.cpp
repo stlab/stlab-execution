@@ -32,6 +32,7 @@ struct core_shutdown_state {
     std::once_flag registration;
     std::atomic<bool> registered{false};
     std::atomic<bool> closed{false};
+    // Protects executors/count and serializes executor registration with shutdown closure.
     std::mutex mutex;
     std::array<core_executor_cleanup, 3> executors{};
     std::size_t count = 0;

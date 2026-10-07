@@ -57,6 +57,7 @@ void wait_for_all_submissions(Submit&& submit, std::size_t count) {
     std::vector<counted_task_context> contexts(count);
     std::atomic<int> remaining{static_cast<int>(count)};
     std::condition_variable ready;
+    // Coordinates remaining/ready and excludes callback access after the wait completes.
     std::mutex mutex;
 
     for (std::size_t i = 0; i < count; ++i) {
@@ -108,6 +109,7 @@ TEST_CASE("abi_executor_submit_drains_concurrent_contention_without_dropping_tas
     std::vector<counted_task_context> contexts(executions.size());
     std::atomic<int> remaining{static_cast<int>(contexts.size())};
     std::condition_variable ready;
+    // Coordinates remaining/ready and excludes callback access after the wait completes.
     std::mutex mutex;
 
     for (std::size_t i = 0; i < contexts.size(); ++i) {
@@ -163,6 +165,7 @@ TEST_CASE("abi callback does not publish completion before acquiring the final-a
     std::atomic<int> count{0};
     std::atomic<int> remaining{1};
     std::condition_variable ready;
+    // Gates completion publication and the callback's final access to remaining/ready.
     std::mutex mutex;
     counted_task_context context{&count, &remaining, &ready, &mutex};
     std::unique_lock lock(mutex);

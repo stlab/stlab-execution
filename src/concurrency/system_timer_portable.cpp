@@ -48,6 +48,7 @@ class portable_timers {
         }
     };
 
+    // Protects _pending, _closed, and worker startup; coordinates the _ready wait predicate.
     std::mutex _mutex;
     std::condition_variable _ready;
     std::vector<record> _pending;
