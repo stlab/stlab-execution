@@ -203,7 +203,8 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
     execution_test_target(execution.test.portable_executor_regression
       portable_executor_regression_test.cpp)
     foreach(scenario IN ITEMS expansion_wake expansion_during_join hardware_zero
-        descendant_wait descendant_capture_wait queue_reentry main_queue_reentry
+        descendant_wait descendant_capture_wait queue_submission main_queue_submission
+        queue_enqueue_noallocation main_queue_enqueue_noallocation timer_enqueue_noallocation
         queue_noallocation main_queue_noallocation)
       add_test(NAME execution.test.portable_executor_${scenario}
         COMMAND execution.test.portable_executor_regression ${scenario})
@@ -228,7 +229,7 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
       COMMAND execution.test.pre_exit_callback ${scenario})
     set_tests_properties(execution.test.pre_exit_callback_${scenario} PROPERTIES TIMEOUT 10)
   endforeach()
-  set(timer_scenarios lifecycle shutdown_first executor_shutdown application_shutdown reentry)
+  set(timer_scenarios lifecycle shutdown_first executor_shutdown application_shutdown submission)
   if(WIN32 AND NOT STLAB_EXECUTION_SHARED AND NOT STLAB_SANITIZER STREQUAL "address")
     list(APPEND timer_scenarios resource_failure)
   endif()

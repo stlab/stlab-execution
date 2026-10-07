@@ -20,9 +20,14 @@
  * require main-queue progress. The shared core handler does not close or drain the main queue.
  * On threadless Emscripten, timer cancellation finishes during `pre_exit()`, but executor
  * retirement and remaining handlers finish asynchronously before the next ordinary main task. On
- * native platforms `pre_exit()` must not be called from a timer callback. Client modules supplying
+ * native platforms timer callbacks and their executed-target cleanup must not call `pre_exit()`;
+ * violations assert and terminate. Client modules supplying
  * task operations must remain loaded until their accepted tasks have completed or have been
  * canceled and destroyed.
+ *
+ * Queued targets must meet the lifecycle requirement in `task.hpp`: construction and
+ * moved-from destruction must not submit work. Timer callbacks and executed-target cleanup may
+ * submit additional work while admission remains open.
  */
 
 #include <stlab/concurrency/task.hpp>
@@ -62,6 +67,8 @@ using stlab_v2_task_proc = void (*)(void*) noexcept;
 ///
 /// - Precondition: the task ABI guard and relocation operations describe the live task at `source`;
 ///   `delay_ns` is nonnegative, and `pre_exit()` has not closed timer admission.
+/// - Precondition: the target meets the queued-target lifecycle requirement in `task.hpp`;
+///   on threaded task systems, its callback and executed-target cleanup do not call `pre_exit()`.
 /// - Postcondition: success relocates the target exactly once; failure leaves `source` unconsumed.
 ///   Accepted targets are invoked once or canceled, and destroyed once.
 extern "C" stlab_v2_timer_status stlab_v2_system_timer_submit(const unsigned char* task_abi_guard,
@@ -220,6 +227,9 @@ struct system_timer_type {
 } // namespace execution_detail
 
 /// Schedules move-only `void() noexcept` tasks through the process-shared timer service.
+/// - Precondition: targets meet the queued-target lifecycle requirement in `task.hpp`.
+/// - Precondition: on threaded task systems, callbacks and executed-target cleanup do not call
+///   `pre_exit()`.
 inline constexpr auto system_timer = execution_detail::system_timer_type{};
 
 /** @} */

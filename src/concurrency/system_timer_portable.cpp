@@ -16,7 +16,6 @@
 #include <algorithm>
 #include <chrono>
 #include <condition_variable>
-#include <memory>
 #include <mutex>
 #include <new>
 #include <optional>
@@ -44,15 +43,14 @@ class portable_timers {
     /// Orders the timer heap by its next wake.
     struct later {
         /// Returns whether `a` should wake after `b`.
-        auto operator()(const std::unique_ptr<record>& a,
-                        const std::unique_ptr<record>& b) const noexcept -> bool {
-            return a->wake > b->wake;
+        auto operator()(const record& a, const record& b) const noexcept -> bool {
+            return a.wake > b.wake;
         }
     };
 
     std::mutex _mutex;
     std::condition_variable _ready;
-    std::vector<std::unique_ptr<record>> _pending;
+    std::vector<record> _pending;
     std::thread _worker;
     bool _closed = false;
 
@@ -66,25 +64,23 @@ class portable_timers {
                 _ready.wait(lock);
                 continue;
             }
-            const auto wake = _pending.front()->wake;
+            const auto wake = _pending.front().wake;
             if (std::chrono::steady_clock::now() < wake) {
                 _ready.wait_until(lock, wake);
                 continue; // An insertion may have changed the earliest deadline.
             }
             std::pop_heap(_pending.begin(), _pending.end(), later{});
-            if (_pending.back()->delay.remaining() != 0) {
-                _pending.back()->wake = _pending.back()->delay.next_wake();
+            auto& next = _pending.back();
+            if (next.delay.remaining() != 0) {
+                next.wake = next.delay.next_wake();
                 std::push_heap(_pending.begin(), _pending.end(), later{});
                 continue;
             }
-            auto next = std::move(_pending.back());
+            auto target = std::move(*next.target);
             _pending.pop_back();
             lock.unlock();
-            auto target = std::move(*next->target);
-            next->target.reset();
             target();
             target = nullptr; // Destruction is part of the committed callback.
-            next.reset();
             lock.lock();
         }
     }
@@ -95,12 +91,11 @@ public:
                 stlab_v2_task_proc invoke,
                 void* source,
                 std::int64_t delay_ns) {
-        auto entry = std::make_unique<record>(delay_ns);
         std::unique_lock<std::mutex> lock(_mutex);
         execution_detail::check_timer_open(_closed);
         if (!_worker.joinable()) _worker = std::thread([this] { run(); });
-        _pending.push_back(std::move(entry));
-        _pending.back()->target.emplace(vtable, invoke, source);
+        _pending.emplace_back(delay_ns);
+        _pending.back().target.emplace(vtable, invoke, source);
         std::push_heap(_pending.begin(), _pending.end(), later{});
         lock.unlock();
         _ready.notify_one();
@@ -111,7 +106,7 @@ public:
     /// - Precondition: not called by this timer worker.
     /// - Complexity: linear in the number of pending timers.
     void close() noexcept {
-        std::vector<std::unique_ptr<record>> canceled;
+        std::vector<record> canceled;
         {
             std::scoped_lock lock(_mutex);
             _closed = true;

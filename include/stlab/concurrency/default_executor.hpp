@@ -25,6 +25,11 @@
  *  main tasks. Submission closes after the last executor target and its captures are destroyed.
  *  A subsequent ordinary main task is the shutdown-completion fence.
  *
+ *  Queued targets must meet the lifecycle requirement in `task.hpp`: construction and
+ *  moved-from destruction must not submit work. Task bodies and executed-target cleanup may
+ *  submit additional work. On threaded task systems, neither may call `pre_exit()` because
+ *  core retirement waits for their completion; violations assert and terminate.
+ *
  *  @note Call `pre_exit()` before normal process exit when using these executors so detached tasks
  *  do not overlap teardown of globals or other exit handlers (the implementation registers a
  *  pre-exit hook). `std::quick_exit()` is an alternative when it fits your program.
@@ -47,6 +52,9 @@ inline namespace v2 {
 /** @defgroup stlab_concurrency_executor_abi executor_abi
  *  @ingroup stlab_concurrency_default_executor
  *  @brief ABI-stable task submission entry points for the shared executor core.
+ *  @details Submitted targets must meet the queued-target lifecycle requirement in `task.hpp`.
+ *  On threaded task systems, default/high/low executor tasks and their executed-target cleanup
+ *  must not call `pre_exit()`.
  *  @{
  */
 
@@ -153,6 +161,10 @@ template <executor_priority P = executor_priority::medium>
 struct executor_type {
     using result_type = void;
 
+    /// Schedules `f` on the selected priority queue.
+    /// - Precondition: `f` meets the queued-target lifecycle requirement in `task.hpp`.
+    /// - Precondition: on threaded task systems, the task and its executed-target cleanup do
+    ///   not call `pre_exit()`.
     template <class F>
     auto operator()(F&& f) const -> std::enable_if_t<std::is_nothrow_invocable_v<std::decay_t<F>>> {
         task<void() noexcept> t{std::forward<F>(f)};

@@ -23,6 +23,11 @@
  *  Mutable `operator()` allows moving arguments through for one invocation. Small targets with
  *  non-throwing move construction may use small-buffer optimization; other targets are
  *  heap-allocated so task relocation remains non-throwing.
+ *
+ *  Queued-target requirement: callable construction (including copy/move construction) and
+ *  destruction of moved-from callables must not submit work to executors or timers. These
+ *  operations may run while a queue is locked. Submission from the task body and destruction
+ *  of its executed target is supported.
  */
 
 /**************************************************************************************************/

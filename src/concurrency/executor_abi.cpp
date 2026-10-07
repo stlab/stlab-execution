@@ -38,9 +38,7 @@
 #include <cstdint>
 #include <deque>
 #include <exception>
-#include <memory>
 #include <mutex>
-#include <optional>
 #include <thread>
 #include <utility>
 #include <vector>
@@ -86,38 +84,31 @@ constexpr auto executor_priority_index(executor_priority priority) -> std::size_
 /// Synchronizes access to a FIFO shard of executor tasks.
 class task_shard {
     using task_t = task<void() noexcept>;
-    using entry_t = std::optional<task_t>;
 
     std::mutex _mutex;
-    std::deque<std::unique_ptr<entry_t>> _tasks;
+    std::deque<task_t> _tasks;
 
 public:
     /// Attempts to remove and return the oldest task without blocking.
     ///
     /// - Postcondition: returns an empty task if the shard is locked or empty.
     auto try_pop() -> task_t {
-        std::unique_ptr<entry_t> extracted;
-        {
-            std::unique_lock<std::mutex> lock{_mutex, std::try_to_lock};
-            if (!lock || _tasks.empty()) return nullptr;
-            extracted = std::move(_tasks.front());
-            _tasks.pop_front();
-        }
-        return std::move(**extracted);
+        std::unique_lock<std::mutex> lock{_mutex, std::try_to_lock};
+        if (!lock || _tasks.empty()) return nullptr;
+        auto result = std::move(_tasks.front());
+        _tasks.pop_front();
+        return result;
     }
 
     /// Removes and returns the oldest task, waiting only for the shard lock.
     ///
     /// - Postcondition: returns an empty task if the shard is empty.
     auto pop() -> task_t {
-        std::unique_ptr<entry_t> extracted;
-        {
-            std::unique_lock<std::mutex> lock{_mutex};
-            if (_tasks.empty()) return nullptr;
-            extracted = std::move(_tasks.front());
-            _tasks.pop_front();
-        }
-        return std::move(**extracted);
+        std::unique_lock<std::mutex> lock{_mutex};
+        if (_tasks.empty()) return nullptr;
+        auto result = std::move(_tasks.front());
+        _tasks.pop_front();
+        return result;
     }
 
     /// Attempts to append a task without blocking.
@@ -127,18 +118,14 @@ public:
         std::unique_lock<std::mutex> lock{_mutex, std::try_to_lock};
         if (!lock) return false;
 
-        auto entry = std::make_unique<entry_t>();
-        _tasks.push_back(std::move(entry));
-        _tasks.back()->emplace(r.vtable, r.invoke, r.source);
+        _tasks.emplace_back(r.vtable, r.invoke, r.source);
         return true;
     }
 
     /// Appends a task, waiting until the shard is available.
     void push(task_relocation r) {
         std::unique_lock<std::mutex> lock{_mutex};
-        auto entry = std::make_unique<entry_t>();
-        _tasks.push_back(std::move(entry));
-        _tasks.back()->emplace(r.vtable, r.invoke, r.source);
+        _tasks.emplace_back(r.vtable, r.invoke, r.source);
     }
 };
 

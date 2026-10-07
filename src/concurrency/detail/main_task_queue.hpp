@@ -13,9 +13,7 @@
 #include <cassert>
 #include <condition_variable>
 #include <deque>
-#include <memory>
 #include <mutex>
-#include <optional>
 #include <utility>
 
 namespace stlab {
@@ -26,11 +24,10 @@ namespace execution_detail {
 /// queue.
 class main_task_queue {
     using task_t = task<void() noexcept>;
-    using entry_t = std::optional<task_t>;
 
     std::mutex _mutex;
     std::condition_variable _ready;
-    std::deque<std::unique_ptr<entry_t>> _tasks;
+    std::deque<task_t> _tasks;
 
 public:
     /// Appends the task relocated from `source`.
@@ -39,9 +36,7 @@ public:
     ///   `vtable`/`invoke`.
     void push(const task_t::concept_t* vtable, task_t::invoke_t invoke, void* source) {
         std::unique_lock<std::mutex> lock{_mutex};
-        auto entry = std::make_unique<entry_t>();
-        _tasks.push_back(std::move(entry));
-        _tasks.back()->emplace(vtable, invoke, source);
+        _tasks.emplace_back(vtable, invoke, source);
         lock.unlock();
         _ready.notify_one();
     }
@@ -50,26 +45,20 @@ public:
     ///
     /// - Precondition: the queue is not empty.
     auto pop() -> task_t {
-        std::unique_ptr<entry_t> extracted;
-        {
-            std::lock_guard<std::mutex> lock{_mutex};
-            assert(!_tasks.empty() && "main executor wake without a queued task.");
-            extracted = std::move(_tasks.front());
-            _tasks.pop_front();
-        }
-        return std::move(**extracted);
+        std::lock_guard<std::mutex> lock{_mutex};
+        assert(!_tasks.empty() && "main executor wake without a queued task.");
+        auto result = std::move(_tasks.front());
+        _tasks.pop_front();
+        return result;
     }
 
     /// Waits until a task is available, then removes and returns the oldest task.
     auto wait_pop() -> task_t {
-        std::unique_ptr<entry_t> extracted;
-        {
-            std::unique_lock<std::mutex> lock{_mutex};
-            _ready.wait(lock, [&] { return !_tasks.empty(); });
-            extracted = std::move(_tasks.front());
-            _tasks.pop_front();
-        }
-        return std::move(**extracted);
+        std::unique_lock<std::mutex> lock{_mutex};
+        _ready.wait(lock, [&] { return !_tasks.empty(); });
+        auto result = std::move(_tasks.front());
+        _tasks.pop_front();
+        return result;
     }
 };
 

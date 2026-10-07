@@ -9,6 +9,7 @@
 #include "../src/concurrency/detail/waiter_state.hpp"
 #include <stlab/concurrency/default_executor.hpp>
 #include <stlab/concurrency/set_current_thread_name.hpp>
+#include <stlab/concurrency/system_timer.hpp>
 #include <stlab/pre_exit.hpp>
 
 #include <algorithm>
@@ -28,7 +29,6 @@
 #include <memory>
 #include <mutex>
 #include <new>
-#include <optional>
 #include <string>
 #include <thread>
 #include <utility>
@@ -238,54 +238,104 @@ void hardware_zero() {
     stlab::pre_exit();
 }
 
-struct destructor_submission {
-    bool* armed;
-    bool* submitted;
-    void* queue;
-    void (*submit)(void*);
-
-    void operator()() const noexcept {}
-    ~destructor_submission() {
-        if (*armed && !std::exchange(*submitted, true)) submit(queue);
+template <class Queue, class Submit>
+void executed_target_submission(Queue& queue, Submit submit) {
+    int body_result = 0;
+    int cleanup_result = 0;
+    auto cleanup = [&](int* pointer) noexcept {
+        delete pointer;
+        stlab::task<void() noexcept> child{[&]() noexcept { cleanup_result = 97; }};
+        submit(child);
+    };
+    stlab::task<void() noexcept> source{
+        [owned = std::unique_ptr<int, decltype(cleanup)>(new int, cleanup), &submit,
+         &body_result]() noexcept {
+            stlab::task<void() noexcept> child{[&]() noexcept { body_result = 137; }};
+            submit(child);
+        }};
+    submit(source);
+    auto target = queue.pop();
+    target();
+    target = nullptr;
+    for (int i = 0; i != 2; ++i) {
+        auto child = queue.pop();
+        if (!child) fail("executed task did not submit its child");
+        child();
     }
-};
+    if (body_result != 137 || cleanup_result != 97)
+        fail("task body or executed-target cleanup could not submit work");
+}
 
-void queue_reentry(bool main_queue) {
-    for (bool waiting_pop : {false, true}) {
-        bool armed = false;
-        bool submitted = false;
-        if (main_queue) {
-            stlab::execution_detail::main_task_queue queue;
-            stlab::task<void() noexcept> source{destructor_submission{
-                &armed, &submitted, &queue, [](void* value) {
-                    stlab::task<void() noexcept> child{[]() noexcept {}};
-                    static_cast<stlab::execution_detail::main_task_queue*>(value)->push(
-                        child.relocation_concept(), child.relocation_invoke(),
-                        child.relocation_source());
-                }}};
+void queue_submission(bool main_queue) {
+    if (main_queue) {
+        stlab::execution_detail::main_task_queue queue;
+        executed_target_submission(queue, [&](auto& source) {
             queue.push(source.relocation_concept(), source.relocation_invoke(),
                        source.relocation_source());
-            armed = true;
-            auto task = waiting_pop ? queue.wait_pop() : queue.pop();
-            if (!submitted) fail("main queue did not destroy the consumed source");
-            (void)queue.pop();
-        } else {
-            stlab::execution_detail::task_shard queue;
-            stlab::task<void() noexcept> source{destructor_submission{
-                &armed, &submitted, &queue, [](void* value) {
-                    stlab::task<void() noexcept> child{[]() noexcept {}};
-                    static_cast<stlab::execution_detail::task_shard*>(value)->push(
-                        {child.relocation_concept(), child.relocation_invoke(),
-                         child.relocation_source()});
-                }}};
+        });
+    } else {
+        stlab::execution_detail::task_shard queue;
+        executed_target_submission(queue, [&](auto& source) {
             queue.push({source.relocation_concept(), source.relocation_invoke(),
                         source.relocation_source()});
-            armed = true;
-            auto task = waiting_pop ? queue.pop() : queue.try_pop();
-            if (!submitted) fail("executor queue did not destroy the consumed source");
-            (void)queue.pop();
-        }
+        });
     }
+    stlab::pre_exit();
+}
+
+template <class Queue, class Submit>
+void warmed_enqueue_noallocation(Queue& queue, Submit submit) {
+    for (int i = 0; i != 32; ++i) {
+        stlab::task<void() noexcept> source{[]() noexcept {}};
+        submit(source);
+        (void)queue.pop();
+    }
+    int result = 0;
+    stlab::task<void() noexcept> source{[&]() noexcept { result = 137; }};
+    const auto before = allocation_test::count.load();
+    submit(source);
+    if (allocation_test::count.load() != before)
+        fail("warmed queue allocated a separate task entry");
+    auto target = queue.pop();
+    if (!target) fail("warmed queue did not retain its submitted task");
+    target();
+    if (result != 137) fail("warmed queue did not execute its submitted task");
+}
+
+void queue_enqueue_noallocation(bool main_queue) {
+    if (main_queue) {
+        stlab::execution_detail::main_task_queue queue;
+        warmed_enqueue_noallocation(queue, [&](auto& source) {
+            queue.push(source.relocation_concept(), source.relocation_invoke(),
+                       source.relocation_source());
+        });
+    } else {
+        stlab::execution_detail::task_shard queue;
+        warmed_enqueue_noallocation(queue, [&](auto& source) {
+            queue.push({source.relocation_concept(), source.relocation_invoke(),
+                        source.relocation_source()});
+        });
+    }
+    stlab::pre_exit();
+}
+
+void timer_enqueue_noallocation() {
+    std::promise<void> release;
+    auto released = release.get_future().share();
+    std::promise<void> started;
+    auto ready = started.get_future();
+    stlab::system_timer(0ns, [&]() noexcept {
+        started.set_value();
+        released.wait();
+    });
+    if (ready.wait_for(5s) != std::future_status::ready) fail("timer worker did not start");
+    for (int i = 0; i != 17; ++i)
+        stlab::system_timer(1h, []() noexcept {});
+    const auto before = allocation_test::count.load();
+    stlab::system_timer(1h, []() noexcept {});
+    if (allocation_test::count.load() != before)
+        fail("warmed timer heap allocated a separate timer record");
+    release.set_value();
     stlab::pre_exit();
 }
 
@@ -333,10 +383,16 @@ int main(int argc, char** argv) {
         descendant_wait(false);
     else if (scenario == "descendant_capture_wait")
         descendant_wait(true);
-    else if (scenario == "queue_reentry")
-        queue_reentry(false);
-    else if (scenario == "main_queue_reentry")
-        queue_reentry(true);
+    else if (scenario == "queue_submission")
+        queue_submission(false);
+    else if (scenario == "main_queue_submission")
+        queue_submission(true);
+    else if (scenario == "queue_enqueue_noallocation")
+        queue_enqueue_noallocation(false);
+    else if (scenario == "main_queue_enqueue_noallocation")
+        queue_enqueue_noallocation(true);
+    else if (scenario == "timer_enqueue_noallocation")
+        timer_enqueue_noallocation();
     else if (scenario == "queue_noallocation")
         queue_noallocation(false);
     else if (scenario == "main_queue_noallocation")

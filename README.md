@@ -10,6 +10,19 @@ development commits are available on public review branches; cpp-library is pinn
 to its 5.5.0 release. Hosted CI results remain separate from local validation.
 Release publication still follows the order below.
 
+## Queued task requirements
+
+For targets submitted to the default/high/low executors, main executor, or system
+timer, callable construction (including copy/move construction) and destruction
+of moved-from callables must not submit additional work. Queues may perform these
+operations while locked. Submission from task bodies and executed-target cleanup
+remains supported.
+
+On threaded task systems, default/high/low executor tasks and timer callbacks,
+including their executed-target cleanup, must not call `pre_exit()`: shutdown
+waits for their completion. Main-queue tasks may initiate shutdown. Threadless
+Emscripten retains asynchronous shutdown behavior.
+
 ## External dependencies
 
 Search for `[DEPENDENCY]` in source comments and this README to find dependency

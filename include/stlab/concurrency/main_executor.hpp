@@ -14,11 +14,10 @@
  *
  *  @details
  *  Tasks submitted to `main_executor` normally run in submission order on the main queue selected
- *  by `STLAB_MAIN_EXECUTOR` when `stlab-execution` is configured: the libdispatch main queue, the Qt
- *  application event loop, the Emscripten main runtime thread, or (opt-in) a portable
- *  stlab-owned queue. On native platforms, `main_executor_run()` services the main queue on the
- *  calling thread and never returns, like `dispatch_main()`. The main queue remains available
- *  after `pre_exit()`.
+ *  by `STLAB_MAIN_EXECUTOR` when `stlab-execution` is configured: the libdispatch main queue, the
+ * Qt application event loop, the Emscripten main runtime thread, or (opt-in) a portable stlab-owned
+ * queue. On native platforms, `main_executor_run()` services the main queue on the calling thread
+ * and never returns, like `dispatch_main()`. The main queue remains available after `pre_exit()`.
  *  A shutdown task can call `pre_exit()` to retire timer/default-executor producers, then post
  *  another main task that calls `std::exit()`. That exit task follows main work submitted by the
  *  retired producers, but does not drain work that earlier main tasks subsequently enqueue.
@@ -39,6 +38,10 @@
  *
  *  Windows has no process main queue (each UI thread owns its message queue), so no main executor
  *  is provided there unless `STLAB_MAIN_EXECUTOR` selects Qt or `portable`.
+ *
+ *  Queued targets must meet the lifecycle requirement in `task.hpp`: construction and
+ *  moved-from destruction must not submit work. Task bodies and executed-target cleanup may
+ *  submit additional work.
  */
 
 #include <stlab/execution/config.hpp>
@@ -69,6 +72,7 @@ inline namespace v2 {
 /// - Precondition: `vtable` and `invoke` are not `nullptr`.
 /// - Precondition: `source` is the `relocation_source()` of a live `task<void() noexcept>` sharing
 ///   `vtable`/`invoke`, valid for the duration of this call.
+/// - Precondition: the target meets the queued-target lifecycle requirement in `task.hpp`.
 /// - Postcondition: exactly one invocation of the relocated target is scheduled on the main queue,
 ///   normally after every task previously submitted from the calling thread. Cooperative
 ///   retirement stages ordinary main submissions behind main work posted by draining producers.
@@ -116,6 +120,7 @@ struct main_executor_type {
     using result_type = void;
 
     /// Schedules `f` in main-queue order, subject to the cooperative shutdown barrier.
+    /// - Precondition: `f` meets the queued-target lifecycle requirement in `task.hpp`.
     template <class F>
     auto operator()(F&& f) const -> std::enable_if_t<std::is_nothrow_invocable_v<std::decay_t<F>>> {
         task<void() noexcept> t{std::forward<F>(f)};
