@@ -47,7 +47,7 @@ set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fwasm-exceptions" )
 #
 # `-sSUPPORT_LONGJMP=wasm`
 # Enables experimental support for LONGJMP in functions which may throw exceptions.
-# Without this, Boost doesn't compile (LLVM errors out).
+# Retained from STLab's toolchain; removing this compatibility flag requires separate validation.
 #
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -sSUPPORT_LONGJMP=wasm" )
 
@@ -111,11 +111,9 @@ endif()
 # [DEPENDENCY] https://github.com/nodejs/node/releases
 set( STLAB_WASM_NODE_JS_MIN_VERSION "18.3.0" )
 
-# set( NODE_JS_FLAGS "--experimental-wasm-threads;--experimental-wasm-eh" )
-
 #
 # Check if NODE_JS_EXECUTABLE (found by find_program() in Emscripten.cmake) is recent enough for STLab.
-# Set CMAKE_CROSSCOMPILING_EMULATOR to a sufficiently recent node + required experimental flags.
+# Set CMAKE_CROSSCOMPILING_EMULATOR to the selected node and caller-supplied NODE_JS_FLAGS.
 #
 if ( NOT NODE_JS_EXECUTABLE )
     message( FATAL_ERROR "stlab:wasm: Unable to find node. Please install ${STLAB_WASM_NODE_JS_MIN_VERSION} or newer." )
@@ -135,13 +133,9 @@ set( CMAKE_CROSSCOMPILING_EMULATOR "${NODE_JS_EXECUTABLE};${NODE_JS_FLAGS}" )
 #
 # Emscripten supports dynamic linking, but doing so introduces some complexity:
 # https://emscripten.org/docs/compiling/Dynamic-Linking.html
-# We presently have no need to dynamically link WASM modules, so we instruct
-# boost to link statically.
-#
-# It would be nice if Boost respected (BUILD_SHARED_LIBS OFF), but it does not.
+# Execution uses a static WASM library rather than dynamically linked WASM modules.
 #
 set( BUILD_SHARED_LIBS OFF )
-set( Boost_USE_STATIC_LIBS ON )
 
 #
 # Print the emcc version information, if relevant.
