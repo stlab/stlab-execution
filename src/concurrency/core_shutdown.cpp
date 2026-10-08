@@ -115,10 +115,14 @@ void register_core_shutdown() {
 }
 
 void register_core_executor_cleanup(core_executor_cleanup cleanup) {
+    if (!cleanup) {
+        assert(false && "invalid or excess core executor cleanup registrations");
+        std::terminate();
+    }
     auto& value = state();
     std::scoped_lock lock(value.mutex);
     check_open(value);
-    if (!cleanup || value.count == value.executors.size()) {
+    if (value.count == value.executors.size()) {
         assert(false && "invalid or excess core executor cleanup registrations");
         std::terminate();
     }

@@ -63,6 +63,9 @@ inline unsigned reported_hardware = 2;
 inline std::atomic<unsigned> sleepers{0};
 inline std::function<void()> before_shutdown;
 inline thread_local unsigned thread_start_allocations = 0;
+class condition_variable;
+inline condition_variable* observed_idle = nullptr;
+inline std::function<void()> before_idle_notification;
 
 class thread {
     std::thread _thread;
@@ -89,6 +92,11 @@ public:
 
 class condition_variable : public std::condition_variable {
 public:
+    void notify_one() noexcept {
+        if (this == observed_idle && before_idle_notification) before_idle_notification();
+        std::condition_variable::notify_one();
+    }
+
     void wait(std::unique_lock<std::mutex>& lock) {
         sleepers.fetch_add(1, std::memory_order_release);
         std::condition_variable::wait(lock);
@@ -339,6 +347,96 @@ void queue_submission(bool main_queue) {
     stlab::pre_exit();
 }
 
+struct return_move_context {
+    int moves = 0;
+    bool returning = false;
+    bool invoked = false;
+    std::function<void()> on_return;
+};
+
+struct return_move_target {
+    return_move_context* context;
+
+    explicit return_move_target(return_move_context& value) : context(&value) {}
+    return_move_target(return_move_target&& other) noexcept : context(other.context) {
+        if (context->returning && ++context->moves == 2) context->on_return();
+    }
+    void operator()() noexcept { context->invoked = true; }
+};
+
+template <class Queue, class Submit, class Pop>
+void returned_target_submission(Queue& queue, Submit submit, Pop pop) {
+    return_move_context context;
+    context.on_return = [&] {
+        std::promise<void> submitted;
+        auto ready = submitted.get_future();
+        std::thread sender([&] {
+            stlab::task<void() noexcept> child{[]() noexcept {}};
+            submit(child);
+            submitted.set_value();
+        });
+        if (ready.wait_for(2s) != std::future_status::ready)
+            fail("return relocation holds the queue mutex");
+        sender.join();
+    };
+    stlab::task<void() noexcept> source{return_move_target{context}};
+    submit(source);
+    context.returning = true;
+    auto target = pop();
+    context.returning = false;
+    if (context.moves < 2) fail("return relocation regression requires disabled NRVO");
+    target();
+    if (!context.invoked) fail("returned target did not execute");
+    if (!queue.pop()) fail("return relocation did not submit its child");
+}
+
+void queue_return_relocation(const std::string& scenario) {
+    if (scenario == "main_queue_return_pop" || scenario == "main_queue_return_wait_pop") {
+        stlab::execution_detail::main_task_queue queue;
+        returned_target_submission(
+            queue,
+            [&](auto& source) {
+                queue.push(source.relocation_concept(), source.relocation_invoke(),
+                           source.relocation_source());
+            },
+            [&] { return scenario == "main_queue_return_pop" ? queue.pop() : queue.wait_pop(); });
+    } else {
+        stlab::execution_detail::task_shard queue;
+        returned_target_submission(
+            queue,
+            [&](auto& source) {
+                queue.push({source.relocation_concept(), source.relocation_invoke(),
+                            source.relocation_source()});
+            },
+            [&] { return scenario == "queue_return_pop" ? queue.pop() : queue.try_pop(); });
+    }
+    stlab::pre_exit();
+}
+
+void idle_notification() {
+    stlab::execution_detail::priority_task_system_implementation system;
+    portable_test_std::observed_idle = &system._idle;
+    portable_test_std::before_idle_notification = [&] {
+        std::promise<void> inspected;
+        auto ready = inspected.get_future();
+        std::thread inspector([&] {
+            std::scoped_lock lock(system._mutex);
+            inspected.set_value();
+        });
+        if (ready.wait_for(2s) != std::future_status::ready)
+            fail("idle notification holds the worker-pool mutex");
+        inspector.join();
+    };
+    stlab::task<void() noexcept> source{[]() noexcept {}};
+    system.submit(
+        stlab::execution_detail::executor_priority::medium,
+        {source.relocation_concept(), source.relocation_invoke(), source.relocation_source()});
+    system.join();
+    portable_test_std::observed_idle = nullptr;
+    portable_test_std::before_idle_notification = nullptr;
+    stlab::pre_exit();
+}
+
 template <class Queue, class Submit>
 void warmed_enqueue_noallocation(Queue& queue, Submit submit) {
     for (int i = 0; i != 32; ++i) {
@@ -440,6 +538,8 @@ int main(int argc, char** argv) {
         hardware_zero();
     else if (scenario == "construction_allocations")
         construction_allocations();
+    else if (scenario == "idle_notification")
+        idle_notification();
     else if (scenario == "descendant_wait")
         descendant_wait(false);
     else if (scenario == "descendant_capture_wait")
@@ -448,6 +548,9 @@ int main(int argc, char** argv) {
         queue_submission(false);
     else if (scenario == "main_queue_submission")
         queue_submission(true);
+    else if (scenario == "queue_return_pop" || scenario == "queue_return_try_pop" ||
+             scenario == "main_queue_return_pop" || scenario == "main_queue_return_wait_pop")
+        queue_return_relocation(scenario);
     else if (scenario == "queue_enqueue_noallocation")
         queue_enqueue_noallocation(false);
     else if (scenario == "main_queue_enqueue_noallocation")

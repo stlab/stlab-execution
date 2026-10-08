@@ -92,10 +92,11 @@ public:
                 stlab_v2_task_proc invoke,
                 void* source,
                 std::int64_t delay_ns) {
+        record entry(delay_ns);
         std::unique_lock<std::mutex> lock(_mutex);
         execution_detail::check_timer_open(_closed);
         if (!_worker.joinable()) _worker = std::thread([this] { run(); });
-        _pending.emplace_back(delay_ns);
+        _pending.emplace_back(std::move(entry));
         _pending.back().target.emplace(vtable, invoke, source);
         std::push_heap(_pending.begin(), _pending.end(), later{});
         lock.unlock();

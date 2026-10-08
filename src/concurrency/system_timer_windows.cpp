@@ -131,10 +131,10 @@ public:
                 stlab_v2_task_proc invoke,
                 void* source,
                 std::int64_t delay_ns) {
+        auto entry = std::make_unique<record>(*this, delay_ns);
         std::scoped_lock lock(_mutex);
         execution_detail::check_timer_open(_closed);
         prepare();
-        auto entry = std::make_unique<record>(*this, delay_ns);
         entry->timer = CreateThreadpoolTimer(callback, entry.get(), &_environment);
         if (!entry->timer) resource_failure(GetLastError());
         entry->target.emplace(vtable, invoke, source);

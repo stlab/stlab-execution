@@ -46,10 +46,11 @@ public:
     ///
     /// - Precondition: the queue is not empty.
     auto pop() -> task_t {
-        std::lock_guard<std::mutex> lock{_mutex};
+        std::unique_lock<std::mutex> lock{_mutex};
         assert(!_tasks.empty() && "main executor wake without a queued task.");
         auto result = std::move(_tasks.front());
         _tasks.pop_front();
+        lock.unlock();
         return result;
     }
 
@@ -59,6 +60,7 @@ public:
         _ready.wait(lock, [&] { return !_tasks.empty(); });
         auto result = std::move(_tasks.front());
         _tasks.pop_front();
+        lock.unlock();
         return result;
     }
 };

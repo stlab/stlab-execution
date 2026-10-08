@@ -61,8 +61,10 @@ int main(int argc, char** argv) {
         // PROXY_TO_PTHREAD already services the main runtime during host startup.
         stlab::main_executor([]() noexcept {
             main_executor_test::require_run_started();
-            std::scoped_lock lock{startup_mutex};
-            startup_task_ran = true;
+            {
+                std::scoped_lock lock{startup_mutex};
+                startup_task_ran = true;
+            }
             startup_condition.notify_one();
         });
         {

@@ -70,7 +70,8 @@ struct timer_record {
 
 /// Serializes timer admission and tracks accepted registration/timeout callbacks.
 struct timer_state {
-    // Protects closed, head/list links, and registration/cancellation of accepted timers.
+    // Protects closed and head/list links against submitters. Only the main runtime writes closed
+    // and accesses native timeout fields.
     std::mutex mutex;
     timer_record* head = nullptr;
     bool closed = false;
@@ -114,20 +115,21 @@ void arm(timer_record& record) noexcept {
 
 /// Invokes a due timer, or re-arms it when a bounded timeout expires early.
 void fire(void* context) noexcept {
+    assert(emscripten_is_main_runtime_thread());
     core_callback_scope callback_scope;
     auto& record = *static_cast<timer_record*>(context);
-    {
-        auto& service = state();
-        std::scoped_lock lock{service.mutex};
-        assert(!service.closed && record.armed);
-        if (record.remaining() != 0) {
-            arm(record);
-            return;
-        }
-        service.remove(record);
-        record.armed = false;
-        record.release();
+    auto& service = state();
+    assert(!service.closed && record.armed);
+    if (record.remaining() != 0) {
+        arm(record);
+        return;
     }
+    {
+        std::scoped_lock lock{service.mutex};
+        service.remove(record);
+    }
+    record.armed = false;
+    record.release();
     auto target = std::move(*record.target);
     record.target.reset();
     target();
@@ -137,10 +139,15 @@ void fire(void* context) noexcept {
 
 /// Registers an accepted timer, releasing its proxy ownership if shutdown canceled it.
 void register_timer(void* context) noexcept {
+    assert(emscripten_is_main_runtime_thread());
     auto& record = *static_cast<timer_record*>(context);
     auto& service = state();
-    std::scoped_lock lock{service.mutex};
-    if (service.closed) {
+    bool closed;
+    {
+        std::scoped_lock lock{service.mutex};
+        closed = service.closed;
+    }
+    if (closed) {
         record.release();
         return;
     }
@@ -158,20 +165,23 @@ void bounce_registration(void* context) noexcept {
 void close_on_main() noexcept {
     assert(emscripten_is_main_runtime_thread());
     auto& service = state();
-    std::unique_lock lock{service.mutex};
-    service.closed = true;
-    while (service.head) {
-        auto& record = *service.head;
-        service.remove(record);
+    timer_record* pending;
+    {
+        std::scoped_lock lock{service.mutex};
+        service.closed = true;
+        pending = std::exchange(service.head, nullptr);
+    }
+    while (pending) {
+        auto& record = *pending;
+        pending = record.next;
+        record.previous = record.next = nullptr;
         if (record.armed) {
             emscripten_clear_timeout(record.timeout_id);
             record.armed = false;
             record.release();
         }
-        lock.unlock();
         record.target.reset();
         record.release();
-        lock.lock();
     }
 }
 

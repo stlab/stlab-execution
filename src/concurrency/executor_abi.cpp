@@ -97,6 +97,7 @@ public:
         if (!lock || _tasks.empty()) return nullptr;
         auto result = std::move(_tasks.front());
         _tasks.pop_front();
+        lock.unlock();
         return result;
     }
 
@@ -108,6 +109,7 @@ public:
         if (_tasks.empty()) return nullptr;
         auto result = std::move(_tasks.front());
         _tasks.pop_front();
+        lock.unlock();
         return result;
     }
 
@@ -711,11 +713,13 @@ private:
                 if (task) {
                     task();
                     task = nullptr;
+                    bool idle;
                     {
                         std::unique_lock<std::mutex> lock{_mutex};
                         assert(_pending != 0);
-                        if (--_pending == 0) _idle.notify_one();
+                        idle = --_pending == 0;
                     }
+                    if (idle) _idle.notify_one();
                     continue;
                 }
 

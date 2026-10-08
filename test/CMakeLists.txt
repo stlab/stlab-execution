@@ -111,6 +111,14 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
       COMMAND execution.test.emscripten_timer shutdown_worker)
     set_tests_properties(execution.test.emscripten_timer_shutdown_worker PROPERTIES TIMEOUT 60)
   endif()
+  if(NOT STLAB_EXECUTION_SHARED)
+    execution_test_target(execution.test.emscripten_timer_locks emscripten_timer_lock_test.cpp)
+    foreach(scenario IN ITEMS registration rearm cancellation closed_registration)
+      add_test(NAME execution.test.emscripten_timer_locks_${scenario}
+        COMMAND execution.test.emscripten_timer_locks ${scenario})
+      set_tests_properties(execution.test.emscripten_timer_locks_${scenario} PROPERTIES TIMEOUT 60)
+    endforeach()
+  endif()
 endif()
 
 if(NOT STLAB_MAIN_EXECUTOR STREQUAL "none")
@@ -189,9 +197,11 @@ if(STLAB_TASK_SYSTEM STREQUAL "libdispatch")
     execution_process_test(execution.test.libdispatch_timer_preparation 10
       libdispatch_timer_preparation_test.cpp)
     target_compile_definitions(execution.test.libdispatch_timer_preparation PRIVATE NDEBUG)
-    add_test(NAME execution.test.libdispatch_timer_capture_destruction
-      COMMAND execution.test.libdispatch_timer_preparation capture_destruction)
-    set_tests_properties(execution.test.libdispatch_timer_capture_destruction PROPERTIES TIMEOUT 10)
+    foreach(scenario IN ITEMS capture_destruction arming_shutdown activation_shutdown)
+      add_test(NAME execution.test.libdispatch_timer_${scenario}
+        COMMAND execution.test.libdispatch_timer_preparation ${scenario})
+      set_tests_properties(execution.test.libdispatch_timer_${scenario} PROPERTIES TIMEOUT 10)
+    endforeach()
   endif()
 endif()
 
@@ -202,6 +212,16 @@ if(WIN32 AND STLAB_EXECUTION_SHARED)
 endif()
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+  if(NOT STLAB_EXECUTION_SHARED)
+    execution_process_test(execution.test.core_cleanup_validation 10
+      core_cleanup_validation_test.cpp)
+    target_compile_definitions(execution.test.core_cleanup_validation PRIVATE NDEBUG)
+    if(STLAB_TASK_SYSTEM STREQUAL "windows" OR STLAB_TASK_SYSTEM STREQUAL "portable")
+      execution_process_test(execution.test.system_timer_preparation 10
+        system_timer_preparation_test.cpp)
+      target_compile_definitions(execution.test.system_timer_preparation PRIVATE NDEBUG)
+    endif()
+  endif()
   if(WIN32 AND STLAB_TASK_SYSTEM STREQUAL "windows" AND NOT STLAB_EXECUTION_SHARED)
     execution_process_test(execution.test.windows_executor_resource_failure 10
       windows_executor_resource_failure.cpp)
@@ -223,6 +243,7 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
     execution_test_target(execution.test.portable_executor_regression
       portable_executor_regression_test.cpp)
     set(portable_scenarios expansion_wake expansion_during_join hardware_zero construction_allocations
+        idle_notification
         descendant_wait descendant_capture_wait queue_submission main_queue_submission
         queue_enqueue_noallocation main_queue_enqueue_noallocation timer_enqueue_noallocation
         queue_noallocation main_queue_noallocation)
@@ -234,6 +255,21 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
         COMMAND execution.test.portable_executor_regression ${scenario})
       set_tests_properties(execution.test.portable_executor_${scenario}
         PROPERTIES TIMEOUT 15)
+    endforeach()
+    execution_test_target(execution.test.queue_return_relocation
+      portable_executor_regression_test.cpp)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+      target_compile_options(execution.test.queue_return_relocation PRIVATE /Zc:nrvo-)
+    elseif(MSVC)
+      target_compile_options(execution.test.queue_return_relocation PRIVATE /clang:-fno-elide-constructors)
+    else()
+      target_compile_options(execution.test.queue_return_relocation PRIVATE -fno-elide-constructors)
+    endif()
+    foreach(scenario IN ITEMS queue_return_pop queue_return_try_pop
+        main_queue_return_pop main_queue_return_wait_pop)
+      add_test(NAME execution.test.portable_executor_${scenario}
+        COMMAND execution.test.queue_return_relocation ${scenario})
+      set_tests_properties(execution.test.portable_executor_${scenario} PROPERTIES TIMEOUT 15)
     endforeach()
     execution_test_target(execution.test.portable_executor_unlimited
       portable_executor_regression_test.cpp)

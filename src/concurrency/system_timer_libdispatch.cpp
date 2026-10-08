@@ -54,10 +54,9 @@ class dispatch_timers {
         }
     };
 
-    // Protects _closed and _pending links. At unlock, linked records are resumed and no longer
-    // owned by submit(). Closure excludes new records and new execution commitments. Records stay
-    // linked until event handlers and capture destruction finish, making an empty list a drain
-    // predicate for _finished.
+    // Protects _closed and _pending links. Published records are callback-owned but may still
+    // await activation. Closure excludes new admission/execution commitments. Records remain
+    // linked through event completion and capture destruction, so emptiness is a drain predicate.
     std::mutex _mutex;
     std::condition_variable _finished;
     record* _pending = nullptr;
@@ -124,21 +123,23 @@ public:
         dispatch_set_context(entry->source, entry.get());
         dispatch_source_set_event_handler_f(entry->source, event);
         dispatch_source_set_cancel_handler_f(entry->source, canceled);
-
-        // Leave a resumed, callback-owned record in _pending only if admission is open.
-        std::unique_lock<std::mutex> lock(_mutex);
-        if (_closed) {
-            lock.unlock();
-            entry.reset();
-            execution_detail::check_timer_open(true);
-        }
-        entry->target.emplace(vtable, invoke, source);
-        entry->next = _pending;
-        if (_pending) _pending->previous = entry.get();
-        _pending = entry.get();
         arm(*entry, entry->delay.remaining());
-        dispatch_resume(entry->source);
-        (void)entry.release();
+        const auto native_source = entry->source;
+
+        {
+            std::unique_lock<std::mutex> lock(_mutex);
+            if (_closed) {
+                lock.unlock();
+                entry.reset();
+                execution_detail::check_timer_open(true);
+            }
+            entry->target.emplace(vtable, invoke, source);
+            entry->next = _pending;
+            if (_pending) _pending->previous = entry.get();
+            _pending = entry.get();
+            (void)entry.release();
+        }
+        dispatch_resume(native_source);
     }
 
     /// Cancels pending sources and waits for all committed callbacks and capture destruction.
