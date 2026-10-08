@@ -1,0 +1,299 @@
+include("${CMAKE_CURRENT_SOURCE_DIR}/RuntimeDlls.cmake")
+get_target_property(execution_alias stlab::execution ALIASED_TARGET)
+if(NOT execution_alias STREQUAL "execution")
+  message(FATAL_ERROR "The build target must be stlab::execution, matching the installed target.")
+endif()
+add_executable(execution.test.header_smoke header_smoke.cpp)
+target_link_libraries(execution.test.header_smoke PRIVATE stlab::execution)
+execution_copy_runtime_dlls(execution.test.header_smoke)
+add_test(NAME execution.test.header_smoke COMMAND execution.test.header_smoke)
+option(STLAB_EXECUTION_PACKAGE_TESTS "Verify native installed execution consumers" OFF)
+if(STLAB_EXECUTION_PACKAGE_TESTS AND NOT CMAKE_CROSSCOMPILING)
+  add_test(NAME execution.package.roundtrip
+    COMMAND ${CMAKE_COMMAND}
+      "-DEXECUTION_SOURCE:PATH=${PROJECT_SOURCE_DIR}"
+      "-DTOOLKIT_SOURCE:PATH=${cpp-library_SOURCE_DIR}"
+      "-DVERIFY_PARENT:PATH=${PROJECT_BINARY_DIR}/package-test"
+      "-DVERIFY_ROOT:PATH=${PROJECT_BINARY_DIR}/package-test/execution-packages"
+      "-DBUILD_SHARED_LIBS:BOOL=${STLAB_EXECUTION_SHARED}"
+      "-DSTLAB_TASK_SYSTEM=${STLAB_TASK_SYSTEM}"
+      "-DSTLAB_SANITIZER=${STLAB_SANITIZER}"
+      "-DTEST_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}"
+      "-DTEST_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/verify_package.cmake")
+  set_tests_properties(execution.package.roundtrip PROPERTIES TIMEOUT 600 LABELS package)
+endif()
+add_test(NAME execution.config.node_minimum
+  COMMAND ${CMAKE_COMMAND}
+    "-DTEST_BINARY_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/node_minimum"
+    "-DTEST_TOOLCHAIN:FILEPATH=${PROJECT_SOURCE_DIR}/cmake/Platform/Emscripten-Execution.cmake"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/node_minimum.cmake")
+add_test(NAME execution.config.shared_reconfiguration
+  COMMAND ${CMAKE_COMMAND}
+    "-DTEST_BINARY_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/shared_reconfiguration"
+    "-DTEST_PARENT_BINARY_DIR:PATH=${PROJECT_BINARY_DIR}"
+    "-DCPM_cpp-library_SOURCE:PATH=${cpp-library_SOURCE_DIR}"
+    "-DTEST_TOOLCHAIN:FILEPATH=${CMAKE_TOOLCHAIN_FILE}"
+    "-DTEST_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}"
+    "-DEM_CONFIG_EXECUTABLE:FILEPATH=${EM_CONFIG_EXECUTABLE}"
+    "-DNODE_JS_EXECUTABLE:FILEPATH=${NODE_JS_EXECUTABLE}"
+    "-DNODE_JS_FLAGS:STRING=${NODE_JS_FLAGS}"
+    "-DSTLAB_EMSCRIPTEN_PTHREADS:BOOL=${STLAB_EMSCRIPTEN_PTHREADS}"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/shared_reconfiguration.cmake")
+set_tests_properties(execution.test.header_smoke
+  execution.config.node_minimum
+  PROPERTIES TIMEOUT 60)
+set_tests_properties(execution.config.shared_reconfiguration PROPERTIES TIMEOUT 450)
+
+# Each public header must compile without relying on another include preceding it.
+foreach(header IN ITEMS
+    concurrency/task.hpp
+    concurrency/executor_base.hpp
+    concurrency/default_executor.hpp
+    concurrency/main_executor.hpp
+    concurrency/immediate_executor.hpp
+    concurrency/system_timer.hpp
+    concurrency/set_current_thread_name.hpp
+    pre_exit.hpp
+    execution/config.hpp)
+  string(REPLACE "/" "." header_target "${header}")
+  set(source "${CMAKE_CURRENT_BINARY_DIR}/${header_target}.cpp")
+  file(WRITE "${source}" "#include <stlab/${header}>\n")
+  add_library(execution.header.${header_target} OBJECT "${source}")
+  target_link_libraries(execution.header.${header_target} PRIVATE stlab::execution)
+endforeach()
+
+# Matches the runtime's sanitizer instrumentation, including MSVC STL annotations.
+function(execution_test_sanitizer target)
+  if(STLAB_SANITIZER STREQUAL "address")
+    if(MSVC)
+      target_compile_options(${target} PRIVATE /fsanitize=address /Zi)
+      target_link_options(${target} PRIVATE /INCREMENTAL:NO /DEBUG)
+    else()
+      target_compile_options(${target} PRIVATE -fsanitize=address -fno-omit-frame-pointer)
+      target_link_options(${target} PRIVATE -fsanitize=address)
+    endif()
+  endif()
+endfunction()
+
+# Links a standalone test and deploys its runtime DLLs beside the executable.
+function(execution_test_target target)
+  add_executable(${target} ${ARGN})
+  target_link_libraries(${target} PRIVATE stlab::execution)
+  execution_copy_runtime_dlls(${target})
+  execution_test_sanitizer(${target})
+endfunction()
+
+execution_test_sanitizer(execution.test.header_smoke)
+
+# Registers a standalone process with a bounded lifecycle.
+function(execution_process_test target timeout)
+  execution_test_target(${target} ${ARGN})
+  add_test(NAME ${target} COMMAND ${target})
+  set_tests_properties(${target} PROPERTIES TIMEOUT ${timeout})
+endfunction()
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+  execution_process_test(execution.test.emscripten_timer 60 emscripten_timer_test.cpp)
+  foreach(scenario IN ITEMS abi_guard negative_abi_delay cancel_capture_reentry)
+    add_test(NAME execution.test.emscripten_timer_${scenario}
+      COMMAND ${CMAKE_COMMAND} "-Demulator=${CMAKE_CROSSCOMPILING_EMULATOR}"
+        "-Dexecutable=$<TARGET_FILE:execution.test.emscripten_timer>" "-Dscenario=${scenario}"
+        "-Dexpected=EXPECTED_STLAB_TERMINATE|system timer task storage ABI mismatch|delay_ns >= 0|Scheduling a timer after pre_exit"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/expect_emscripten_terminate.cmake")
+    set_tests_properties(execution.test.emscripten_timer_${scenario} PROPERTIES TIMEOUT 60)
+  endforeach()
+  add_test(NAME execution.test.emscripten_timer_cancel_pending
+    COMMAND execution.test.emscripten_timer cancel_pending)
+  set_tests_properties(execution.test.emscripten_timer_cancel_pending PROPERTIES TIMEOUT 60)
+  if(STLAB_EMSCRIPTEN_PTHREADS)
+    add_test(NAME execution.test.emscripten_timer_shutdown_worker
+      COMMAND execution.test.emscripten_timer shutdown_worker)
+    set_tests_properties(execution.test.emscripten_timer_shutdown_worker PROPERTIES TIMEOUT 60)
+  endif()
+  if(NOT STLAB_EXECUTION_SHARED)
+    execution_test_target(execution.test.emscripten_timer_locks emscripten_timer_lock_test.cpp)
+    foreach(scenario IN ITEMS registration rearm cancellation closed_registration)
+      add_test(NAME execution.test.emscripten_timer_locks_${scenario}
+        COMMAND execution.test.emscripten_timer_locks ${scenario})
+      set_tests_properties(execution.test.emscripten_timer_locks_${scenario} PROPERTIES TIMEOUT 60)
+    endforeach()
+  endif()
+endif()
+
+if(NOT STLAB_MAIN_EXECUTOR STREQUAL "none")
+  set(main_scenarios order shutdown_order)
+  if(NOT STLAB_THREAD_SYSTEM STREQUAL "none")
+    list(APPEND main_scenarios concurrent)
+  endif()
+  if(STLAB_MAIN_EXECUTOR STREQUAL "portable")
+    list(APPEND main_scenarios pre_exit pre_exit_before_submit)
+  endif()
+  foreach(scenario IN LISTS main_scenarios)
+    execution_process_test(execution.test.main_executor_${scenario} 60
+      main_executor_${scenario}_test.cpp main_executor_test_host.hpp)
+  endforeach()
+endif()
+
+if((STLAB_MAIN_EXECUTOR STREQUAL "qt5" OR STLAB_MAIN_EXECUTOR STREQUAL "qt6")
+   AND NOT STLAB_EXECUTION_SHARED)
+  execution_process_test(execution.test.qt_receiver_allocation 10 qt_receiver_allocation_test.cpp)
+endif()
+
+execution_test_target(execution.test.task_abi_mismatch task_abi_mismatch_test.cpp)
+set_target_properties(execution.test.task_abi_mismatch PROPERTIES EXCLUDE_FROM_ALL TRUE)
+add_test(NAME execution.test.task_abi_mismatch_link
+  COMMAND ${CMAKE_COMMAND} "-Dbuild_dir=${PROJECT_BINARY_DIR}" "-Dconfig=$<CONFIG>"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/expect_task_abi_mismatch.cmake")
+set_tests_properties(execution.test.task_abi_mismatch_link PROPERTIES TIMEOUT 60)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten" AND NOT STLAB_EMSCRIPTEN_PTHREADS)
+  execution_test_target(execution.test.cooperative_shutdown cooperative_shutdown_test.cpp)
+  foreach(scenario IN ITEMS pending current empty normal_fifo outside timer_only)
+    add_test(NAME execution.test.cooperative_shutdown_${scenario}
+      COMMAND execution.test.cooperative_shutdown ${scenario})
+    set_tests_properties(execution.test.cooperative_shutdown_${scenario} PROPERTIES TIMEOUT 60)
+  endforeach()
+  foreach(scenario IN ITEMS late_default late_high late_low shutdown_first repeat_pre_exit)
+    add_test(NAME execution.test.cooperative_shutdown_${scenario}
+      COMMAND ${CMAKE_COMMAND} "-Demulator=${CMAKE_CROSSCOMPILING_EMULATOR}"
+        "-Dexecutable=$<TARGET_FILE:execution.test.cooperative_shutdown>" "-Dscenario=${scenario}"
+        "-Dexpected=EXPECTED_STLAB_TERMINATE|core service use after pre_exit|pre_exit invoked more than once"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/expect_emscripten_terminate.cmake")
+    set_tests_properties(execution.test.cooperative_shutdown_${scenario} PROPERTIES TIMEOUT 60)
+  endforeach()
+  add_test(NAME execution.test.emscripten_configuration
+    COMMAND ${CMAKE_COMMAND} "-Dsource_dir:PATH=${PROJECT_SOURCE_DIR}"
+      "-Dbinary_dir:PATH=${PROJECT_BINARY_DIR}/configuration-tests"
+      "-DTEST_PARENT_BINARY_DIR:PATH=${PROJECT_BINARY_DIR}"
+      "-Dgenerator:STRING=${CMAKE_GENERATOR}"
+      "-Dtoolchain:FILEPATH=${CMAKE_TOOLCHAIN_FILE}"
+      "-Dem_config:FILEPATH=${EM_CONFIG_EXECUTABLE}"
+      "-Dcpp_library_source:PATH=${cpp-library_SOURCE_DIR}"
+      "-Dnode:FILEPATH=${NODE_JS_EXECUTABLE}"
+      "-DNODE_JS_FLAGS:STRING=${NODE_JS_FLAGS}"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/emscripten_config_test.cmake")
+  set_tests_properties(execution.test.emscripten_configuration PROPERTIES TIMEOUT 450)
+  # Node's event loop cannot progress while a doctest case blocks on std::future.
+  return()
+endif()
+
+# [DEPENDENCY] https://github.com/doctest/doctest/releases
+CPMAddPackage("gh:doctest/doctest@2.5.3")
+foreach(component IN ITEMS task executor executor_abi waiter_state system_timer)
+  if(component STREQUAL "task" OR component STREQUAL "executor")
+    set(source ${component}_contract_test.cpp)
+  else()
+    set(source ${component}_test.cpp)
+  endif()
+  execution_process_test(execution.test.${component} 60 ${source} main.cpp)
+  target_link_libraries(execution.test.${component} PRIVATE doctest::doctest)
+endforeach()
+
+if(STLAB_TASK_SYSTEM STREQUAL "libdispatch")
+  execution_process_test(execution.test.libdispatch_group 10 libdispatch_group_test.cpp main.cpp)
+  target_link_libraries(execution.test.libdispatch_group PRIVATE doctest::doctest)
+  if(NOT STLAB_EXECUTION_SHARED)
+    execution_process_test(execution.test.libdispatch_timer_preparation 10
+      libdispatch_timer_preparation_test.cpp)
+    target_compile_definitions(execution.test.libdispatch_timer_preparation PRIVATE NDEBUG)
+    foreach(scenario IN ITEMS capture_destruction arming_shutdown activation_shutdown)
+      add_test(NAME execution.test.libdispatch_timer_${scenario}
+        COMMAND execution.test.libdispatch_timer_preparation ${scenario})
+      set_tests_properties(execution.test.libdispatch_timer_${scenario} PROPERTIES TIMEOUT 10)
+    endforeach()
+  endif()
+endif()
+
+if(WIN32 AND STLAB_EXECUTION_SHARED)
+  execution_process_test(execution.test.core_shared_smoke 60
+    core_shared_smoke_test.cpp core_shared_smoke_main.cpp)
+  target_link_libraries(execution.test.core_shared_smoke PRIVATE doctest::doctest)
+endif()
+
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+  if(NOT STLAB_EXECUTION_SHARED)
+    execution_process_test(execution.test.core_cleanup_validation 10
+      core_cleanup_validation_test.cpp)
+    target_compile_definitions(execution.test.core_cleanup_validation PRIVATE NDEBUG)
+    if(STLAB_TASK_SYSTEM STREQUAL "windows" OR STLAB_TASK_SYSTEM STREQUAL "portable")
+      execution_process_test(execution.test.system_timer_preparation 10
+        system_timer_preparation_test.cpp)
+      target_compile_definitions(execution.test.system_timer_preparation PRIVATE NDEBUG)
+    endif()
+  endif()
+  if(WIN32 AND STLAB_TASK_SYSTEM STREQUAL "windows" AND NOT STLAB_EXECUTION_SHARED)
+    execution_process_test(execution.test.windows_executor_resource_failure 10
+      windows_executor_resource_failure.cpp)
+    target_compile_definitions(execution.test.windows_executor_resource_failure PRIVATE NDEBUG)
+  endif()
+  add_test(NAME execution.config.pool_decimal
+    COMMAND ${CMAKE_COMMAND}
+      "-DTEST_BINARY_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/pool_configuration"
+      "-DTOOLKIT_SOURCE:PATH=${cpp-library_SOURCE_DIR}"
+      "-DTEST_GENERATOR:STRING=${CMAKE_GENERATOR}"
+      "-DTEST_GENERATOR_PLATFORM:STRING=${CMAKE_GENERATOR_PLATFORM}"
+      "-DTEST_GENERATOR_TOOLSET:STRING=${CMAKE_GENERATOR_TOOLSET}"
+      "-DTEST_CONFIG:STRING=$<CONFIG>"
+      "-DTEST_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}"
+      "-DTEST_MAKE_PROGRAM:FILEPATH=${CMAKE_MAKE_PROGRAM}"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/pool_configuration.cmake")
+  set_tests_properties(execution.config.pool_decimal PROPERTIES TIMEOUT 120)
+  if(STLAB_TASK_SYSTEM STREQUAL "portable" AND NOT STLAB_EXECUTION_SHARED)
+    execution_test_target(execution.test.portable_executor_regression
+      portable_executor_regression_test.cpp)
+    set(portable_scenarios expansion_wake expansion_during_join hardware_zero construction_allocations
+        idle_notification
+        descendant_wait descendant_capture_wait queue_submission main_queue_submission
+        queue_enqueue_noallocation main_queue_enqueue_noallocation timer_enqueue_noallocation
+        queue_noallocation main_queue_noallocation)
+    if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+      list(APPEND portable_scenarios worker_names)
+    endif()
+    foreach(scenario IN LISTS portable_scenarios)
+      add_test(NAME execution.test.portable_executor_${scenario}
+        COMMAND execution.test.portable_executor_regression ${scenario})
+      set_tests_properties(execution.test.portable_executor_${scenario}
+        PROPERTIES TIMEOUT 15)
+    endforeach()
+    execution_test_target(execution.test.queue_return_relocation
+      portable_executor_regression_test.cpp)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+      target_compile_options(execution.test.queue_return_relocation PRIVATE /Zc:nrvo-)
+    elseif(MSVC)
+      target_compile_options(execution.test.queue_return_relocation PRIVATE /clang:-fno-elide-constructors)
+    else()
+      target_compile_options(execution.test.queue_return_relocation PRIVATE -fno-elide-constructors)
+    endif()
+    foreach(scenario IN ITEMS queue_return_pop queue_return_try_pop
+        main_queue_return_pop main_queue_return_wait_pop)
+      add_test(NAME execution.test.portable_executor_${scenario}
+        COMMAND execution.test.queue_return_relocation ${scenario})
+      set_tests_properties(execution.test.portable_executor_${scenario} PROPERTIES TIMEOUT 15)
+    endforeach()
+    execution_test_target(execution.test.portable_executor_unlimited
+      portable_executor_regression_test.cpp)
+    target_compile_definitions(execution.test.portable_executor_unlimited
+      PRIVATE PORTABLE_TEST_UNLIMITED)
+    add_test(NAME execution.test.portable_executor_hardware_zero_unlimited
+      COMMAND execution.test.portable_executor_unlimited hardware_zero)
+    set_tests_properties(execution.test.portable_executor_hardware_zero_unlimited
+      PROPERTIES TIMEOUT 15)
+  endif()
+  execution_process_test(execution.test.pre_exit_null_handler 10 pre_exit_null_handler.cpp)
+  execution_process_test(execution.test.executor_priority_shutdown 10 executor_priority_shutdown.cpp)
+  execution_process_test(execution.test.core_shutdown_first 60 core_shutdown_first.cpp)
+  execution_test_target(execution.test.pre_exit_callback pre_exit_callback.cpp)
+  foreach(scenario IN ITEMS executor timer executor_capture timer_capture)
+    add_test(NAME execution.test.pre_exit_callback_${scenario}
+      COMMAND execution.test.pre_exit_callback ${scenario})
+    set_tests_properties(execution.test.pre_exit_callback_${scenario} PROPERTIES TIMEOUT 10)
+  endforeach()
+  set(timer_scenarios lifecycle shutdown_first executor_shutdown application_shutdown submission)
+  if(WIN32 AND NOT STLAB_EXECUTION_SHARED AND NOT STLAB_SANITIZER STREQUAL "address")
+    list(APPEND timer_scenarios resource_failure)
+  endif()
+  foreach(scenario IN LISTS timer_scenarios)
+    execution_process_test(execution.test.system_timer_${scenario} 10 system_timer_${scenario}.cpp)
+  endforeach()
+endif()
