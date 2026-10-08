@@ -5,10 +5,10 @@ STLab under the Boost Software License 1.0. Existing `stlab::` API names and
 `stlab/concurrency/*.hpp` and `stlab/pre_exit.hpp` include paths are preserved.
 No futures, channels, serial queues, or STLab utility library are required.
 
-**Publication status:** this is an unreleased extraction under review. Execution
-development commits are available on public review branches; cpp-library is pinned
-to its 5.5.0 release. Hosted CI results remain separate from local validation.
-Release publication still follows the order below.
+**Release:** 1.0.0 is the first standalone release of the execution runtime.
+cpp-library is pinned to its 5.5.0 release. See the
+[release notes](https://github.com/stlab/stlab-execution/releases/tag/v1.0.0)
+for compatibility requirements and release validation.
 
 ## Queued task requirements
 
@@ -99,8 +99,10 @@ ctest --test-dir build\test-shared --output-on-failure
 
 The toolkit dependency is pinned to its exact commit;
 for local development, pass `-DCPM_cpp-library_SOURCE:PATH=<toolkit-checkout>` during
-configuration. With no release tag, the toolkit's development version is `0.0.0`.
-`-DCPP_LIBRARY_VERSION=1.0.0` may be used for standalone install validation.
+configuration. Release versions are derived from Git tags; fetch tags when
+building a release checkout. With no release tag, the toolkit's development
+version is `0.0.0`. `-DCPP_LIBRARY_VERSION=1.0.0` may be used for standalone
+install validation, but is not evidence of a release.
 
 Configure with `-DSTLAB_EXECUTION_PACKAGE_TESTS=ON` to verify standalone installed
 C++17/20 consumers. Every test configuration independently compiles each
@@ -174,16 +176,15 @@ From a developer shell, equivalent typed overrides are
 Use them to validate local changes instead of the remote development commits; do not
 substitute developer paths into production dependency declarations.
 
-**Proposed future release example only — 1.0.0 is not published:**
+Fetch the 1.0.0 release:
 
 ```cmake
 CPMAddPackage("gh:stlab/stlab-execution@1.0.0")
 target_link_libraries(app PRIVATE stlab::execution)
 ```
 
-Do not use that fetch until an authorized release exists. Its approved version
-must then replace both this example and STLab's dependency/minimum install
-requirement together, without guessing a floor now.
+STLab's execution dependency pin and minimum installed-package requirement must
+be updated together when it adopts this release.
 
 For a locally installed execution package:
 
@@ -247,8 +248,8 @@ Emscripten, and installed-package variants require separate runs with the
 configuration options above; `.github/matrix.json` is not consumed by this
 workflow. Job configuration alone is not passing runtime evidence.
 
-Publication is a separate authorized operation: publish the toolkit first,
-replace this repository's toolkit SHA with that actual release and verify without
+Release publication follows dependency order: publish cpp-library first, pin
+execution to that release's exact commit and verify without local toolkit
 overrides; publish execution next; then update STLab's pin and matching installed
 dependency requirement and verify STLab without overrides. No release or minimum
 version is inferred from local validation's `CPP_LIBRARY_VERSION` override.
