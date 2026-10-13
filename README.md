@@ -6,7 +6,7 @@ STLab under the Boost Software License 1.0. Existing `stlab::` API names and
 No futures, channels, serial queues, or STLab utility library are required.
 
 **Release:** 1.0.0 is the first standalone release of the execution runtime.
-cpp-library is pinned to its 5.5.0 release. See the
+cpp-library is pinned to its 5.6.0 release. See the
 [release notes](https://github.com/stlab/stlab-execution/releases/tag/v1.0.0)
 for compatibility requirements and release validation.
 
@@ -35,13 +35,17 @@ versions are compatibility requirements, not pins to obsolete releases.
 check on the downloaded release. Keep provenance here rather than modifying the
 externally supplied bootstrap.
 
-<!-- [DEPENDENCY] https://github.com/stlab/cpp-library/releases/tag/v5.5.0 -->
-cpp-library 5.5.0 provides build, install, documentation, and template generation,
+<!-- [DEPENDENCY] https://github.com/stlab/cpp-library/releases/tag/v5.6.0 -->
+cpp-library 5.6.0 provides build, install, documentation, and template generation,
 pinned to the release's exact commit.
 Regenerate templates with `cmake --preset=init` and `cmake --build --preset=init`.
 Do not edit generated files; update their owning cpp-library templates or
 generator instead. The project declares doctest 2.5.3 for tests; the toolkit
 provides doxygen-awesome-css 2.5.0 for documentation.
+
+The pinned release includes the `DOCS_INPUTS`, `DOCS_OPTIONS`, and
+`cpp_library_copy_runtime_dlls` helpers used for documentation and test runtime
+deployment. Tests and documentation require no local toolkit override.
 
 <!-- [DEPENDENCY] https://github.com/actions/checkout/releases -->
 <!-- [DEPENDENCY] https://github.com/ilammy/msvc-dev-cmd/releases -->
@@ -60,10 +64,8 @@ cpp-library's `cmake/cpp-library-ci.cmake`, not the generated workflow.
 Build and analysis tools are client-provided CMake, Ninja, and, for the
 `clang-tidy` preset, LLVM's clang-tidy.
 
-<!-- [DEPENDENCY] https://www.python.org/downloads/ -->
 <!-- [DEPENDENCY] https://git-scm.com/downloads -->
-Python is used by `scripts/flatten_json.py`; Git resolves source dependencies
-and project versions.
+Git resolves source dependencies and project versions.
 
 <!-- [DEPENDENCY] https://github.com/microsoft/vscode/releases -->
 <!-- [DEPENDENCY] https://github.com/matepek/vscode-catch2-test-adapter -->
@@ -241,12 +243,20 @@ Header-adjacent contracts are canonical. `cmake --preset=docs` and
 `build/docs/html`; Doxygen is required. There is no published execution
 documentation site yet. The directory groups and main page are owned here,
 without importing STLab's higher-level API sources.
+The Doxyfile is generated from cpp-library's shared template; `DOCS_INPUTS`,
+`DOCS_EXCLUDE_SYMBOLS`, and `DOCS_OPTIONS` in `CMakeLists.txt` declare only
+execution-specific additions. Do not add a project-owned `docs/Doxyfile`.
 
 The generated CI workflow covers native Linux GCC/Clang, macOS, Windows, and
 clang-tidy using the generic presets. Shared, C++17, portable, sanitizer, Qt,
 Emscripten, and installed-package variants require separate runs with the
-configuration options above; `.github/matrix.json` is not consumed by this
-workflow. Job configuration alone is not passing runtime evidence.
+configuration options above. The unused project matrix and its JSON-flattening
+script have been removed rather than forking the generated workflow.
+Job configuration alone is not passing runtime evidence.
+
+Deferred toolkit designs for sanitizer instrumentation, public-header
+compilation, CI variants, and installed-consumer round trips are tracked in
+[stlab/cpp-library#30](https://github.com/stlab/cpp-library/issues/30).
 
 Release publication follows dependency order: publish cpp-library first, pin
 execution to that release's exact commit and verify without local toolkit

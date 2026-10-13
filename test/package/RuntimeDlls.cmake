@@ -1,3 +1,4 @@
+# This installed-consumer fixture must not require cpp-library source files.
 # Deploys runtime DLLs beside a test executable; static targets need no copy.
 function(execution_copy_runtime_dlls target)
   if(WIN32)

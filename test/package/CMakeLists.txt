@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 project(execution-consumer LANGUAGES CXX)
 enable_testing()
-include("${CMAKE_CURRENT_LIST_DIR}/../RuntimeDlls.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/RuntimeDlls.cmake")
 set(CMAKE_DISABLE_FIND_PACKAGE_stlab TRUE)
 find_package(stlab-execution REQUIRED CONFIG)
 # Package discovery must be repeatable, including its platform dependencies.

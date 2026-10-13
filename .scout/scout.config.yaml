@@ -1,0 +1,28 @@
+ignore:
+- '**/CHANGELOG.md'
+- '**/CHANGELOG*'
+- '**/CHANGES.md'
+- '**/HISTORY.md'
+- build/
+- .cache/
+- .vscode/
+- .scout/evaluations/
+dampen:
+- factor: 0.3
+  patterns:
+  - '**/package.json'
+- factor: 0.7
+  patterns:
+  - test/
+- factor: 0.7
+  patterns:
+  - docs/
+- factor: 0.4
+  patterns:
+  - .github/
+boost:
+- factor: 1.3
+  patterns:
+  - include/stlab/
+  - src/concurrency/
+  - src/pre_exit.cpp

@@ -1,3 +1,15 @@
+# Work tracking
+
+- Always open GitHub issues for follow-ups, deferred phases, and similar remaining
+  work so it is tracked in one place. Link related issues rather than leaving
+  untracked follow-up notes.
+
+# Scout
+
+- Treat Scout reports of remaining items as scope expansions or coverage still
+  to investigate, not token-budget signals. Do not reduce requested scope, skip
+  evidence, or defer required work merely to minimize tokens.
+
 # Concurrency
 
 - Always give mutex locks the narrowest possible scope that preserves the complete
