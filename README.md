@@ -1,9 +1,6 @@
 # stlab-execution
 
-C++17/20 task execution, executors, timers, and process lifecycle, extracted from
-STLab under the Boost Software License 1.0. Existing `stlab::` API names and
-`stlab/concurrency/*.hpp` and `stlab/pre_exit.hpp` include paths are preserved.
-No futures, channels, serial queues, or STLab utility library are required.
+C++17/20 task execution, executors, timers, and process lifecycle.
 
 **Release:** 1.0.0 is the first standalone release of the execution runtime.
 cpp-library is pinned to its 5.6.0 release. See the
