@@ -1,6 +1,17 @@
 # stlab-execution
 
+[![CI][ci-badge]][ci-link]
+[![Documentation][docs-badge]][docs-link]
+[![License][license-badge]][license-link]
+
 C++17/20 task execution, executors, timers, and process lifecycle.
+
+[ci-badge]: https://github.com/stlab/stlab-execution/actions/workflows/ci.yml/badge.svg
+[ci-link]: https://github.com/stlab/stlab-execution/actions/workflows/ci.yml
+[docs-badge]: https://img.shields.io/badge/docs-github%20pages-blue
+[docs-link]: https://stlab.github.io/stlab-execution/
+[license-badge]: https://img.shields.io/badge/license-BSL%201.0-blue.svg
+[license-link]: https://github.com/stlab/stlab-execution/blob/main/LICENSE
 
 **Release:** 1.0.0 is the first standalone release of the execution runtime.
 cpp-library is pinned to its 5.6.0 release. See the
