@@ -156,5 +156,11 @@ fetch example is prospective, and `CPP_LIBRARY_VERSION=1.0.0` is only a standalo
 install-validation override, not release evidence.
 
 The generated CI runs generic native and clang-tidy presets.
-`.github/matrix.json` is not consumed by that workflow; shared, C++17, portable,
-ASan, Qt, Emscripten, and package variants need separate validation.
+Shared, C++17, portable, ASan, Qt, Emscripten, and package variants need separate
+validation. Do not add an unconsumed project matrix or fork the generated workflow.
+Toolkit extensions are tracked in stlab/cpp-library#30.
+
+The pinned cpp-library 5.6.0 release provides the documentation and runtime-DLL
+helpers; tests and documentation require no local toolkit override.
+Keep Doxygen configuration on the shared toolkit template, declaring project
+deltas through `DOCS_INPUTS`, `DOCS_EXCLUDE_SYMBOLS`, and `DOCS_OPTIONS`.

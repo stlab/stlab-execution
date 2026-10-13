@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.24)
 
 include(cmake/CPM.cmake)
-# [DEPENDENCY] https://github.com/stlab/cpp-library/releases/tag/v5.5.0
+# [DEPENDENCY] https://github.com/stlab/cpp-library/releases/tag/v5.6.0
 CPMAddPackage(
   NAME cpp-library
-  VERSION 5.5.0
+  VERSION 5.6.0
   GITHUB_REPOSITORY stlab/cpp-library
-  GIT_TAG b5273fdb8d0c356579883d8419fecb267804d0f2)
+  GIT_TAG fb58112832f7acc3431c6f0d1a272a4db6a3e7da)
 include("${cpp-library_SOURCE_DIR}/cpp-library.cmake")
 cpp_library_enable_dependency_tracking()
 
@@ -27,6 +27,20 @@ cpp_library_setup(
   NAMESPACE stlab
   REQUIRES_CPP_VERSION 17
   INSTALL_OPTION STLAB_EXECUTION_INSTALL
+  DOCS_INPUTS docs/doxygen
+  DOCS_EXCLUDE_SYMBOLS stlab::execution_detail stlab::execution_v*::execution_detail
+  DOCS_OPTIONS
+    "WARN_IF_UNDOCUMENTED = NO"
+    "INCLUDE_PATH = \"${PROJECT_BINARY_DIR}/include\""
+    "ENABLE_PREPROCESSING = YES"
+    "MACRO_EXPANSION = YES"
+    "EXPAND_ONLY_PREDEF = YES"
+    "PREDEFINED = STLAB_EXECUTION_VERSION_NAMESPACE_BEGIN()= STLAB_EXECUTION_VERSION_NAMESPACE_END()= STLAB_CORE_API= STLAB_NODISCARD()=[[nodiscard]]"
+    "HIDE_FRIEND_COMPOUNDS = YES"
+    "USE_MATHJAX = YES"
+    "MATHJAX_VERSION = MathJax_4"
+    # [DEPENDENCY] https://github.com/mathjax/MathJax/releases
+    "MATHJAX_RELPATH = https://cdn.jsdelivr.net/npm/mathjax@4.1.3"
   HEADERS
     concurrency/task.hpp
     concurrency/executor_base.hpp
@@ -53,8 +67,6 @@ target_sources(execution PUBLIC
   FILE_SET headers TYPE HEADERS
   BASE_DIRS "${PROJECT_BINARY_DIR}/include"
   FILES "${PROJECT_BINARY_DIR}/include/stlab/execution/config.hpp")
-target_include_directories(execution PUBLIC
-  "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>")
 target_compile_definitions(execution PRIVATE STLAB_CORE_BUILD)
 target_compile_definitions(execution PUBLIC $<$<CXX_COMPILER_ID:MSVC>:NOMINMAX>)
 target_compile_options(execution PUBLIC
