@@ -1,0 +1,202 @@
+description = "stlab-execution runtime search quality: public adapters, ABI, schedulers, timers, and lifecycle"
+
+[[queries]]
+id = "ident-main-queue"
+query = "main_task_queue"
+class = "identifier"
+[judgments.ident-main-queue]
+"src/concurrency/detail/main_task_queue.hpp" = 3
+"src/concurrency/main_executor_portable.cpp" = 2
+"src/concurrency/main_executor_emscripten.cpp" = 2
+
+[[queries]]
+id = "ident-waiter"
+query = "waiter_state"
+class = "identifier"
+[judgments.ident-waiter]
+"src/concurrency/detail/waiter_state.hpp" = 3
+"src/concurrency/executor_abi.cpp" = 2
+"test/waiter_state_test.cpp" = 2
+
+[[queries]]
+id = "ident-timer-delay"
+query = "timer_delay"
+class = "identifier"
+[judgments.ident-timer-delay]
+"src/concurrency/detail/timer_common.hpp" = 3
+"src/concurrency/system_timer_portable.cpp" = 2
+"src/concurrency/system_timer_windows.cpp" = 2
+"src/concurrency/system_timer_libdispatch.cpp" = 2
+
+[[queries]]
+id = "ident-timer-validation"
+query = "check_timer_submission"
+class = "identifier"
+[judgments.ident-timer-validation]
+"src/concurrency/detail/timer_common.hpp" = 3
+"src/concurrency/system_timer_portable.cpp" = 2
+"src/concurrency/system_timer_windows.cpp" = 2
+"src/concurrency/system_timer_emscripten.cpp" = 2
+"src/concurrency/system_timer_libdispatch.cpp" = 2
+
+[[queries]]
+id = "ident-callback-scope"
+query = "core_callback_scope"
+class = "identifier"
+[judgments.ident-callback-scope]
+"src/concurrency/detail/core_shutdown.hpp" = 3
+"src/concurrency/core_shutdown.cpp" = 3
+"src/concurrency/executor_abi.cpp" = 2
+"src/concurrency/system_timer_portable.cpp" = 2
+
+[[queries]]
+id = "ident-timer-status"
+query = "stlab_v2_timer_status"
+class = "identifier"
+[judgments.ident-timer-status]
+"include/stlab/concurrency/system_timer.hpp" = 3
+"src/concurrency/detail/timer_common.hpp" = 2
+"src/concurrency/system_timer_windows.cpp" = 2
+"src/concurrency/system_timer_portable.cpp" = 2
+
+[[queries]]
+id = "ident-priority"
+query = "executor_priority"
+class = "identifier"
+[judgments.ident-priority]
+"include/stlab/concurrency/default_executor.hpp" = 3
+"src/concurrency/executor_abi.cpp" = 2
+
+[[queries]]
+id = "ident-pre-exit"
+query = "pre_exit"
+class = "identifier"
+[judgments.ident-pre-exit]
+"include/stlab/pre_exit.hpp" = 3
+"src/pre_exit.cpp" = 3
+"src/concurrency/core_shutdown.cpp" = 2
+
+[[queries]]
+id = "nl-retirement-order"
+query = "how does shutdown cancel pending timers before draining executor tasks"
+class = "natural_language"
+[judgments.nl-retirement-order]
+"src/concurrency/core_shutdown.cpp" = 3
+"src/concurrency/detail/core_shutdown.hpp" = 2
+"src/concurrency/system_timer_portable.cpp" = 2
+"src/concurrency/system_timer_windows.cpp" = 2
+"src/concurrency/cooperative_executor.cpp" = 2
+"test/system_timer_executor_shutdown.cpp" = 2
+"src/pre_exit.cpp" = 1
+
+[[queries]]
+id = "nl-task-storage"
+query = "move-only callable small buffer storage and nonthrowing relocation"
+class = "natural_language"
+[judgments.nl-task-storage]
+"include/stlab/concurrency/task.hpp" = 3
+"include/stlab/concurrency/default_executor.hpp" = 2
+"src/concurrency/detail/main_task_queue.hpp" = 1
+"src/concurrency/executor_abi.cpp" = 1
+
+[[queries]]
+id = "nl-cooperative-drain"
+query = "threadless cooperative executor keeps event loop responsive while retiring descendants"
+class = "natural_language"
+[judgments.nl-cooperative-drain]
+"src/concurrency/cooperative_executor.cpp" = 3
+"src/concurrency/main_executor_emscripten.cpp" = 2
+"src/concurrency/detail/core_shutdown.hpp" = 2
+"include/stlab/pre_exit.hpp" = 2
+"src/concurrency/core_shutdown.cpp" = 1
+
+[[queries]]
+id = "nl-lost-wake"
+query = "remember a worker wake request that arrives before it starts waiting"
+class = "natural_language"
+[judgments.nl-lost-wake]
+"src/concurrency/detail/waiter_state.hpp" = 3
+"src/concurrency/executor_abi.cpp" = 2
+"test/waiter_state_test.cpp" = 2
+
+[[queries]]
+id = "nl-timer-rounding"
+query = "round positive timer delays upward and recheck monotonic time to prevent early callbacks"
+class = "natural_language"
+[judgments.nl-timer-rounding]
+"include/stlab/concurrency/system_timer.hpp" = 3
+"src/concurrency/detail/timer_common.hpp" = 3
+"src/concurrency/system_timer_portable.cpp" = 2
+"src/concurrency/system_timer_windows.cpp" = 2
+"src/concurrency/system_timer_libdispatch.cpp" = 2
+
+[[queries]]
+id = "nl-main-fifo"
+query = "main executor FIFO queue waits for work and invokes callbacks outside the queue mutex"
+class = "natural_language"
+[judgments.nl-main-fifo]
+"src/concurrency/detail/main_task_queue.hpp" = 3
+"src/concurrency/main_executor_portable.cpp" = 3
+"src/concurrency/main_executor_emscripten.cpp" = 2
+"src/concurrency/main_executor_libdispatch.cpp" = 2
+
+[[queries]]
+id = "nl-callback-shutdown"
+query = "reject synchronous shutdown from a native timer or executor callback including capture destruction"
+class = "natural_language"
+[judgments.nl-callback-shutdown]
+"src/concurrency/core_shutdown.cpp" = 3
+"src/concurrency/detail/core_shutdown.hpp" = 2
+"src/pre_exit.cpp" = 2
+"src/concurrency/system_timer_portable.cpp" = 1
+"src/concurrency/executor_abi.cpp" = 1
+
+[[queries]]
+id = "filt-public-status"
+query = "stlab_v2_timer_status"
+class = "filtered"
+extensions = ["hpp"]
+paths = ["include/stlab"]
+[judgments.filt-public-status]
+"include/stlab/concurrency/system_timer.hpp" = 3
+
+[[queries]]
+id = "filt-detail-waiter"
+query = "waiter_state"
+class = "filtered"
+extensions = ["hpp"]
+paths = ["src/concurrency/detail"]
+[judgments.filt-detail-waiter]
+"src/concurrency/detail/waiter_state.hpp" = 3
+
+[[queries]]
+id = "filt-priority"
+query = "executor_priority"
+class = "filtered"
+extensions = ["hpp"]
+paths = ["include/stlab/concurrency"]
+[judgments.filt-priority]
+"include/stlab/concurrency/default_executor.hpp" = 3
+
+[[queries]]
+id = "filt-monotonic-delay"
+query = "timer_delay"
+class = "filtered"
+extensions = ["hpp"]
+paths = ["src/concurrency/detail"]
+[judgments.filt-monotonic-delay]
+"src/concurrency/detail/timer_common.hpp" = 3
+
+[[queries]]
+id = "filt-callback-guard"
+query = "core_callback_scope"
+class = "filtered"
+extensions = ["cpp"]
+paths = ["src/concurrency"]
+[judgments.filt-callback-guard]
+"src/concurrency/core_shutdown.cpp" = 3
+"src/concurrency/executor_abi.cpp" = 2
+"src/concurrency/system_timer_windows.cpp" = 2
+"src/concurrency/system_timer_portable.cpp" = 2
+"src/concurrency/system_timer_libdispatch.cpp" = 2
+"src/concurrency/system_timer_emscripten.cpp" = 2

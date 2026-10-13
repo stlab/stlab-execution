@@ -1,0 +1,6010 @@
+{
+  "forward": {
+    "timer-delay": [
+      [
+        "stlab_v2_system_timer_submit",
+        1.0
+      ],
+      [
+        "system-timer",
+        1.0
+      ],
+      [
+        "system_timer",
+        1.0
+      ],
+      [
+        "timer-status",
+        1.0
+      ],
+      [
+        "stlab-v2-system-timer-submit",
+        1.0
+      ],
+      [
+        "portable_timers",
+        1.0
+      ],
+      [
+        "portable-timers",
+        1.0
+      ],
+      [
+        "timer_delay",
+        1.0
+      ],
+      [
+        "timer_status",
+        1.0
+      ]
+    ],
+    "stlab_v2_default_executor_submit": [
+      [
+        "thread-pool",
+        1.0
+      ],
+      [
+        "default_executor",
+        1.0
+      ],
+      [
+        "executor_abi",
+        1.0
+      ],
+      [
+        "executor-abi",
+        1.0
+      ],
+      [
+        "priority_task_system",
+        1.0
+      ],
+      [
+        "thread_pool",
+        1.0
+      ],
+      [
+        "default-executor",
+        1.0
+      ],
+      [
+        "priority-task-system",
+        1.0
+      ],
+      [
+        "stlab-v2-default-executor-submit",
+        1.0
+      ]
+    ],
+    "synchronization_invariants": [
+      [
+        "locking_rules",
+        1.0
+      ],
+      [
+        "synchronization-invariants",
+        1.0
+      ],
+      [
+        "concurrency_contracts",
+        1.0
+      ],
+      [
+        "lock_scoping",
+        1.0
+      ],
+      [
+        "mutex-discipline",
+        1.0
+      ],
+      [
+        "mutex_discipline",
+        1.0
+      ],
+      [
+        "concurrency-contracts",
+        1.0
+      ],
+      [
+        "locking-rules",
+        1.0
+      ],
+      [
+        "lock-scoping",
+        1.0
+      ]
+    ],
+    "stlab_pre_exit": [
+      [
+        "process-shutdown",
+        1.0
+      ],
+      [
+        "stlab-pre-exit",
+        1.0
+      ],
+      [
+        "pre-exit",
+        1.0
+      ],
+      [
+        "core_shutdown",
+        1.0
+      ],
+      [
+        "at-pre-exit",
+        1.0
+      ],
+      [
+        "at_pre_exit",
+        1.0
+      ],
+      [
+        "pre_exit",
+        1.0
+      ],
+      [
+        "process_shutdown",
+        1.0
+      ],
+      [
+        "core-shutdown",
+        1.0
+      ]
+    ],
+    "type-erasure": [
+      [
+        "stlab_v2_task_concept",
+        1.0
+      ],
+      [
+        "move_only_task",
+        1.0
+      ],
+      [
+        "move-only-task",
+        1.0
+      ],
+      [
+        "stlab-v2-task-concept",
+        1.0
+      ],
+      [
+        "task",
+        1.0
+      ],
+      [
+        "task-t",
+        1.0
+      ],
+      [
+        "task_t",
+        1.0
+      ],
+      [
+        "type_erasure",
+        1.0
+      ]
+    ],
+    "build_system": [
+      [
+        "build-system",
+        1.0
+      ],
+      [
+        "ctest_matrix",
+        1.0
+      ],
+      [
+        "cmake-presets",
+        1.0
+      ],
+      [
+        "test-infrastructure",
+        1.0
+      ],
+      [
+        "ctest-matrix",
+        1.0
+      ],
+      [
+        "cmake_presets",
+        1.0
+      ],
+      [
+        "cpp-library",
+        1.0
+      ],
+      [
+        "cpp_library",
+        1.0
+      ],
+      [
+        "test_infrastructure",
+        1.0
+      ]
+    ],
+    "portable_main_executor": [
+      [
+        "main_queue",
+        1.0
+      ],
+      [
+        "main-task-queue",
+        1.0
+      ],
+      [
+        "main-executor",
+        1.0
+      ],
+      [
+        "main-queue",
+        1.0
+      ],
+      [
+        "portable-main-executor",
+        1.0
+      ],
+      [
+        "main_task_queue",
+        1.0
+      ],
+      [
+        "main_executor",
+        1.0
+      ]
+    ],
+    "main_task_queue": [
+      [
+        "main-task-queue",
+        1.0
+      ],
+      [
+        "main_queue",
+        1.0
+      ],
+      [
+        "main_executor",
+        1.0
+      ],
+      [
+        "portable_main_executor",
+        1.0
+      ],
+      [
+        "portable-main-executor",
+        1.0
+      ],
+      [
+        "main-queue",
+        1.0
+      ],
+      [
+        "main-executor",
+        1.0
+      ]
+    ],
+    "main_queue": [
+      [
+        "main_executor",
+        1.0
+      ],
+      [
+        "main-queue",
+        1.0
+      ],
+      [
+        "main_task_queue",
+        1.0
+      ],
+      [
+        "portable_main_executor",
+        1.0
+      ],
+      [
+        "main-executor",
+        1.0
+      ],
+      [
+        "portable-main-executor",
+        1.0
+      ],
+      [
+        "main-task-queue",
+        1.0
+      ]
+    ],
+    "executor_abi": [
+      [
+        "priority_task_system",
+        1.0
+      ],
+      [
+        "thread_pool",
+        1.0
+      ],
+      [
+        "executor-abi",
+        1.0
+      ],
+      [
+        "thread-pool",
+        1.0
+      ],
+      [
+        "priority-task-system",
+        1.0
+      ],
+      [
+        "stlab_v2_default_executor_submit",
+        1.0
+      ],
+      [
+        "default_executor",
+        1.0
+      ],
+      [
+        "default-executor",
+        1.0
+      ],
+      [
+        "stlab-v2-default-executor-submit",
+        1.0
+      ]
+    ],
+    "cmake_presets": [
+      [
+        "cmake-presets",
+        1.0
+      ],
+      [
+        "build_system",
+        1.0
+      ],
+      [
+        "cpp-library",
+        1.0
+      ],
+      [
+        "ctest-matrix",
+        1.0
+      ],
+      [
+        "ctest_matrix",
+        1.0
+      ],
+      [
+        "cpp_library",
+        1.0
+      ],
+      [
+        "build-system",
+        1.0
+      ],
+      [
+        "test-infrastructure",
+        1.0
+      ],
+      [
+        "test_infrastructure",
+        1.0
+      ]
+    ],
+    "abi_stability": [
+      [
+        "task-abi-guard",
+        1.0
+      ],
+      [
+        "shared_library_abi",
+        1.0
+      ],
+      [
+        "execution-def",
+        1.0
+      ],
+      [
+        "shared-library-abi",
+        1.0
+      ],
+      [
+        "version-namespaces",
+        1.0
+      ],
+      [
+        "execution_def",
+        1.0
+      ],
+      [
+        "version_namespaces",
+        1.0
+      ],
+      [
+        "task_abi_guard",
+        1.0
+      ],
+      [
+        "abi-stability",
+        1.0
+      ]
+    ],
+    "test-infrastructure": [
+      [
+        "cpp-library",
+        1.0
+      ],
+      [
+        "cmake-presets",
+        1.0
+      ],
+      [
+        "test_infrastructure",
+        1.0
+      ],
+      [
+        "build-system",
+        1.0
+      ],
+      [
+        "build_system",
+        1.0
+      ],
+      [
+        "cmake_presets",
+        1.0
+      ],
+      [
+        "ctest_matrix",
+        1.0
+      ],
+      [
+        "cpp_library",
+        1.0
+      ],
+      [
+        "ctest-matrix",
+        1.0
+      ]
+    ],
+    "concurrency_contracts": [
+      [
+        "synchronization-invariants",
+        1.0
+      ],
+      [
+        "locking-rules",
+        1.0
+      ],
+      [
+        "lock-scoping",
+        1.0
+      ],
+      [
+        "lock_scoping",
+        1.0
+      ],
+      [
+        "concurrency-contracts",
+        1.0
+      ],
+      [
+        "locking_rules",
+        1.0
+      ],
+      [
+        "mutex_discipline",
+        1.0
+      ],
+      [
+        "mutex-discipline",
+        1.0
+      ],
+      [
+        "synchronization_invariants",
+        1.0
+      ]
+    ],
+    "concurrency_runtime": [
+      [
+        "concurrency-runtime",
+        1.0
+      ],
+      [
+        "architecture_overview",
+        1.0
+      ],
+      [
+        "execution_runtime",
+        1.0
+      ],
+      [
+        "stlab_execution",
+        1.0
+      ],
+      [
+        "stlab-concurrency",
+        1.0
+      ],
+      [
+        "stlab_concurrency",
+        1.0
+      ],
+      [
+        "architecture-overview",
+        1.0
+      ],
+      [
+        "execution-runtime",
+        1.0
+      ],
+      [
+        "stlab-execution",
+        1.0
+      ]
+    ],
+    "lock_scoping": [
+      [
+        "locking-rules",
+        1.0
+      ],
+      [
+        "locking_rules",
+        1.0
+      ],
+      [
+        "synchronization_invariants",
+        1.0
+      ],
+      [
+        "synchronization-invariants",
+        1.0
+      ],
+      [
+        "concurrency_contracts",
+        1.0
+      ],
+      [
+        "concurrency-contracts",
+        1.0
+      ],
+      [
+        "lock-scoping",
+        1.0
+      ],
+      [
+        "mutex_discipline",
+        1.0
+      ],
+      [
+        "mutex-discipline",
+        1.0
+      ]
+    ],
+    "task": [
+      [
+        "move-only-task",
+        1.0
+      ],
+      [
+        "task-t",
+        1.0
+      ],
+      [
+        "type-erasure",
+        1.0
+      ],
+      [
+        "stlab-v2-task-concept",
+        1.0
+      ],
+      [
+        "move_only_task",
+        1.0
+      ],
+      [
+        "stlab_v2_task_concept",
+        1.0
+      ],
+      [
+        "task_t",
+        1.0
+      ],
+      [
+        "type_erasure",
+        1.0
+      ]
+    ],
+    "thread-pool": [
+      [
+        "default_executor",
+        1.0
+      ],
+      [
+        "stlab_v2_default_executor_submit",
+        1.0
+      ],
+      [
+        "priority-task-system",
+        1.0
+      ],
+      [
+        "default-executor",
+        1.0
+      ],
+      [
+        "thread_pool",
+        1.0
+      ],
+      [
+        "stlab-v2-default-executor-submit",
+        1.0
+      ],
+      [
+        "executor-abi",
+        1.0
+      ],
+      [
+        "executor_abi",
+        1.0
+      ],
+      [
+        "priority_task_system",
+        1.0
+      ]
+    ],
+    "build-system": [
+      [
+        "test-infrastructure",
+        1.0
+      ],
+      [
+        "cmake_presets",
+        1.0
+      ],
+      [
+        "ctest-matrix",
+        1.0
+      ],
+      [
+        "cpp-library",
+        1.0
+      ],
+      [
+        "test_infrastructure",
+        1.0
+      ],
+      [
+        "cpp_library",
+        1.0
+      ],
+      [
+        "cmake-presets",
+        1.0
+      ],
+      [
+        "ctest_matrix",
+        1.0
+      ],
+      [
+        "build_system",
+        1.0
+      ]
+    ],
+    "locking-rules": [
+      [
+        "lock-scoping",
+        1.0
+      ],
+      [
+        "synchronization-invariants",
+        1.0
+      ],
+      [
+        "concurrency_contracts",
+        1.0
+      ],
+      [
+        "locking_rules",
+        1.0
+      ],
+      [
+        "synchronization_invariants",
+        1.0
+      ],
+      [
+        "lock_scoping",
+        1.0
+      ],
+      [
+        "concurrency-contracts",
+        1.0
+      ],
+      [
+        "mutex_discipline",
+        1.0
+      ],
+      [
+        "mutex-discipline",
+        1.0
+      ]
+    ],
+    "stlab-execution": [
+      [
+        "stlab_execution",
+        1.0
+      ],
+      [
+        "concurrency-runtime",
+        1.0
+      ],
+      [
+        "architecture_overview",
+        1.0
+      ],
+      [
+        "execution_runtime",
+        1.0
+      ],
+      [
+        "architecture-overview",
+        1.0
+      ],
+      [
+        "concurrency_runtime",
+        1.0
+      ],
+      [
+        "execution-runtime",
+        1.0
+      ],
+      [
+        "stlab_concurrency",
+        1.0
+      ],
+      [
+        "stlab-concurrency",
+        1.0
+      ]
+    ],
+    "wasm_pre_exit": [
+      [
+        "threadless_wasm",
+        1.0
+      ],
+      [
+        "cooperative-executor",
+        1.0
+      ],
+      [
+        "threadless-wasm",
+        1.0
+      ],
+      [
+        "cooperative_executor",
+        1.0
+      ],
+      [
+        "emscripten",
+        1.0
+      ],
+      [
+        "webassembly-execution",
+        1.0
+      ],
+      [
+        "wasm-pre-exit",
+        1.0
+      ],
+      [
+        "webassembly_execution",
+        1.0
+      ]
+    ],
+    "system_timer": [
+      [
+        "system-timer",
+        1.0
+      ],
+      [
+        "timer_delay",
+        1.0
+      ],
+      [
+        "portable_timers",
+        1.0
+      ],
+      [
+        "timer-delay",
+        1.0
+      ],
+      [
+        "stlab-v2-system-timer-submit",
+        1.0
+      ],
+      [
+        "timer-status",
+        1.0
+      ],
+      [
+        "portable-timers",
+        1.0
+      ],
+      [
+        "timer_status",
+        1.0
+      ],
+      [
+        "stlab_v2_system_timer_submit",
+        1.0
+      ]
+    ],
+    "timer-status": [
+      [
+        "portable_timers",
+        1.0
+      ],
+      [
+        "timer_delay",
+        1.0
+      ],
+      [
+        "portable-timers",
+        1.0
+      ],
+      [
+        "system-timer",
+        1.0
+      ],
+      [
+        "stlab_v2_system_timer_submit",
+        1.0
+      ],
+      [
+        "stlab-v2-system-timer-submit",
+        1.0
+      ],
+      [
+        "timer_status",
+        1.0
+      ],
+      [
+        "system_timer",
+        1.0
+      ],
+      [
+        "timer-delay",
+        1.0
+      ]
+    ],
+    "stlab-pre-exit": [
+      [
+        "pre_exit",
+        1.0
+      ],
+      [
+        "process_shutdown",
+        1.0
+      ],
+      [
+        "at-pre-exit",
+        1.0
+      ],
+      [
+        "stlab_pre_exit",
+        1.0
+      ],
+      [
+        "process-shutdown",
+        1.0
+      ],
+      [
+        "core-shutdown",
+        1.0
+      ],
+      [
+        "pre-exit",
+        1.0
+      ],
+      [
+        "at_pre_exit",
+        1.0
+      ],
+      [
+        "core_shutdown",
+        1.0
+      ]
+    ],
+    "version-namespaces": [
+      [
+        "version_namespaces",
+        1.0
+      ],
+      [
+        "abi_stability",
+        1.0
+      ],
+      [
+        "shared-library-abi",
+        1.0
+      ],
+      [
+        "task_abi_guard",
+        1.0
+      ],
+      [
+        "abi-stability",
+        1.0
+      ],
+      [
+        "execution-def",
+        1.0
+      ],
+      [
+        "task-abi-guard",
+        1.0
+      ],
+      [
+        "shared_library_abi",
+        1.0
+      ],
+      [
+        "execution_def",
+        1.0
+      ]
+    ],
+    "execution-def": [
+      [
+        "shared_library_abi",
+        1.0
+      ],
+      [
+        "execution_def",
+        1.0
+      ],
+      [
+        "version_namespaces",
+        1.0
+      ],
+      [
+        "task_abi_guard",
+        1.0
+      ],
+      [
+        "task-abi-guard",
+        1.0
+      ],
+      [
+        "abi-stability",
+        1.0
+      ],
+      [
+        "version-namespaces",
+        1.0
+      ],
+      [
+        "abi_stability",
+        1.0
+      ],
+      [
+        "shared-library-abi",
+        1.0
+      ]
+    ],
+    "test_infrastructure": [
+      [
+        "cpp_library",
+        1.0
+      ],
+      [
+        "build-system",
+        1.0
+      ],
+      [
+        "cmake_presets",
+        1.0
+      ],
+      [
+        "ctest-matrix",
+        1.0
+      ],
+      [
+        "cpp-library",
+        1.0
+      ],
+      [
+        "ctest_matrix",
+        1.0
+      ],
+      [
+        "build_system",
+        1.0
+      ],
+      [
+        "test-infrastructure",
+        1.0
+      ],
+      [
+        "cmake-presets",
+        1.0
+      ]
+    ],
+    "stlab-v2-system-timer-submit": [
+      [
+        "timer-delay",
+        1.0
+      ],
+      [
+        "portable_timers",
+        1.0
+      ],
+      [
+        "timer_delay",
+        1.0
+      ],
+      [
+        "system-timer",
+        1.0
+      ],
+      [
+        "timer_status",
+        1.0
+      ],
+      [
+        "portable-timers",
+        1.0
+      ],
+      [
+        "stlab_v2_system_timer_submit",
+        1.0
+      ],
+      [
+        "timer-status",
+        1.0
+      ],
+      [
+        "system_timer",
+        1.0
+      ]
+    ],
+    "main-task-queue": [
+      [
+        "portable_main_executor",
+        1.0
+      ],
+      [
+        "main_task_queue",
+        1.0
+      ],
+      [
+        "main_queue",
+        1.0
+      ],
+      [
+        "main-executor",
+        1.0
+      ],
+      [
+        "portable-main-executor",
+        1.0
+      ],
+      [
+        "main_executor",
+        1.0
+      ],
+      [
+        "main-queue",
+        1.0
+      ]
+    ],
+    "process-shutdown": [
+      [
+        "core-shutdown",
+        1.0
+      ],
+      [
+        "pre_exit",
+        1.0
+      ],
+      [
+        "core_shutdown",
+        1.0
+      ],
+      [
+        "stlab_pre_exit",
+        1.0
+      ],
+      [
+        "stlab-pre-exit",
+        1.0
+      ],
+      [
+        "at_pre_exit",
+        1.0
+      ],
+      [
+        "process_shutdown",
+        1.0
+      ],
+      [
+        "pre-exit",
+        1.0
+      ],
+      [
+        "at-pre-exit",
+        1.0
+      ]
+    ],
+    "concurrency-runtime": [
+      [
+        "stlab_execution",
+        1.0
+      ],
+      [
+        "architecture_overview",
+        1.0
+      ],
+      [
+        "architecture-overview",
+        1.0
+      ],
+      [
+        "stlab-execution",
+        1.0
+      ],
+      [
+        "stlab_concurrency",
+        1.0
+      ],
+      [
+        "execution_runtime",
+        1.0
+      ],
+      [
+        "execution-runtime",
+        1.0
+      ],
+      [
+        "stlab-concurrency",
+        1.0
+      ],
+      [
+        "concurrency_runtime",
+        1.0
+      ]
+    ],
+    "webassembly-execution": [
+      [
+        "threadless_wasm",
+        1.0
+      ],
+      [
+        "threadless-wasm",
+        1.0
+      ],
+      [
+        "cooperative_executor",
+        1.0
+      ],
+      [
+        "wasm_pre_exit",
+        1.0
+      ],
+      [
+        "emscripten",
+        1.0
+      ],
+      [
+        "cooperative-executor",
+        1.0
+      ],
+      [
+        "wasm-pre-exit",
+        1.0
+      ],
+      [
+        "webassembly_execution",
+        1.0
+      ]
+    ],
+    "shared_library_abi": [
+      [
+        "execution_def",
+        1.0
+      ],
+      [
+        "task_abi_guard",
+        1.0
+      ],
+      [
+        "execution-def",
+        1.0
+      ],
+      [
+        "abi_stability",
+        1.0
+      ],
+      [
+        "version_namespaces",
+        1.0
+      ],
+      [
+        "abi-stability",
+        1.0
+      ],
+      [
+        "task-abi-guard",
+        1.0
+      ],
+      [
+        "version-namespaces",
+        1.0
+      ],
+      [
+        "shared-library-abi",
+        1.0
+      ]
+    ],
+    "priority-task-system": [
+      [
+        "stlab_v2_default_executor_submit",
+        1.0
+      ],
+      [
+        "executor-abi",
+        1.0
+      ],
+      [
+        "priority_task_system",
+        1.0
+      ],
+      [
+        "stlab-v2-default-executor-submit",
+        1.0
+      ],
+      [
+        "executor_abi",
+        1.0
+      ],
+      [
+        "default_executor",
+        1.0
+      ],
+      [
+        "default-executor",
+        1.0
+      ],
+      [
+        "thread_pool",
+        1.0
+      ],
+      [
+        "thread-pool",
+        1.0
+      ]
+    ],
+    "stlab_execution": [
+      [
+        "architecture-overview",
+        1.0
+      ],
+      [
+        "execution_runtime",
+        1.0
+      ],
+      [
+        "concurrency-runtime",
+        1.0
+      ],
+      [
+        "stlab_concurrency",
+        1.0
+      ],
+      [
+        "architecture_overview",
+        1.0
+      ],
+      [
+        "stlab-execution",
+        1.0
+      ],
+      [
+        "execution-runtime",
+        1.0
+      ],
+      [
+        "concurrency_runtime",
+        1.0
+      ],
+      [
+        "stlab-concurrency",
+        1.0
+      ]
+    ],
+    "portable-main-executor": [
+      [
+        "main_executor",
+        1.0
+      ],
+      [
+        "main-queue",
+        1.0
+      ],
+      [
+        "main_task_queue",
+        1.0
+      ],
+      [
+        "main-executor",
+        1.0
+      ],
+      [
+        "main-task-queue",
+        1.0
+      ],
+      [
+        "main_queue",
+        1.0
+      ],
+      [
+        "portable_main_executor",
+        1.0
+      ]
+    ],
+    "task_t": [
+      [
+        "type-erasure",
+        1.0
+      ],
+      [
+        "stlab-v2-task-concept",
+        1.0
+      ],
+      [
+        "task-t",
+        1.0
+      ],
+      [
+        "move-only-task",
+        1.0
+      ],
+      [
+        "move_only_task",
+        1.0
+      ],
+      [
+        "stlab_v2_task_concept",
+        1.0
+      ],
+      [
+        "task",
+        1.0
+      ],
+      [
+        "type_erasure",
+        1.0
+      ]
+    ],
+    "cmake-presets": [
+      [
+        "build_system",
+        1.0
+      ],
+      [
+        "cmake_presets",
+        1.0
+      ],
+      [
+        "test_infrastructure",
+        1.0
+      ],
+      [
+        "test-infrastructure",
+        1.0
+      ],
+      [
+        "cpp-library",
+        1.0
+      ],
+      [
+        "ctest_matrix",
+        1.0
+      ],
+      [
+        "cpp_library",
+        1.0
+      ],
+      [
+        "build-system",
+        1.0
+      ],
+      [
+        "ctest-matrix",
+        1.0
+      ]
+    ],
+    "type_erasure": [
+      [
+        "move_only_task",
+        1.0
+      ],
+      [
+        "task-t",
+        1.0
+      ],
+      [
+        "type-erasure",
+        1.0
+      ],
+      [
+        "task_t",
+        1.0
+      ],
+      [
+        "stlab-v2-task-concept",
+        1.0
+      ],
+      [
+        "move-only-task",
+        1.0
+      ],
+      [
+        "task",
+        1.0
+      ],
+      [
+        "stlab_v2_task_concept",
+        1.0
+      ]
+    ],
+    "architecture_overview": [
+      [
+        "architecture-overview",
+        1.0
+      ],
+      [
+        "concurrency-runtime",
+        1.0
+      ],
+      [
+        "stlab_concurrency",
+        1.0
+      ],
+      [
+        "stlab-concurrency",
+        1.0
+      ],
+      [
+        "concurrency_runtime",
+        1.0
+      ],
+      [
+        "stlab-execution",
+        1.0
+      ],
+      [
+        "execution_runtime",
+        1.0
+      ],
+      [
+        "execution-runtime",
+        1.0
+      ],
+      [
+        "stlab_execution",
+        1.0
+      ]
+    ],
+    "mutex_discipline": [
+      [
+        "lock-scoping",
+        1.0
+      ],
+      [
+        "mutex-discipline",
+        1.0
+      ],
+      [
+        "locking-rules",
+        1.0
+      ],
+      [
+        "synchronization-invariants",
+        1.0
+      ],
+      [
+        "synchronization_invariants",
+        1.0
+      ],
+      [
+        "concurrency-contracts",
+        1.0
+      ],
+      [
+        "locking_rules",
+        1.0
+      ],
+      [
+        "concurrency_contracts",
+        1.0
+      ],
+      [
+        "lock_scoping",
+        1.0
+      ]
+    ],
+    "cpp-library": [
+      [
+        "ctest_matrix",
+        1.0
+      ],
+      [
+        "cmake_presets",
+        1.0
+      ],
+      [
+        "test-infrastructure",
+        1.0
+      ],
+      [
+        "build_system",
+        1.0
+      ],
+      [
+        "test_infrastructure",
+        1.0
+      ],
+      [
+        "ctest-matrix",
+        1.0
+      ],
+      [
+        "cmake-presets",
+        1.0
+      ],
+      [
+        "cpp_library",
+        1.0
+      ],
+      [
+        "build-system",
+        1.0
+      ]
+    ],
+    "portable-timers": [
+      [
+        "system_timer",
+        1.0
+      ],
+      [
+        "timer-delay",
+        1.0
+      ],
+      [
+        "timer_delay",
+        1.0
+      ],
+      [
+        "portable_timers",
+        1.0
+      ],
+      [
+        "timer-status",
+        1.0
+      ],
+      [
+        "stlab_v2_system_timer_submit",
+        1.0
+      ],
+      [
+        "stlab-v2-system-timer-submit",
+        1.0
+      ],
+      [
+        "system-timer",
+        1.0
+      ],
+      [
+        "timer_status",
+        1.0
+      ]
+    ],
+    "at-pre-exit": [
+      [
+        "process_shutdown",
+        1.0
+      ],
+      [
+        "core_shutdown",
+        1.0
+      ],
+      [
+        "stlab_pre_exit",
+        1.0
+      ],
+      [
+        "stlab-pre-exit",
+        1.0
+      ],
+      [
+        "pre_exit",
+        1.0
+      ],
+      [
+        "core-shutdown",
+        1.0
+      ],
+      [
+        "pre-exit",
+        1.0
+      ],
+      [
+        "at_pre_exit",
+        1.0
+      ],
+      [
+        "process-shutdown",
+        1.0
+      ]
+    ],
+    "cooperative_executor": [
+      [
+        "webassembly_execution",
+        1.0
+      ],
+      [
+        "threadless-wasm",
+        1.0
+      ],
+      [
+        "wasm_pre_exit",
+        1.0
+      ],
+      [
+        "threadless_wasm",
+        1.0
+      ],
+      [
+        "emscripten",
+        1.0
+      ],
+      [
+        "cooperative-executor",
+        1.0
+      ],
+      [
+        "wasm-pre-exit",
+        1.0
+      ],
+      [
+        "webassembly-execution",
+        1.0
+      ]
+    ],
+    "task-t": [
+      [
+        "move-only-task",
+        1.0
+      ],
+      [
+        "type_erasure",
+        1.0
+      ],
+      [
+        "stlab_v2_task_concept",
+        1.0
+      ],
+      [
+        "stlab-v2-task-concept",
+        1.0
+      ],
+      [
+        "move_only_task",
+        1.0
+      ],
+      [
+        "type-erasure",
+        1.0
+      ],
+      [
+        "task_t",
+        1.0
+      ],
+      [
+        "task",
+        1.0
+      ]
+    ],
+    "at_pre_exit": [
+      [
+        "pre_exit",
+        1.0
+      ],
+      [
+        "core_shutdown",
+        1.0
+      ],
+      [
+        "core-shutdown",
+        1.0
+      ],
+      [
+        "process_shutdown",
+        1.0
+      ],
+      [
+        "pre-exit",
+        1.0
+      ],
+      [
+        "process-shutdown",
+        1.0
+      ],
+      [
+        "stlab_pre_exit",
+        1.0
+      ],
+      [
+        "stlab-pre-exit",
+        1.0
+      ],
+      [
+        "at-pre-exit",
+        1.0
+      ]
+    ],
+    "stlab-concurrency": [
+      [
+        "stlab-execution",
+        1.0
+      ],
+      [
+        "architecture_overview",
+        1.0
+      ],
+      [
+        "execution_runtime",
+        1.0
+      ],
+      [
+        "stlab_execution",
+        1.0
+      ],
+      [
+        "stlab_concurrency",
+        1.0
+      ],
+      [
+        "concurrency_runtime",
+        1.0
+      ],
+      [
+        "execution-runtime",
+        1.0
+      ],
+      [
+        "concurrency-runtime",
+        1.0
+      ],
+      [
+        "architecture-overview",
+        1.0
+      ]
+    ],
+    "timer_delay": [
+      [
+        "portable_timers",
+        1.0
+      ],
+      [
+        "stlab_v2_system_timer_submit",
+        1.0
+      ],
+      [
+        "system-timer",
+        1.0
+      ],
+      [
+        "timer-delay",
+        1.0
+      ],
+      [
+        "system_timer",
+        1.0
+      ],
+      [
+        "timer-status",
+        1.0
+      ],
+      [
+        "timer_status",
+        1.0
+      ],
+      [
+        "portable-timers",
+        1.0
+      ],
+      [
+        "stlab-v2-system-timer-submit",
+        1.0
+      ]
+    ],
+    "ctest_matrix": [
+      [
+        "build-system",
+        1.0
+      ],
+      [
+        "cmake-presets",
+        1.0
+      ],
+      [
+        "cmake_presets",
+        1.0
+      ],
+      [
+        "cpp-library",
+        1.0
+      ],
+      [
+        "cpp_library",
+        1.0
+      ],
+      [
+        "test-infrastructure",
+        1.0
+      ],
+      [
+        "ctest-matrix",
+        1.0
+      ],
+      [
+        "build_system",
+        1.0
+      ],
+      [
+        "test_infrastructure",
+        1.0
+      ]
+    ],
+    "portable_timers": [
+      [
+        "timer_delay",
+        1.0
+      ],
+      [
+        "stlab_v2_system_timer_submit",
+        1.0
+      ],
+      [
+        "timer_status",
+        1.0
+      ],
+      [
+        "stlab-v2-system-timer-submit",
+        1.0
+      ],
+      [
+        "timer-status",
+        1.0
+      ],
+      [
+        "portable-timers",
+        1.0
+      ],
+      [
+        "system-timer",
+        1.0
+      ],
+      [
+        "system_timer",
+        1.0
+      ],
+      [
+        "timer-delay",
+        1.0
+      ]
+    ],
+    "lock-scoping": [
+      [
+        "locking_rules",
+        1.0
+      ],
+      [
+        "synchronization_invariants",
+        1.0
+      ],
+      [
+        "concurrency-contracts",
+        1.0
+      ],
+      [
+        "mutex_discipline",
+        1.0
+      ],
+      [
+        "lock_scoping",
+        1.0
+      ],
+      [
+        "concurrency_contracts",
+        1.0
+      ],
+      [
+        "mutex-discipline",
+        1.0
+      ],
+      [
+        "synchronization-invariants",
+        1.0
+      ],
+      [
+        "locking-rules",
+        1.0
+      ]
+    ],
+    "stlab_v2_task_concept": [
+      [
+        "type_erasure",
+        1.0
+      ],
+      [
+        "move-only-task",
+        1.0
+      ],
+      [
+        "move_only_task",
+        1.0
+      ],
+      [
+        "task",
+        1.0
+      ],
+      [
+        "task-t",
+        1.0
+      ],
+      [
+        "type-erasure",
+        1.0
+      ],
+      [
+        "stlab-v2-task-concept",
+        1.0
+      ],
+      [
+        "task_t",
+        1.0
+      ]
+    ],
+    "main-queue": [
+      [
+        "main-executor",
+        1.0
+      ],
+      [
+        "portable_main_executor",
+        1.0
+      ],
+      [
+        "main_task_queue",
+        1.0
+      ],
+      [
+        "main_executor",
+        1.0
+      ],
+      [
+        "portable-main-executor",
+        1.0
+      ],
+      [
+        "main_queue",
+        1.0
+      ],
+      [
+        "main-task-queue",
+        1.0
+      ]
+    ],
+    "abi-stability": [
+      [
+        "execution_def",
+        1.0
+      ],
+      [
+        "shared-library-abi",
+        1.0
+      ],
+      [
+        "version-namespaces",
+        1.0
+      ],
+      [
+        "task_abi_guard",
+        1.0
+      ],
+      [
+        "execution-def",
+        1.0
+      ],
+      [
+        "version_namespaces",
+        1.0
+      ],
+      [
+        "task-abi-guard",
+        1.0
+      ],
+      [
+        "shared_library_abi",
+        1.0
+      ],
+      [
+        "abi_stability",
+        1.0
+      ]
+    ],
+    "threadless-wasm": [
+      [
+        "webassembly_execution",
+        1.0
+      ],
+      [
+        "wasm-pre-exit",
+        1.0
+      ],
+      [
+        "threadless_wasm",
+        1.0
+      ],
+      [
+        "emscripten",
+        1.0
+      ],
+      [
+        "webassembly-execution",
+        1.0
+      ],
+      [
+        "cooperative_executor",
+        1.0
+      ],
+      [
+        "cooperative-executor",
+        1.0
+      ],
+      [
+        "wasm_pre_exit",
+        1.0
+      ]
+    ],
+    "ctest-matrix": [
+      [
+        "cmake_presets",
+        1.0
+      ],
+      [
+        "cpp_library",
+        1.0
+      ],
+      [
+        "ctest_matrix",
+        1.0
+      ],
+      [
+        "cmake-presets",
+        1.0
+      ],
+      [
+        "build-system",
+        1.0
+      ],
+      [
+        "test-infrastructure",
+        1.0
+      ],
+      [
+        "build_system",
+        1.0
+      ],
+      [
+        "cpp-library",
+        1.0
+      ],
+      [
+        "test_infrastructure",
+        1.0
+      ]
+    ],
+    "stlab-v2-task-concept": [
+      [
+        "task_t",
+        1.0
+      ],
+      [
+        "move_only_task",
+        1.0
+      ],
+      [
+        "task-t",
+        1.0
+      ],
+      [
+        "task",
+        1.0
+      ],
+      [
+        "move-only-task",
+        1.0
+      ],
+      [
+        "stlab_v2_task_concept",
+        1.0
+      ],
+      [
+        "type_erasure",
+        1.0
+      ],
+      [
+        "type-erasure",
+        1.0
+      ]
+    ],
+    "emscripten": [
+      [
+        "wasm-pre-exit",
+        1.0
+      ],
+      [
+        "wasm_pre_exit",
+        1.0
+      ],
+      [
+        "webassembly-execution",
+        1.0
+      ],
+      [
+        "threadless-wasm",
+        1.0
+      ],
+      [
+        "cooperative_executor",
+        1.0
+      ],
+      [
+        "cooperative-executor",
+        1.0
+      ],
+      [
+        "threadless_wasm",
+        1.0
+      ],
+      [
+        "webassembly_execution",
+        1.0
+      ]
+    ],
+    "system-timer": [
+      [
+        "stlab_v2_system_timer_submit",
+        1.0
+      ],
+      [
+        "portable_timers",
+        1.0
+      ],
+      [
+        "timer_status",
+        1.0
+      ],
+      [
+        "stlab-v2-system-timer-submit",
+        1.0
+      ],
+      [
+        "timer_delay",
+        1.0
+      ],
+      [
+        "timer-status",
+        1.0
+      ],
+      [
+        "portable-timers",
+        1.0
+      ],
+      [
+        "timer-delay",
+        1.0
+      ],
+      [
+        "system_timer",
+        1.0
+      ]
+    ],
+    "version_namespaces": [
+      [
+        "version-namespaces",
+        1.0
+      ],
+      [
+        "abi_stability",
+        1.0
+      ],
+      [
+        "execution-def",
+        1.0
+      ],
+      [
+        "task_abi_guard",
+        1.0
+      ],
+      [
+        "execution_def",
+        1.0
+      ],
+      [
+        "shared-library-abi",
+        1.0
+      ],
+      [
+        "abi-stability",
+        1.0
+      ],
+      [
+        "shared_library_abi",
+        1.0
+      ],
+      [
+        "task-abi-guard",
+        1.0
+      ]
+    ],
+    "execution_def": [
+      [
+        "shared_library_abi",
+        1.0
+      ],
+      [
+        "abi-stability",
+        1.0
+      ],
+      [
+        "task-abi-guard",
+        1.0
+      ],
+      [
+        "task_abi_guard",
+        1.0
+      ],
+      [
+        "abi_stability",
+        1.0
+      ],
+      [
+        "execution-def",
+        1.0
+      ],
+      [
+        "shared-library-abi",
+        1.0
+      ],
+      [
+        "version_namespaces",
+        1.0
+      ],
+      [
+        "version-namespaces",
+        1.0
+      ]
+    ],
+    "main_executor": [
+      [
+        "main-executor",
+        1.0
+      ],
+      [
+        "main-queue",
+        1.0
+      ],
+      [
+        "portable-main-executor",
+        1.0
+      ],
+      [
+        "portable_main_executor",
+        1.0
+      ],
+      [
+        "main_task_queue",
+        1.0
+      ],
+      [
+        "main-task-queue",
+        1.0
+      ],
+      [
+        "main_queue",
+        1.0
+      ]
+    ],
+    "default_executor": [
+      [
+        "stlab-v2-default-executor-submit",
+        1.0
+      ],
+      [
+        "executor_abi",
+        1.0
+      ],
+      [
+        "thread-pool",
+        1.0
+      ],
+      [
+        "priority-task-system",
+        1.0
+      ],
+      [
+        "default-executor",
+        1.0
+      ],
+      [
+        "priority_task_system",
+        1.0
+      ],
+      [
+        "executor-abi",
+        1.0
+      ],
+      [
+        "stlab_v2_default_executor_submit",
+        1.0
+      ],
+      [
+        "thread_pool",
+        1.0
+      ]
+    ],
+    "wasm-pre-exit": [
+      [
+        "emscripten",
+        1.0
+      ],
+      [
+        "webassembly_execution",
+        1.0
+      ],
+      [
+        "threadless_wasm",
+        1.0
+      ],
+      [
+        "cooperative_executor",
+        1.0
+      ],
+      [
+        "threadless-wasm",
+        1.0
+      ],
+      [
+        "cooperative-executor",
+        1.0
+      ],
+      [
+        "wasm_pre_exit",
+        1.0
+      ],
+      [
+        "webassembly-execution",
+        1.0
+      ]
+    ],
+    "priority_task_system": [
+      [
+        "priority-task-system",
+        1.0
+      ],
+      [
+        "thread-pool",
+        1.0
+      ],
+      [
+        "thread_pool",
+        1.0
+      ],
+      [
+        "default-executor",
+        1.0
+      ],
+      [
+        "executor_abi",
+        1.0
+      ],
+      [
+        "executor-abi",
+        1.0
+      ],
+      [
+        "stlab_v2_default_executor_submit",
+        1.0
+      ],
+      [
+        "default_executor",
+        1.0
+      ],
+      [
+        "stlab-v2-default-executor-submit",
+        1.0
+      ]
+    ],
+    "cpp_library": [
+      [
+        "cmake_presets",
+        1.0
+      ],
+      [
+        "test_infrastructure",
+        1.0
+      ],
+      [
+        "test-infrastructure",
+        1.0
+      ],
+      [
+        "cpp-library",
+        1.0
+      ],
+      [
+        "cmake-presets",
+        1.0
+      ],
+      [
+        "build-system",
+        1.0
+      ],
+      [
+        "ctest_matrix",
+        1.0
+      ],
+      [
+        "ctest-matrix",
+        1.0
+      ],
+      [
+        "build_system",
+        1.0
+      ]
+    ],
+    "default-executor": [
+      [
+        "stlab-v2-default-executor-submit",
+        1.0
+      ],
+      [
+        "priority-task-system",
+        1.0
+      ],
+      [
+        "executor-abi",
+        1.0
+      ],
+      [
+        "executor_abi",
+        1.0
+      ],
+      [
+        "thread-pool",
+        1.0
+      ],
+      [
+        "thread_pool",
+        1.0
+      ],
+      [
+        "stlab_v2_default_executor_submit",
+        1.0
+      ],
+      [
+        "priority_task_system",
+        1.0
+      ],
+      [
+        "default_executor",
+        1.0
+      ]
+    ],
+    "move-only-task": [
+      [
+        "type_erasure",
+        1.0
+      ],
+      [
+        "move_only_task",
+        1.0
+      ],
+      [
+        "type-erasure",
+        1.0
+      ],
+      [
+        "stlab-v2-task-concept",
+        1.0
+      ],
+      [
+        "task",
+        1.0
+      ],
+      [
+        "task_t",
+        1.0
+      ],
+      [
+        "task-t",
+        1.0
+      ],
+      [
+        "stlab_v2_task_concept",
+        1.0
+      ]
+    ],
+    "mutex-discipline": [
+      [
+        "synchronization_invariants",
+        1.0
+      ],
+      [
+        "lock_scoping",
+        1.0
+      ],
+      [
+        "concurrency_contracts",
+        1.0
+      ],
+      [
+        "concurrency-contracts",
+        1.0
+      ],
+      [
+        "locking_rules",
+        1.0
+      ],
+      [
+        "locking-rules",
+        1.0
+      ],
+      [
+        "synchronization-invariants",
+        1.0
+      ],
+      [
+        "mutex_discipline",
+        1.0
+      ],
+      [
+        "lock-scoping",
+        1.0
+      ]
+    ],
+    "executor-abi": [
+      [
+        "priority_task_system",
+        1.0
+      ],
+      [
+        "thread_pool",
+        1.0
+      ],
+      [
+        "thread-pool",
+        1.0
+      ],
+      [
+        "stlab_v2_default_executor_submit",
+        1.0
+      ],
+      [
+        "priority-task-system",
+        1.0
+      ],
+      [
+        "executor_abi",
+        1.0
+      ],
+      [
+        "default-executor",
+        1.0
+      ],
+      [
+        "default_executor",
+        1.0
+      ],
+      [
+        "stlab-v2-default-executor-submit",
+        1.0
+      ]
+    ],
+    "threadless_wasm": [
+      [
+        "emscripten",
+        1.0
+      ],
+      [
+        "wasm-pre-exit",
+        1.0
+      ],
+      [
+        "webassembly_execution",
+        1.0
+      ],
+      [
+        "webassembly-execution",
+        1.0
+      ],
+      [
+        "wasm_pre_exit",
+        1.0
+      ],
+      [
+        "cooperative_executor",
+        1.0
+      ],
+      [
+        "cooperative-executor",
+        1.0
+      ],
+      [
+        "threadless-wasm",
+        1.0
+      ]
+    ],
+    "stlab-v2-default-executor-submit": [
+      [
+        "thread_pool",
+        1.0
+      ],
+      [
+        "thread-pool",
+        1.0
+      ],
+      [
+        "default-executor",
+        1.0
+      ],
+      [
+        "executor-abi",
+        1.0
+      ],
+      [
+        "priority_task_system",
+        1.0
+      ],
+      [
+        "executor_abi",
+        1.0
+      ],
+      [
+        "default_executor",
+        1.0
+      ],
+      [
+        "stlab_v2_default_executor_submit",
+        1.0
+      ],
+      [
+        "priority-task-system",
+        1.0
+      ]
+    ],
+    "stlab_v2_system_timer_submit": [
+      [
+        "timer_delay",
+        1.0
+      ],
+      [
+        "portable-timers",
+        1.0
+      ],
+      [
+        "timer_status",
+        1.0
+      ],
+      [
+        "timer-delay",
+        1.0
+      ],
+      [
+        "system-timer",
+        1.0
+      ],
+      [
+        "system_timer",
+        1.0
+      ],
+      [
+        "portable_timers",
+        1.0
+      ],
+      [
+        "timer-status",
+        1.0
+      ],
+      [
+        "stlab-v2-system-timer-submit",
+        1.0
+      ]
+    ],
+    "stlab_concurrency": [
+      [
+        "execution-runtime",
+        1.0
+      ],
+      [
+        "execution_runtime",
+        1.0
+      ],
+      [
+        "architecture_overview",
+        1.0
+      ],
+      [
+        "stlab-execution",
+        1.0
+      ],
+      [
+        "concurrency_runtime",
+        1.0
+      ],
+      [
+        "concurrency-runtime",
+        1.0
+      ],
+      [
+        "architecture-overview",
+        1.0
+      ],
+      [
+        "stlab_execution",
+        1.0
+      ],
+      [
+        "stlab-concurrency",
+        1.0
+      ]
+    ],
+    "thread_pool": [
+      [
+        "priority-task-system",
+        1.0
+      ],
+      [
+        "default-executor",
+        1.0
+      ],
+      [
+        "priority_task_system",
+        1.0
+      ],
+      [
+        "stlab_v2_default_executor_submit",
+        1.0
+      ],
+      [
+        "thread-pool",
+        1.0
+      ],
+      [
+        "executor_abi",
+        1.0
+      ],
+      [
+        "executor-abi",
+        1.0
+      ],
+      [
+        "default_executor",
+        1.0
+      ],
+      [
+        "stlab-v2-default-executor-submit",
+        1.0
+      ]
+    ],
+    "timer_status": [
+      [
+        "stlab-v2-system-timer-submit",
+        1.0
+      ],
+      [
+        "portable_timers",
+        1.0
+      ],
+      [
+        "system_timer",
+        1.0
+      ],
+      [
+        "timer-delay",
+        1.0
+      ],
+      [
+        "stlab_v2_system_timer_submit",
+        1.0
+      ],
+      [
+        "timer-status",
+        1.0
+      ],
+      [
+        "portable-timers",
+        1.0
+      ],
+      [
+        "system-timer",
+        1.0
+      ],
+      [
+        "timer_delay",
+        1.0
+      ]
+    ],
+    "process_shutdown": [
+      [
+        "stlab_pre_exit",
+        1.0
+      ],
+      [
+        "pre-exit",
+        1.0
+      ],
+      [
+        "process-shutdown",
+        1.0
+      ],
+      [
+        "pre_exit",
+        1.0
+      ],
+      [
+        "stlab-pre-exit",
+        1.0
+      ],
+      [
+        "core_shutdown",
+        1.0
+      ],
+      [
+        "at_pre_exit",
+        1.0
+      ],
+      [
+        "at-pre-exit",
+        1.0
+      ],
+      [
+        "core-shutdown",
+        1.0
+      ]
+    ],
+    "pre-exit": [
+      [
+        "stlab_pre_exit",
+        1.0
+      ],
+      [
+        "at-pre-exit",
+        1.0
+      ],
+      [
+        "core-shutdown",
+        1.0
+      ],
+      [
+        "process-shutdown",
+        1.0
+      ],
+      [
+        "stlab-pre-exit",
+        1.0
+      ],
+      [
+        "pre_exit",
+        1.0
+      ],
+      [
+        "process_shutdown",
+        1.0
+      ],
+      [
+        "at_pre_exit",
+        1.0
+      ],
+      [
+        "core_shutdown",
+        1.0
+      ]
+    ],
+    "pre_exit": [
+      [
+        "core_shutdown",
+        1.0
+      ],
+      [
+        "core-shutdown",
+        1.0
+      ],
+      [
+        "process_shutdown",
+        1.0
+      ],
+      [
+        "at-pre-exit",
+        1.0
+      ],
+      [
+        "process-shutdown",
+        1.0
+      ],
+      [
+        "stlab-pre-exit",
+        1.0
+      ],
+      [
+        "at_pre_exit",
+        1.0
+      ],
+      [
+        "pre-exit",
+        1.0
+      ],
+      [
+        "stlab_pre_exit",
+        1.0
+      ]
+    ],
+    "core-shutdown": [
+      [
+        "stlab_pre_exit",
+        1.0
+      ],
+      [
+        "process_shutdown",
+        1.0
+      ],
+      [
+        "pre-exit",
+        1.0
+      ],
+      [
+        "core_shutdown",
+        1.0
+      ],
+      [
+        "at_pre_exit",
+        1.0
+      ],
+      [
+        "process-shutdown",
+        1.0
+      ],
+      [
+        "at-pre-exit",
+        1.0
+      ],
+      [
+        "pre_exit",
+        1.0
+      ],
+      [
+        "stlab-pre-exit",
+        1.0
+      ]
+    ],
+    "main-executor": [
+      [
+        "main-queue",
+        1.0
+      ],
+      [
+        "main_task_queue",
+        1.0
+      ],
+      [
+        "portable_main_executor",
+        1.0
+      ],
+      [
+        "main_executor",
+        1.0
+      ],
+      [
+        "portable-main-executor",
+        1.0
+      ],
+      [
+        "main-task-queue",
+        1.0
+      ],
+      [
+        "main_queue",
+        1.0
+      ]
+    ],
+    "cooperative-executor": [
+      [
+        "cooperative_executor",
+        1.0
+      ],
+      [
+        "threadless_wasm",
+        1.0
+      ],
+      [
+        "threadless-wasm",
+        1.0
+      ],
+      [
+        "emscripten",
+        1.0
+      ],
+      [
+        "webassembly_execution",
+        1.0
+      ],
+      [
+        "wasm_pre_exit",
+        1.0
+      ],
+      [
+        "webassembly-execution",
+        1.0
+      ],
+      [
+        "wasm-pre-exit",
+        1.0
+      ]
+    ],
+    "synchronization-invariants": [
+      [
+        "mutex-discipline",
+        1.0
+      ],
+      [
+        "locking_rules",
+        1.0
+      ],
+      [
+        "synchronization_invariants",
+        1.0
+      ],
+      [
+        "concurrency_contracts",
+        1.0
+      ],
+      [
+        "locking-rules",
+        1.0
+      ],
+      [
+        "mutex_discipline",
+        1.0
+      ],
+      [
+        "lock-scoping",
+        1.0
+      ],
+      [
+        "concurrency-contracts",
+        1.0
+      ],
+      [
+        "lock_scoping",
+        1.0
+      ]
+    ],
+    "execution-runtime": [
+      [
+        "stlab_concurrency",
+        1.0
+      ],
+      [
+        "concurrency_runtime",
+        1.0
+      ],
+      [
+        "execution_runtime",
+        1.0
+      ],
+      [
+        "architecture-overview",
+        1.0
+      ],
+      [
+        "stlab-execution",
+        1.0
+      ],
+      [
+        "stlab-concurrency",
+        1.0
+      ],
+      [
+        "stlab_execution",
+        1.0
+      ],
+      [
+        "concurrency-runtime",
+        1.0
+      ],
+      [
+        "architecture_overview",
+        1.0
+      ]
+    ],
+    "move_only_task": [
+      [
+        "move-only-task",
+        1.0
+      ],
+      [
+        "task",
+        1.0
+      ],
+      [
+        "task-t",
+        1.0
+      ],
+      [
+        "task_t",
+        1.0
+      ],
+      [
+        "stlab-v2-task-concept",
+        1.0
+      ],
+      [
+        "type_erasure",
+        1.0
+      ],
+      [
+        "type-erasure",
+        1.0
+      ],
+      [
+        "stlab_v2_task_concept",
+        1.0
+      ]
+    ],
+    "execution_runtime": [
+      [
+        "architecture-overview",
+        1.0
+      ],
+      [
+        "execution-runtime",
+        1.0
+      ],
+      [
+        "stlab_concurrency",
+        1.0
+      ],
+      [
+        "concurrency_runtime",
+        1.0
+      ],
+      [
+        "concurrency-runtime",
+        1.0
+      ],
+      [
+        "architecture_overview",
+        1.0
+      ],
+      [
+        "stlab_execution",
+        1.0
+      ],
+      [
+        "stlab-execution",
+        1.0
+      ],
+      [
+        "stlab-concurrency",
+        1.0
+      ]
+    ],
+    "locking_rules": [
+      [
+        "concurrency-contracts",
+        1.0
+      ],
+      [
+        "lock_scoping",
+        1.0
+      ],
+      [
+        "synchronization_invariants",
+        1.0
+      ],
+      [
+        "concurrency_contracts",
+        1.0
+      ],
+      [
+        "synchronization-invariants",
+        1.0
+      ],
+      [
+        "locking-rules",
+        1.0
+      ],
+      [
+        "lock-scoping",
+        1.0
+      ],
+      [
+        "mutex-discipline",
+        1.0
+      ],
+      [
+        "mutex_discipline",
+        1.0
+      ]
+    ],
+    "core_shutdown": [
+      [
+        "process_shutdown",
+        1.0
+      ],
+      [
+        "pre-exit",
+        1.0
+      ],
+      [
+        "stlab_pre_exit",
+        1.0
+      ],
+      [
+        "stlab-pre-exit",
+        1.0
+      ],
+      [
+        "at_pre_exit",
+        1.0
+      ],
+      [
+        "process-shutdown",
+        1.0
+      ],
+      [
+        "core-shutdown",
+        1.0
+      ],
+      [
+        "at-pre-exit",
+        1.0
+      ],
+      [
+        "pre_exit",
+        1.0
+      ]
+    ],
+    "task_abi_guard": [
+      [
+        "shared-library-abi",
+        1.0
+      ],
+      [
+        "version_namespaces",
+        1.0
+      ],
+      [
+        "shared_library_abi",
+        1.0
+      ],
+      [
+        "abi-stability",
+        1.0
+      ],
+      [
+        "task-abi-guard",
+        1.0
+      ],
+      [
+        "execution-def",
+        1.0
+      ],
+      [
+        "version-namespaces",
+        1.0
+      ],
+      [
+        "execution_def",
+        1.0
+      ],
+      [
+        "abi_stability",
+        1.0
+      ]
+    ],
+    "concurrency-contracts": [
+      [
+        "locking-rules",
+        1.0
+      ],
+      [
+        "locking_rules",
+        1.0
+      ],
+      [
+        "synchronization_invariants",
+        1.0
+      ],
+      [
+        "lock_scoping",
+        1.0
+      ],
+      [
+        "mutex_discipline",
+        1.0
+      ],
+      [
+        "concurrency_contracts",
+        1.0
+      ],
+      [
+        "mutex-discipline",
+        1.0
+      ],
+      [
+        "lock-scoping",
+        1.0
+      ],
+      [
+        "synchronization-invariants",
+        1.0
+      ]
+    ],
+    "webassembly_execution": [
+      [
+        "threadless-wasm",
+        1.0
+      ],
+      [
+        "webassembly-execution",
+        1.0
+      ],
+      [
+        "wasm-pre-exit",
+        1.0
+      ],
+      [
+        "emscripten",
+        1.0
+      ],
+      [
+        "wasm_pre_exit",
+        1.0
+      ],
+      [
+        "cooperative_executor",
+        1.0
+      ],
+      [
+        "cooperative-executor",
+        1.0
+      ],
+      [
+        "threadless_wasm",
+        1.0
+      ]
+    ],
+    "shared-library-abi": [
+      [
+        "execution-def",
+        1.0
+      ],
+      [
+        "abi_stability",
+        1.0
+      ],
+      [
+        "execution_def",
+        1.0
+      ],
+      [
+        "abi-stability",
+        1.0
+      ],
+      [
+        "version_namespaces",
+        1.0
+      ],
+      [
+        "shared_library_abi",
+        1.0
+      ],
+      [
+        "version-namespaces",
+        1.0
+      ],
+      [
+        "task_abi_guard",
+        1.0
+      ],
+      [
+        "task-abi-guard",
+        1.0
+      ]
+    ],
+    "architecture-overview": [
+      [
+        "concurrency-runtime",
+        1.0
+      ],
+      [
+        "execution_runtime",
+        1.0
+      ],
+      [
+        "stlab_concurrency",
+        1.0
+      ],
+      [
+        "stlab_execution",
+        1.0
+      ],
+      [
+        "execution-runtime",
+        1.0
+      ],
+      [
+        "concurrency_runtime",
+        1.0
+      ],
+      [
+        "stlab-execution",
+        1.0
+      ],
+      [
+        "stlab-concurrency",
+        1.0
+      ],
+      [
+        "architecture_overview",
+        1.0
+      ]
+    ],
+    "task-abi-guard": [
+      [
+        "shared_library_abi",
+        1.0
+      ],
+      [
+        "execution_def",
+        1.0
+      ],
+      [
+        "shared-library-abi",
+        1.0
+      ],
+      [
+        "task_abi_guard",
+        1.0
+      ],
+      [
+        "abi_stability",
+        1.0
+      ],
+      [
+        "execution-def",
+        1.0
+      ],
+      [
+        "abi-stability",
+        1.0
+      ],
+      [
+        "version-namespaces",
+        1.0
+      ],
+      [
+        "version_namespaces",
+        1.0
+      ]
+    ]
+  },
+  "provenance": {
+    "concurrency-runtime|stlab_execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "execution_runtime|execution-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "priority_task_system|thread_pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "test_infrastructure|ctest-matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "architecture-overview|execution-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "version-namespaces|execution-def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "core-shutdown|at_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "pre_exit|core-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "thread-pool|executor_abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "abi-stability|task_abi_guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "webassembly_execution|threadless-wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "task_t|type-erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab_v2_default_executor_submit|executor-abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "task_abi_guard|shared-library-abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "portable-timers|stlab_v2_system_timer_submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "pre_exit|core_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "webassembly-execution|emscripten": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "synchronization-invariants|synchronization_invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "task-t|type_erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "type_erasure|task_t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab-v2-task-concept|task_t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "thread-pool|default-executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "move-only-task|stlab-v2-task-concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "default_executor|stlab-v2-default-executor-submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "task|task_t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "move_only_task|task_t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "shared_library_abi|shared-library-abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab-v2-system-timer-submit|system-timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "process-shutdown|pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "wasm_pre_exit|emscripten": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "version_namespaces|version-namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "lock-scoping|concurrency_contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab_v2_system_timer_submit|system_timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "abi-stability|version-namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "process_shutdown|stlab-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "concurrency-contracts|concurrency_contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "execution_runtime|stlab-concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab-v2-task-concept|type-erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "main-queue|portable-main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "threadless_wasm|emscripten": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "execution_def|shared_library_abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "test_infrastructure|build_system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "stlab-pre-exit|pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "abi-stability|version_namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab-concurrency|stlab_execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "ctest-matrix|cpp_library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "execution-runtime|concurrency_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "thread-pool|executor-abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "type_erasure|type-erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "process_shutdown|pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "wasm_pre_exit|threadless_wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "executor-abi|stlab-v2-default-executor-submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "stlab-pre-exit|at-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab-v2-task-concept|move_only_task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "abi-stability|shared_library_abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "system-timer|timer_status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "portable_main_executor|portable-main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "concurrency_contracts|concurrency-contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "abi_stability|task_abi_guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "lock_scoping|locking_rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "system_timer|timer-delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "cpp-library|build-system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "thread_pool|stlab_v2_default_executor_submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "main-executor|portable-main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "stlab-execution|stlab-concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "cpp-library|ctest-matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "portable-main-executor|main_task_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "build_system|test-infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "main-executor|main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "build_system|cmake_presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "concurrency_contracts|lock-scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab-concurrency|stlab_concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "shared-library-abi|abi_stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "core-shutdown|pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab_pre_exit|core-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "shared_library_abi|task_abi_guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "webassembly-execution|webassembly_execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "concurrency-contracts|mutex_discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "concurrency_contracts|locking-rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab_concurrency|concurrency_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "cmake_presets|build_system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "emscripten|cooperative_executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "executor_abi|default-executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "threadless-wasm|cooperative-executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab-v2-task-concept|stlab_v2_task_concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "at_pre_exit|pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab_concurrency|architecture_overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "default-executor|stlab_v2_default_executor_submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "version_namespaces|task-abi-guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "mutex_discipline|synchronization-invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "version_namespaces|abi-stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "move_only_task|task-t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "wasm_pre_exit|cooperative-executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab-v2-task-concept|move-only-task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "locking-rules|mutex-discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "core-shutdown|stlab_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "core-shutdown|process-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "main_task_queue|main_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "task_abi_guard|execution-def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "default-executor|thread-pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "executor_abi|priority-task-system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "thread-pool|priority_task_system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "mutex_discipline|synchronization_invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "type-erasure|stlab-v2-task-concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab-pre-exit|at_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "concurrency_contracts|mutex_discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "version-namespaces|shared_library_abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "build-system|cmake-presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "cmake_presets|ctest-matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "type-erasure|move-only-task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "lock-scoping|locking_rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "timer-status|system-timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "stlab-v2-system-timer-submit|timer_delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "thread-pool|stlab-v2-default-executor-submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "main_task_queue|main-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "synchronization_invariants|mutex_discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "timer-status|timer-delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "priority-task-system|thread-pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "pre_exit|stlab_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "execution-def|shared_library_abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab-concurrency|execution-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "cpp-library|cmake-presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "task_t|stlab-v2-task-concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "locking_rules|concurrency-contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "webassembly_execution|wasm_pre_exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "main_queue|portable-main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "cmake-presets|cmake_presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "thread_pool|stlab-v2-default-executor-submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "timer-status|timer_status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "shared-library-abi|execution_def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "execution_runtime|architecture-overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab-v2-default-executor-submit|thread_pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "lock_scoping|mutex-discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "task|stlab_v2_task_concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "ctest-matrix|cpp-library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "timer_delay|timer-delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "architecture_overview|architecture-overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "abi_stability|version-namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab-v2-default-executor-submit|executor_abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "execution_runtime|concurrency-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab_v2_system_timer_submit|timer-status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "concurrency-contracts|lock-scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "process-shutdown|at_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "build_system|test_infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "stlab-v2-task-concept|task-t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "move-only-task|type_erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "architecture_overview|execution_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab-v2-system-timer-submit|portable-timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "abi_stability|execution-def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "priority_task_system|stlab-v2-default-executor-submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "cooperative_executor|wasm_pre_exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab_concurrency|stlab-concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "at-pre-exit|pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "execution_def|abi_stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "default_executor|stlab_v2_default_executor_submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "stlab-v2-task-concept|task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "execution_def|execution-def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "version_namespaces|execution_def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "architecture_overview|stlab-execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "task|move-only-task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "threadless_wasm|webassembly_execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "lock_scoping|synchronization_invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "threadless-wasm|threadless_wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "webassembly_execution|cooperative_executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "task-t|move_only_task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "architecture-overview|stlab_execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "synchronization-invariants|concurrency-contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "main_executor|portable_main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "lock_scoping|locking-rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "abi-stability|abi_stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab_v2_task_concept|stlab-v2-task-concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "default_executor|thread-pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "architecture-overview|execution_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab_execution|stlab-execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "type-erasure|move_only_task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "at_pre_exit|stlab_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "main_queue|portable_main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "main_task_queue|main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "concurrency_runtime|execution_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "lock-scoping|lock_scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "system_timer|timer_status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "lock_scoping|lock-scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "cmake_presets|build-system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "thread-pool|priority-task-system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "threadless_wasm|cooperative_executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab-v2-default-executor-submit|default-executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "concurrency-runtime|stlab_concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "build_system|cpp_library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "task|type-erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "main-executor|main-task-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "stlab_v2_default_executor_submit|executor_abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "test-infrastructure|ctest-matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "concurrency_contracts|synchronization_invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "default_executor|executor-abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "main_executor|main-task-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "at-pre-exit|core_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab_execution|concurrency-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "concurrency_runtime|stlab_concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "timer_delay|timer-status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "task-abi-guard|shared-library-abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "locking-rules|mutex_discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "executor_abi|thread-pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "cpp-library|cpp_library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "at-pre-exit|pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "cpp-library|cmake_presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "ctest-matrix|test_infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "move_only_task|stlab-v2-task-concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "threadless-wasm|webassembly-execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "portable_main_executor|main_task_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "timer_status|system_timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "default_executor|executor_abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "main_executor|main_task_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "core_shutdown|at_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "pre_exit|pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "system_timer|portable-timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "main-queue|portable_main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "at_pre_exit|core-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "executor_abi|stlab_v2_default_executor_submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "stlab_v2_default_executor_submit|thread-pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "executor-abi|executor_abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "move-only-task|move_only_task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "system-timer|portable-timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "cmake-presets|cpp-library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "task-abi-guard|execution_def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "main-executor|main-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "task|stlab-v2-task-concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab_v2_system_timer_submit|portable-timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "webassembly_execution|webassembly-execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab_v2_system_timer_submit|timer-delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "build-system|ctest-matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "main-queue|main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "move_only_task|type-erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab-v2-system-timer-submit|system_timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "webassembly-execution|cooperative_executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "lock-scoping|synchronization-invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "execution_runtime|stlab_concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab_pre_exit|process-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "portable-main-executor|portable_main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "concurrency_runtime|execution-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "mutex-discipline|locking-rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "priority-task-system|executor-abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "priority_task_system|thread-pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "architecture_overview|stlab_concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "synchronization_invariants|lock-scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "mutex-discipline|locking_rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "test_infrastructure|cpp-library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "concurrency-contracts|lock_scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "ctest_matrix|cpp_library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "mutex-discipline|concurrency-contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "system-timer|timer-delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "concurrency-contracts|synchronization_invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "build_system|ctest_matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "stlab-execution|execution-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "abi_stability|abi-stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "wasm_pre_exit|threadless-wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "task_t|move-only-task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "default_executor|default-executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "cooperative-executor|webassembly-execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "ctest_matrix|build-system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "type-erasure|task-t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "executor_abi|thread_pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "system_timer|stlab_v2_system_timer_submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "concurrency-contracts|synchronization-invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "process-shutdown|process_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "synchronization-invariants|lock_scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "wasm-pre-exit|wasm_pre_exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "mutex-discipline|synchronization-invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "core_shutdown|core-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab-concurrency|stlab-execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "portable-main-executor|main-task-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "execution-def|abi-stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "main_task_queue|portable-main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "stlab_concurrency|execution_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "lock-scoping|locking-rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "task-abi-guard|execution-def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "process-shutdown|core_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "version-namespaces|execution_def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "thread_pool|priority-task-system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "default-executor|thread_pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "ctest_matrix|test_infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "task|move_only_task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "process_shutdown|at-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "thread_pool|executor_abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "stlab_v2_system_timer_submit|timer_status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "core_shutdown|pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab_v2_system_timer_submit|stlab-v2-system-timer-submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "mutex-discipline|mutex_discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "pre-exit|pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "threadless-wasm|cooperative_executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "abi-stability|task-abi-guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab_execution|execution_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "main_queue|main-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "portable_main_executor|main-task-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "task_t|move_only_task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "concurrency_runtime|concurrency-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "execution_def|abi-stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "portable_timers|timer-status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "cpp-library|test_infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "priority-task-system|default-executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "test_infrastructure|cpp_library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "system_timer|system-timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "process-shutdown|stlab-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "default_executor|priority-task-system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "emscripten|cooperative-executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "default_executor|thread_pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "execution_runtime|architecture_overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "execution_def|task_abi_guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "execution-runtime|execution_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "locking_rules|locking-rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab_execution|architecture_overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "executor-abi|default-executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "pre-exit|process-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "locking_rules|synchronization_invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "thread_pool|executor-abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "system-timer|system_timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "priority_task_system|executor_abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "main_queue|main_task_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "timer-delay|portable_timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "synchronization-invariants|concurrency_contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "emscripten|wasm-pre-exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "synchronization-invariants|mutex-discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "pre_exit|at_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "wasm-pre-exit|webassembly_execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "system_timer|timer_delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "main-task-queue|main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "timer_delay|system-timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "timer-delay|stlab-v2-system-timer-submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "cmake-presets|ctest_matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "cmake_presets|ctest_matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "task_abi_guard|version_namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "task-t|stlab_v2_task_concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "timer-delay|timer-status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "priority-task-system|thread_pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "main_executor|main_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "portable-main-executor|main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "concurrency-runtime|architecture_overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "build-system|cmake_presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "test-infrastructure|build-system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "synchronization-invariants|lock-scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "process_shutdown|stlab_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "at-pre-exit|process_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "locking-rules|concurrency_contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "type_erasure|stlab_v2_task_concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "locking-rules|concurrency-contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "task_abi_guard|execution_def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "cmake_presets|test_infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "type-erasure|task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "at_pre_exit|pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "portable_timers|timer-delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "locking-rules|locking_rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "execution-runtime|architecture-overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "core-shutdown|pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "lock-scoping|concurrency-contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "portable-main-executor|main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "execution-def|task-abi-guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "webassembly-execution|threadless-wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab-execution|architecture_overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "execution-runtime|stlab-concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "version-namespaces|abi_stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "move_only_task|stlab_v2_task_concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab_concurrency|concurrency-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "system-timer|portable_timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "execution-runtime|stlab_execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "cpp-library|test-infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "ctest_matrix|build_system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "pre-exit|core-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "cooperative_executor|emscripten": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "task-abi-guard|version-namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "thread_pool|priority_task_system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "stlab_pre_exit|core_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "synchronization-invariants|locking-rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab_v2_system_timer_submit|system-timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "concurrency_contracts|synchronization-invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "concurrency-runtime|stlab-execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "build_system|cmake-presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "concurrency-runtime|architecture-overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab-v2-default-executor-submit|executor-abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "execution-def|execution_def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "cmake-presets|build-system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "ctest_matrix|cmake_presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "execution_runtime|stlab_execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "test-infrastructure|cmake-presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "concurrency_contracts|locking_rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "priority-task-system|default_executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "at-pre-exit|stlab_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "architecture-overview|concurrency_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "version_namespaces|shared_library_abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "ctest_matrix|ctest-matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "concurrency_runtime|architecture-overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "ctest-matrix|cmake_presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "default-executor|stlab-v2-default-executor-submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "execution_def|task-abi-guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "emscripten|wasm_pre_exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "timer_status|stlab_v2_system_timer_submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "default-executor|executor_abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "thread_pool|thread-pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "timer_delay|timer_status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "task_t|task-t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab-concurrency|concurrency-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "wasm-pre-exit|cooperative-executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "threadless_wasm|threadless-wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "at_pre_exit|process_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "architecture-overview|stlab-concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "cooperative_executor|threadless_wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "execution-runtime|stlab_concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "shared-library-abi|task-abi-guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "at_pre_exit|stlab-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "main_queue|main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "execution_def|version_namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "timer-delay|stlab_v2_system_timer_submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "task_t|stlab_v2_task_concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "ctest_matrix|cpp-library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "version_namespaces|task_abi_guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "cmake_presets|cmake-presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "execution-def|version-namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "priority_task_system|priority-task-system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "system-timer|stlab_v2_system_timer_submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "cpp-library|build_system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "timer_delay|portable_timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "thread-pool|stlab_v2_default_executor_submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "timer_status|portable_timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "concurrency_contracts|mutex-discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "core_shutdown|at-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "timer-delay|timer_status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "timer_status|stlab-v2-system-timer-submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "at-pre-exit|process-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "process_shutdown|at_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "portable_main_executor|main_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "ctest-matrix|build-system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "executor-abi|priority-task-system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "shared-library-abi|shared_library_abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "threadless_wasm|cooperative-executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "test-infrastructure|build_system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "shared_library_abi|version_namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab-pre-exit|stlab_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "main-queue|main_task_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "portable_timers|stlab_v2_system_timer_submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "webassembly-execution|wasm-pre-exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab-v2-system-timer-submit|timer-status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "task-t|task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "lock_scoping|concurrency_contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "executor-abi|default_executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "priority_task_system|stlab_v2_default_executor_submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "process-shutdown|stlab_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "main-task-queue|main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "portable_main_executor|main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "stlab-v2-task-concept|type_erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "task|task-t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "webassembly-execution|wasm_pre_exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "cooperative_executor|threadless-wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "task_abi_guard|abi-stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "main_executor|main-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "execution_runtime|concurrency_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "cmake-presets|test_infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "core-shutdown|stlab-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "architecture_overview|execution-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "synchronization_invariants|lock_scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "main-queue|main_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "cmake-presets|ctest-matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "portable-main-executor|main-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "test_infrastructure|cmake-presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "locking-rules|lock_scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab-concurrency|execution_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "execution_def|version-namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "lock-scoping|mutex-discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "timer_status|timer_delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "stlab-concurrency|concurrency_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "executor_abi|default_executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "test_infrastructure|cmake_presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "stlab-execution|execution_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab_v2_default_executor_submit|priority_task_system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "system_timer|stlab-v2-system-timer-submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "ctest-matrix|cmake-presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "shared-library-abi|abi-stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "executor_abi|executor-abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "mutex-discipline|synchronization_invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "build-system|cpp_library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "shared_library_abi|execution_def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab_pre_exit|pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab_v2_default_executor_submit|stlab-v2-default-executor-submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "portable-timers|system-timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "build-system|ctest_matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "cpp_library|ctest_matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "emscripten|webassembly-execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "ctest_matrix|cmake-presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "stlab-v2-system-timer-submit|portable_timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "test-infrastructure|cmake_presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "webassembly_execution|cooperative-executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "main_queue|main-task-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "portable_main_executor|main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "concurrency-contracts|locking_rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab-execution|architecture-overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "portable-timers|timer_status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "portable-timers|system_timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "test_infrastructure|ctest_matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "main-queue|main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "locking-rules|synchronization_invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "process_shutdown|core_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "main-executor|main_task_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "concurrency-runtime|concurrency_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "portable_timers|timer_status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "shared_library_abi|version-namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "abi_stability|execution_def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "move-only-task|task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab_v2_default_executor_submit|default_executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "ctest_matrix|test-infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "execution-runtime|concurrency-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "portable-timers|stlab-v2-system-timer-submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "cooperative-executor|webassembly_execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "test-infrastructure|ctest_matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "task_t|type_erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab-v2-system-timer-submit|stlab_v2_system_timer_submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "version-namespaces|shared-library-abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab-v2-system-timer-submit|timer_status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "locking-rules|synchronization-invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "mutex_discipline|locking_rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab_v2_default_executor_submit|default-executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "concurrency_runtime|stlab-concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "wasm_pre_exit|webassembly-execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "task_abi_guard|abi_stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "cmake-presets|build_system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "version_namespaces|shared-library-abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "move_only_task|move-only-task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "timer_delay|portable-timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "cooperative_executor|webassembly_execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "concurrency-runtime|execution-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "cmake-presets|cpp_library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "system_timer|portable_timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "system-timer|stlab-v2-system-timer-submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "type_erasure|move-only-task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab_v2_task_concept|task_t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "build_system|cpp-library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "abi_stability|shared-library-abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "concurrency-runtime|execution_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "type-erasure|stlab_v2_task_concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "execution-def|abi_stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "timer-status|portable-timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "priority_task_system|default-executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "main_executor|main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "timer-status|portable_timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "move-only-task|task-t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab-execution|stlab_concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "cooperative_executor|wasm-pre-exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "portable-main-executor|main_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "timer_delay|stlab-v2-system-timer-submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "ctest-matrix|test-infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "cpp_library|build_system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "timer-delay|system_timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "stlab_v2_task_concept|type_erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "cmake_presets|test-infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "stlab_execution|concurrency_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "task|type_erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "portable_main_executor|main-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "cooperative-executor|emscripten": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab-pre-exit|pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "pre_exit|process_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "timer_delay|stlab_v2_system_timer_submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "mutex_discipline|locking-rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "wasm-pre-exit|webassembly-execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "portable-timers|portable_timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "cpp_library|ctest-matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "task-abi-guard|task_abi_guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "concurrency-runtime|stlab-concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "task-abi-guard|shared_library_abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "task_abi_guard|shared_library_abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "pre-exit|stlab-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "process-shutdown|at-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "ctest-matrix|ctest_matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "default_executor|priority_task_system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "synchronization_invariants|concurrency-contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab_pre_exit|at-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "pre-exit|core_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "version-namespaces|version_namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "lock_scoping|mutex_discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "portable-timers|timer-delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "lock-scoping|synchronization_invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "locking-rules|lock-scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab-concurrency|architecture_overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "pre_exit|at-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab_v2_default_executor_submit|priority-task-system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "task-abi-guard|abi_stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "main-task-queue|portable-main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "mutex-discipline|concurrency_contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "abi-stability|shared-library-abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "build-system|build_system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "main-task-queue|main-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "timer_status|system-timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "core-shutdown|process_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "locking_rules|mutex-discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "build-system|test_infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "threadless-wasm|wasm_pre_exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab_v2_task_concept|move-only-task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "cpp_library|cmake-presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "timer_delay|system_timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "architecture-overview|stlab_concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "execution-runtime|stlab-execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "webassembly_execution|threadless_wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "shared_library_abi|abi_stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "threadless_wasm|wasm-pre-exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "pre-exit|at-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "wasm_pre_exit|cooperative_executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "execution-def|version_namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab_concurrency|architecture-overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "main-executor|portable_main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "build_system|build-system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "version-namespaces|task-abi-guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab_pre_exit|stlab-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "timer-status|stlab_v2_system_timer_submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "version_namespaces|execution-def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "concurrency-contracts|mutex-discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "version-namespaces|abi-stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "portable_timers|portable-timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "priority_task_system|default_executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "task_t|task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "synchronization-invariants|locking_rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "wasm-pre-exit|cooperative_executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "shared_library_abi|abi-stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "cooperative-executor|threadless-wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "emscripten|threadless_wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "cooperative-executor|wasm-pre-exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab_v2_task_concept|type-erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab_execution|stlab-concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "cpp_library|test_infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "locking_rules|mutex_discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "timer-status|system_timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "emscripten|webassembly_execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab-pre-exit|core-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "portable-timers|timer-status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "executor-abi|thread-pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "core-shutdown|core_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "shared-library-abi|execution-def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "locking_rules|synchronization-invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "locking_rules|concurrency_contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab_pre_exit|at_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab_execution|architecture-overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "main-executor|main_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "main_queue|main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "cooperative_executor|webassembly-execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "type_erasure|task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "mutex_discipline|mutex-discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "threadless_wasm|wasm_pre_exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "build-system|cpp-library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "stlab_concurrency|stlab-execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "pre-exit|stlab_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab_concurrency|execution-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab_v2_task_concept|move_only_task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "task-abi-guard|abi-stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "mutex-discipline|lock_scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab-v2-system-timer-submit|timer-delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "task_abi_guard|version-namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "shared-library-abi|version_namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab_v2_system_timer_submit|timer_delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "threadless-wasm|webassembly_execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "cpp_library|build-system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "cpp_library|cpp-library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "test_infrastructure|test-infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "main_executor|portable-main-executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "wasm-pre-exit|threadless-wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "architecture-overview|concurrency-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "timer-status|stlab-v2-system-timer-submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "at_pre_exit|core_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "move_only_task|task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "move-only-task|type-erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab_v2_task_concept|task-t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "execution-runtime|architecture_overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "portable-timers|timer_delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "default-executor|priority-task-system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "at_pre_exit|process-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "move-only-task|task_t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "system-timer|timer-status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "timer-status|timer_delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "execution_runtime|stlab-execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "execution-def|task_abi_guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "shared_library_abi|task-abi-guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "cooperative-executor|threadless_wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "main-task-queue|main_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "core_shutdown|stlab_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "architecture_overview|concurrency-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab_execution|execution-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "pre-exit|process_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "timer_status|portable-timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "abi-stability|execution-def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab-pre-exit|process-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "abi_stability|task-abi-guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab_pre_exit|pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "system_timer|timer-status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "webassembly-execution|cooperative-executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "architecture_overview|stlab-concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "wasm_pre_exit|webassembly_execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "execution-def|shared-library-abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "concurrency_contracts|lock_scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "cpp_library|test-infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "build_system|ctest-matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "main-task-queue|portable_main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "priority-task-system|executor_abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "pre-exit|at_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "timer_status|timer-delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "core-shutdown|at-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "executor_abi|stlab-v2-default-executor-submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "stlab_v2_system_timer_submit|portable_timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "portable_timers|stlab-v2-system-timer-submit": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "executor-abi|stlab_v2_default_executor_submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "wasm-pre-exit|threadless_wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "synchronization_invariants|locking_rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "ctest-matrix|build_system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "synchronization_invariants|concurrency_contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "type-erasure|type_erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "process-shutdown|pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "mutex_discipline|lock-scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "type_erasure|task-t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "main-queue|main-task-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "execution_def|shared-library-abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "pre_exit|stlab-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "webassembly-execution|threadless_wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "priority-task-system|stlab-v2-default-executor-submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "priority_task_system|executor-abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "type-erasure|task_t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "stlab_pre_exit|process_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "portable_timers|timer_delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "at_pre_exit|at-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "process_shutdown|pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab_concurrency|stlab_execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "process_shutdown|process-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "timer-delay|portable-timers": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "default-executor|default_executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "test-infrastructure|cpp_library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "locking_rules|lock_scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "core_shutdown|process-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "wasm-pre-exit|emscripten": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "architecture_overview|stlab_execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "version-namespaces|task_abi_guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "type_erasure|stlab-v2-task-concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "thread-pool|thread_pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "mutex-discipline|lock-scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "task-t|task_t": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "threadless_wasm|webassembly-execution": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab-concurrency|architecture-overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "wasm_pre_exit|wasm-pre-exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "thread-pool|default_executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "main_task_queue|portable_main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "mutex_discipline|lock_scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "stlab-v2-default-executor-submit|priority_task_system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "main-task-queue|main_task_queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "stlab_v2_task_concept|task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "test_infrastructure|build-system": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "at-pre-exit|core-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab-pre-exit|core_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "cooperative-executor|wasm_pre_exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "build-system|test-infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "lock_scoping|concurrency-contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "executor-abi|priority_task_system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "concurrency-contracts|locking-rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "webassembly_execution|wasm-pre-exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "threadless-wasm|emscripten": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "lock_scoping|synchronization-invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "synchronization-invariants|mutex_discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "version_namespaces|abi_stability": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "default-executor|executor-abi": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "cooperative-executor|cooperative_executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "task-t|move-only-task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "at-pre-exit|at_pre_exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "executor-abi|thread_pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "move-only-task|stlab_v2_task_concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "mutex_discipline|concurrency-contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "synchronization_invariants|locking-rules": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "task-t|type-erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "core_shutdown|stlab-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "stlab-execution|concurrency_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "main_task_queue|main_executor": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "stlab-execution|concurrency-runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "architecture-overview|architecture_overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "cmake_presets|cpp-library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "locking_rules|lock-scoping": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "concurrency_runtime|stlab-execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab_execution|stlab_concurrency": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "move_only_task|type_erasure": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "threadless-wasm|wasm-pre-exit": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "cpp_library|cmake_presets": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "task_abi_guard|task-abi-guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "portable_timers|system_timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "shared_library_abi|execution-def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "test-infrastructure|test_infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "abi_stability|shared_library_abi": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "stlab-v2-default-executor-submit|thread-pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "timer-delay|timer_delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "lock-scoping|mutex_discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "task-t|stlab-v2-task-concept": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "pre_exit|process-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "priority-task-system|stlab_v2_default_executor_submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "concurrency_runtime|stlab_execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "abi-stability|execution_def": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "type_erasure|move_only_task": [
+      "knowledge\\task-type-erasure-and-relocation-abi.md"
+    ],
+    "emscripten|threadless-wasm": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab-execution|stlab_execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "mutex_discipline|concurrency_contracts": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "cmake-presets|test-infrastructure": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "timer-delay|system-timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "abi_stability|version_namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "webassembly_execution|emscripten": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "stlab_v2_default_executor_submit|thread_pool": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "architecture_overview|concurrency_runtime": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "stlab-pre-exit|process_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "system-timer|timer_delay": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "executor_abi|priority_task_system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "concurrency_runtime|architecture_overview": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "main_task_queue|main-task-queue": [
+      "knowledge\\main-executor-backends-and-dispatch-queue.md"
+    ],
+    "task-abi-guard|version_namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "shared-library-abi|version-namespaces": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "priority-task-system|priority_task_system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "shared-library-abi|task_abi_guard": [
+      "knowledge\\abi-stability-version-namespaces-and-shared-library-exports.md"
+    ],
+    "process-shutdown|core-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "core_shutdown|pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "architecture-overview|stlab-execution": [
+      "knowledge\\architecture-overview.md"
+    ],
+    "cooperative_executor|cooperative-executor": [
+      "knowledge\\threadless-emscripten-cooperative-execution-and-shutdown.md"
+    ],
+    "core_shutdown|process_shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "thread_pool|default_executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "thread_pool|default-executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "test-infrastructure|cpp-library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "cmake_presets|cpp_library": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "stlab-v2-default-executor-submit|stlab_v2_default_executor_submit": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "stlab-v2-default-executor-submit|default_executor": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "cpp-library|ctest_matrix": [
+      "procedures\\build-presets-testing-matrix-and-cpp-library-tooling.md"
+    ],
+    "stlab-v2-default-executor-submit|priority-task-system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "process_shutdown|core-shutdown": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "synchronization_invariants|synchronization-invariants": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ],
+    "at-pre-exit|stlab-pre-exit": [
+      "knowledge\\process-lifecycle-and-pre-exit-protocol.md"
+    ],
+    "timer_status|timer-status": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "portable_timers|system-timer": [
+      "knowledge\\system-timer-architecture-and-guarantees.md"
+    ],
+    "default-executor|priority_task_system": [
+      "knowledge\\executor-architecture-and-native-priority-schedulers.md"
+    ],
+    "synchronization_invariants|mutex-discipline": [
+      "knowledge\\concurrency-contracts-and-locking-discipline.md"
+    ]
+  },
+  "entries_processed": 10,
+  "built_at": "2026-10-13T00:40:05.144525400+00:00"
+}
