@@ -15,6 +15,41 @@
 
 #include <doctest/doctest.h>
 
+TEST_CASE("noexcept task relocation callback preserves its signature") {
+    using task_t = stlab::task<int&(int&, int) noexcept>;
+    using callback_t = int& (*)(void*, int&, int) noexcept;
+    static_assert(std::is_same_v<task_t::invoke_t, callback_t>);
+    static_assert(
+        std::is_same_v<decltype(std::declval<const task_t&>().relocation_invoke()), callback_t>);
+
+    task_t target = [](int& value, int amount) noexcept -> int& {
+        value += amount;
+        return value;
+    };
+    int value = 24;
+    CHECK(&target.relocation_invoke()(target.relocation_source(), value, 18) == &value);
+    CHECK(value == 42);
+}
+
+TEST_CASE("throwing task relocation callback preserves its signature and propagates errors") {
+    using task_t = stlab::task<int&(int&, int)>;
+    using callback_t = int& (*)(void*, int&, int);
+    static_assert(std::is_same_v<task_t::invoke_t, callback_t>);
+    static_assert(
+        std::is_same_v<decltype(std::declval<const task_t&>().relocation_invoke()), callback_t>);
+
+    task_t target = [](int& value, int amount) -> int& {
+        if (amount < 0) throw std::runtime_error("negative amount");
+        value += amount;
+        return value;
+    };
+    int value = 24;
+    CHECK(&target.relocation_invoke()(target.relocation_source(), value, 18) == &value);
+    CHECK(value == 42);
+    CHECK_THROWS_AS(target.relocation_invoke()(target.relocation_source(), value, -1),
+                    std::runtime_error);
+}
+
 TEST_CASE("task retains a move-only capture through move construction") {
     int observed = 0;
     stlab::task<void() noexcept> first = [p = std::make_unique<int>(42), &observed]() noexcept {

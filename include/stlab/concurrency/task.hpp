@@ -169,7 +169,8 @@ public:
     using concept_t = stlab_v2_task_concept;
 
     /// Function used to invoke a task's target, valid for as long as the target is live.
-    using invoke_t = R (*)(void*, Args...) noexcept(NoExcept);
+    using invoke_t =
+        std::conditional_t<NoExcept, R (*)(void*, Args...) noexcept, R (*)(void*, Args...)>;
 
 private:
     template <class F>
